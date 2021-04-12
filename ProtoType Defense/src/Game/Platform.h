@@ -1,6 +1,10 @@
 #pragma once
+#ifndef Platform_H
+#define Platform_H
+
 #include "glm.hpp"
-#include "Tower.h"
+
+class Tower;
 
 
 class Platform
@@ -23,3 +27,4 @@ public:
 	bool placeTower(Tower& tower);
 };
 
+#endif

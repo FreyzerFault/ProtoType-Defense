@@ -76,7 +76,7 @@
     <ClCompile Include="tests\TestThreads.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="Sprite.cpp">
+    <ClCompile Include="src\Sprite.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
     <ClCompile Include="src\Game\Platform.cpp">
@@ -123,11 +123,11 @@
     <ClInclude Include="tests\TestDynamicBuffer.h" />
     <ClInclude Include="src\GlobalParameters.h" />
     <ClInclude Include="tests\TestThreads.h" />
-    <ClInclude Include="Sprite.h" />
+    <ClInclude Include="src\Sprite.h" />
     <ClInclude Include="src\Game\Platform.h" />
     <ClInclude Include="src\Game\Structure\Entity.h" />
     <ClInclude Include="src\Game\Structure\Hitbox.h" />
-    <ClInclude Include="src\DeltaTime.h" />
+    <ClInclude Include="src\Game\DeltaTime.h" />
     <ClInclude Include="tests\TestShootDeltaTime.h" />
     <ClInclude Include="src\Game\Enemy.h" />
   </ItemGroup>

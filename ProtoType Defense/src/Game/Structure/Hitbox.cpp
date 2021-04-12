@@ -6,12 +6,12 @@
 
 using namespace glm;
 
-#define pX position[0]
-#define pY position[1]
-#define pZ position[2]
-#define sX size[0]
-#define sY size[1]
-#define sZ size[2]
+#define pX m_Position[0]
+#define pY m_Position[1]
+#define pZ m_Position[2]
+#define sX m_Size[0]
+#define sY m_Size[1]
+#define sZ m_Size[2]
 
 Hitbox::Hitbox()
 	: Hitbox(vec2(windowCenterX, windowCenterY), vec2(16.0f, 16.0f))
@@ -24,7 +24,7 @@ Hitbox::Hitbox(vec2 position, vec2 size, float yaw)
 }
 
 Hitbox::Hitbox(vec3 position, vec3 size, float yaw)
-	: position(position), size(size), yaw(yaw)
+	: m_Position(position), m_Size(size), m_Yaw(yaw)
 {
 }
 
@@ -32,7 +32,7 @@ Hitbox::Hitbox(vec3 position, vec3 size, float yaw)
 bool Hitbox::collision(Hitbox& object)
 {
 	// If the Entity is rotated, solution isn't trivial, SAT algorithm needed
-	if (yaw != 0) SATcollision(object);
+	if (m_Yaw != 0) SATcollision(object);
 
 	// Trivial solution
 	
@@ -110,29 +110,29 @@ bool Hitbox::SATcollision(Hitbox& object)
 
 void Hitbox::updateVertices()
 {
-	vertices[0] = vec2(pX - sX / 2 * cos(yaw), pY - sY / 2 * sin(yaw));
-	vertices[1] = vec2(pX + sX / 2 * cos(yaw), pY - sY / 2 * sin(yaw));
-	vertices[2] = vec2(pX + sX / 2 * cos(yaw), pY + sY / 2 * sin(yaw));
-	vertices[3] = vec2(pX - sX / 2 * cos(yaw), pY + sY / 2 * sin(yaw));
+	vertices[0] = vec2(pX - sX / 2 * cos(m_Yaw), pY - sY / 2 * sin(m_Yaw));
+	vertices[1] = vec2(pX + sX / 2 * cos(m_Yaw), pY - sY / 2 * sin(m_Yaw));
+	vertices[2] = vec2(pX + sX / 2 * cos(m_Yaw), pY + sY / 2 * sin(m_Yaw));
+	vertices[3] = vec2(pX - sX / 2 * cos(m_Yaw), pY + sY / 2 * sin(m_Yaw));
 }
 
-
-void Hitbox::move(const float X, const float Y)
-{
-	pX += X * cos(yaw);
-	pY += Y * sin(yaw);
-}
 
 void Hitbox::move(const float X, const float Y, const float Z)
 {
-	pX += X * cos(yaw);
-	pY += Y * sin(yaw);
+	pX += X;
+	pY += Y;
 	pZ += Z;
+}
+
+void Hitbox::move(const float d)
+{
+	pX += d * cos(m_Yaw);
+	pY += d * sin(m_Yaw);
 }
 
 void Hitbox::rotate(float X)
 {
-	// Normalized to [0,360] º
-	if (X > 360 || X < 0) X -= floor(X / 360) * 360;
-	yaw += rad(X);
+	m_Yaw += rad(X);
+	// Normalized to [0,2PI] radians
+	m_Yaw -= floor(m_Yaw / (2 * PI)) * 2 * PI;
 }

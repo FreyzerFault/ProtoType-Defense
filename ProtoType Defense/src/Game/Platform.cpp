@@ -1,4 +1,5 @@
 #include "Platform.h"
+#include "Tower.h"
 
 float Platform::size = 10.0f;
 

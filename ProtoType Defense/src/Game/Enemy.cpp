@@ -4,13 +4,13 @@ using namespace glm;
 
 static vec2 hitboxSize(32,32);
 
-Enemy::Enemy(const vec3 pos, const unsigned life, const float speed)
-	: Entity(pos, hitboxSize), life(life), speed(speed)
+Enemy::Enemy(const vec3 pos, const unsigned int texID, const unsigned life, const float speed)
+	: Entity(pos, hitboxSize, 0.0f, texID), life(life), speed(speed)
 {
 }
 
 Enemy::Enemy(const Enemy& orig)
-	: Entity(orig.position, orig.getSize2D()), life(orig.life), speed(orig.speed)
+	: Entity(orig.m_Position, orig.getSize2D()), life(orig.life), speed(orig.speed)
 {
 }
 

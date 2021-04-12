@@ -3,47 +3,61 @@
 #include <trigonometric.hpp>
 #include "GlobalParameters.h"
 
-Projectile::Projectile()
-	: Projectile(windowCenterX, windowCenterY, 10.0f, 10.0f, 0.0f, 1, false)
+using namespace glm;
+
+static vec3 hitboxSize(16.0f);
+
+Projectile::Projectile(const Tower* tower)
+	: Projectile(tower, vec2(tower->getPosition2D()), hitboxSize, tower->getYaw(), tower->getPierce())
 {
 }
 
 // 2D
-Projectile::Projectile(const float X, const float Y, const float sX, const float sY,
-	float orientation, const int piercing, bool homming)
-	: Entity(X, Y, sX, sY), orientation(orientation), pierce(piercing), homming(homming)
+Projectile::Projectile(const Tower* tower, vec2 position, vec2 size, float orientation, bool homming)
+	: Entity(position, size, orientation), m_Pierce(tower->getPierce()), m_Homming(homming), m_Tower(tower)
+{
+}
+
+// 3D Flat Hitbox
+Projectile::Projectile(const Tower* tower, vec3 position, vec2 size, float orientation, bool homming)
+	: Entity(position, size, orientation), m_Pierce(tower->getPierce()), m_Homming(homming), m_Tower(tower)
 {
 }
 
 // 3D
-Projectile::Projectile(const float X, const float Y, const float Z,
-	const float sX, const float sY, const float sZ,
-	float orientation, const int piercing, bool homming)
-	: Entity(X,Y,Z, sX, sY, sZ), orientation(orientation), pierce(piercing), homming(homming)
+Projectile::Projectile(const Tower* tower, vec3 position, vec3 size, float orientation, bool homming)
+	: Entity(position, size, orientation), m_Pierce(tower->getPierce()), m_Homming(homming), m_Tower(tower)
 {
 }
-
 
 Projectile::Projectile(const Projectile& orig) = default;
 
 Projectile::~Projectile() = default;
 
-
-void Projectile::move(const float distance)
+Projectile& Projectile::operator=(const Projectile& orig)
 {
-	Entity::move(distance * glm::cos(orientation), distance * glm::sin(orientation), 0.0f);
+	if (this != &orig)
+	{
+		m_Pierce = orig.m_Pierce;
+		m_Homming = orig.m_Homming;
+		m_Tower = orig.m_Tower;
+	}
+	return *this;
 }
+
 
 bool Projectile::Impact()
 {
 	// IF Piercing:
-	pierce--;
+	m_Pierce--;
 
-	// If piercing stop pursuing and goes straight
-	homming = false;
+	// If pierced stop pursuing and goes straight
+	m_Homming = false;
 
 	return true;
 }
+
+
 
 
 

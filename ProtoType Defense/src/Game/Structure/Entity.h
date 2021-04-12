@@ -6,10 +6,10 @@
 class Entity
 {
 protected:
-	glm::vec3 position;
-	float yaw; // radians
+	glm::vec3 m_Position;
+	float m_Yaw; // radians
 	
-	Hitbox* hitbox; // No necessary
+	Hitbox* m_Hitbox; // No necessary
 
 	Sprite m_Sprite;
 
@@ -28,19 +28,20 @@ public:
 
 	virtual ~Entity();
 	
-	glm::vec2 getPosition2D() const { return glm::vec2(position); }
-	glm::vec3 getPosition3D() const { return glm::vec3(position); }
-	glm::vec2 getSize2D() const { return hitbox->getSize2D(); }
-	glm::vec3 getSize3D() const { return hitbox->getPosition3D(); }
+	glm::vec2 getPosition2D() const { return glm::vec2(m_Position.x, m_Position.y); }
+	glm::vec3 getPosition3D() const { return m_Position; }
+	glm::vec2 getSize2D() const { return m_Hitbox->getSize2D(); }
+	glm::vec3 getSize3D() const { return m_Hitbox->getPosition3D(); }
 	Sprite& getSprite() { return m_Sprite; }
-	Hitbox& getHitbox() const { return *hitbox; }
+	Hitbox& getHitbox() const { return *m_Hitbox; }
+	float getYaw() const { return m_Yaw; }
 
 	void setPosition(const glm::vec3 pos);
-
-	void move(const float X, const float Y);
-	void move(const float X, const float Y, const float Z);
+	
+	void move(const float X, const float Y, const float Z = 0.0f);
+	void move(const float d);
 
 	void rotate(float X); // X in Degrees
-	
+	void lookAt(glm::vec3 position);
 };
 

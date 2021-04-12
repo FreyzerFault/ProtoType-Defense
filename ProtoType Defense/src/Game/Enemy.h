@@ -19,7 +19,7 @@ private:
 
 public:
 
-	Enemy(const glm::vec3 pos, const unsigned int life = baseLife, const float speed = baseSpeed);
+	Enemy(const glm::vec3 pos, const unsigned int texID = 0, const unsigned int life = baseLife, const float speed = baseSpeed);
 	Enemy(const Enemy& orig);
 	~Enemy() override;
 

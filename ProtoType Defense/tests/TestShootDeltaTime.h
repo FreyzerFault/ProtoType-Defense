@@ -1,9 +1,11 @@
 #pragma once
+#include "Enemy.h"
 #include "Renderer.h"
 #include "Shader.h"
 #include "Test.h"
 #include "Texture.h"
 #include "Tower.h"
+#include "Projectile.h"
 
 namespace test {
 
@@ -23,6 +25,8 @@ namespace test {
 		glm::mat4 m_Model;
 
 		Tower tower;
+
+		Enemy enemy;
 
 		float atkSpd = Tower::baseAttackSpeed;
 	

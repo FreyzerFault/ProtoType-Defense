@@ -1,9 +1,23 @@
 #include "Tower.h"
+#include "Projectile.h"
 
 #include <iostream>
 #include <thread>
 
+#include "GlobalParameters.h"
+
+#define x m_Position.x
+#define y m_Position.y
+#define z m_Position.z
+
 int Tower::numTowers = 0;
+
+const int Tower::baseDamage = 50;
+const int Tower::baseAttackSpeed = 3;
+const int Tower::baseProjectileSpeed = 300; // Optimal = Range * AtkSpeed
+const int Tower::baseProjectilePierce = 1;
+const int Tower::baseRange = 300;
+const int Tower::baseCost = 200;
 
 // Por defecto tendra las caracteristicas de un Piercer
 Tower::Tower()
@@ -18,12 +32,12 @@ Tower::Tower(const unsigned int texID, Platform* platform)
 }
 
 Tower::Tower(Platform* platform, const int damage, float const attackSpeed, float const range,
-	float const projectileSpeed, float const projectilePierce, const int cost, const unsigned int texID)
+	float const projectileSpeed, int const projectilePierce, const int cost, const unsigned int texID)
 	: Entity(platform->getPosition(), 0.0f, texID), // No Hitbox
 	m_ID(numTowers++), m_Damage(damage),
 	m_AttackSpeed(attackSpeed), m_Range(range), m_ProjectileSpeed(projectileSpeed),
 	m_ProjectilePierce(projectilePierce), m_Cost(cost),
-	m_Platform(platform)
+	m_Platform(platform), aimedEnemy(nullptr)
 {
 }
 
@@ -64,11 +78,50 @@ bool Tower::placeIn(Platform& platform)
 }
 
 
-void doShoot() { std::cout << "Shoot" << std::endl; };
-
-void Tower::shoot() const {
+void Tower::shoot() {
 	if (m_Platform)
-		std::cout << "Tower (" << m_ID << "): [Shoot]" << std::endl;
+	{
+		m_Projectiles.emplace_back(this);
+		
+		// Remove the first Projectile like a queue if a projectile have passed the range radious
+		// 
+		// Nº projectiles in radious = AttackSpeed * Radious / ProjSpeed
+		//	[Projs/secs] * [~pixels~] / [~pixels~/secs]  -->  [Projs] * [~secs~] / [~secs~]  -->  [Projectiles in radius]
+		
+		if (m_Projectiles.size() > ceil(m_AttackSpeed * m_Range / m_ProjectileSpeed))
+			m_Projectiles.pop_front();
+
+	}
 	else
-		std::cout << "Tower (" << m_ID << "): [ERROR] Not placed" << std::endl;
+		std::cout << "Tower (" << m_ID << "): [ERROR] Not placed in any platform" << std::endl;
 }
+
+
+
+void Tower::aim()
+{
+	// Aim an Enemy from the Path
+
+	
+	lookAt(aimedEnemy->getPosition3D());
+}
+
+void Tower::aim(Enemy& enemy)
+{
+	aimedEnemy = &enemy;
+	
+	lookAt(aimedEnemy->getPosition3D());
+}
+
+void Tower::aimPredictive(Enemy& enemy)
+{
+	const float predictiveCoefficient = enemy.getSpeed() / 2; // Distance towards the enemy movement
+
+	// Position X,Y
+	glm::vec3 predictedPos(enemy.getPosition3D().s, enemy.getPosition3D().t, 0.0f);
+	predictedPos.s += predictiveCoefficient * cos(enemy.getYaw());
+	predictedPos.t += predictiveCoefficient * sin(enemy.getYaw());
+	
+	lookAt(predictedPos);
+}
+

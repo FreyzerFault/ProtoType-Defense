@@ -1,5 +1,6 @@
 #pragma once
-#include "trigonometric.hpp"
+#include "trigonometric.hpp" // rad() & degrees()
+#include <ext/scalar_constants.hpp> // PI()
 
 #define PI glm::pi<float>()
 #define rad(x) glm::radians<float>(x) // º -> radians

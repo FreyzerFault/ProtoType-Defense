@@ -4,7 +4,7 @@
 
 // INITIAL PARAMETERS
 static float iniPosition[3]{ 0.0f, 0.0f, 0.0f };
-static float iniSize = 16.0f;
+static float iniSize = 64.0f;
 
 Sprite::Sprite() // Por defecto, centrado en la ventana
 	: Sprite(glm::vec3(windowCenterX,windowCenterY,0.0f), 1.0f, 0.0f, 0)
@@ -61,7 +61,7 @@ void Sprite::setTransformation(const glm::vec3 position, const float scale, cons
 glm::mat4 Sprite::getModelMatrix() const
 {
 	glm::mat4 model = glm::translate(glm::mat4(0.1f), m_Position);
-	model = glm::rotate(model, rad(m_Rotation), glm::vec3(0, 0, 1));
+	model = glm::rotate(model, m_Rotation, glm::vec3(0, 0, 1));
 	model = glm::scale(model, glm::vec3(m_Scale, m_Scale, 0));
 	return model;
 }

@@ -6,6 +6,8 @@
 
 #include <thread>
 
+using namespace glm;
+
 static std::string shaderPath = shaderFolderPath + "Basic.shader";
 
 test::TestThreads::TestThreads()
@@ -16,7 +18,7 @@ test::TestThreads::TestThreads()
 {
 	for (int i = 0; i < numTowers; i++)
 	{
-		m_Towers.push_back(Tower(i, new Platform(i * 100.0f, windowCenterY, 0.0f)));
+		m_Towers.push_back(Tower(i, new Platform(vec3(i * 100.0f, windowCenterY, 0.0f))));
 	}
 
 	// TEXTURAS

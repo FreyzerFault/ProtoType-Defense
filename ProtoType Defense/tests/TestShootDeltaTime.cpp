@@ -22,7 +22,8 @@ TestShootDeltaTime::TestShootDeltaTime()
 	m_Proj(glm::ortho(0.0f, (float)windowWidth, 0.0f, (float)windowHeight, -200.0f, 2000.0f)),
 	m_View(glm::lookAt(glm::vec3(0.0f, 0.0f, 1000.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f))),
 	m_Model(glm::mat4(1.0f)),
-	tower(0, new Platform(vec3(0.0f)))
+	tower(0, new Platform(vec3(50.0f))),
+	enemy(vec3(200), 2)
 {
 	// TEXTURAS
 	for (int i = 0; i < numTextures; i++)
@@ -42,6 +43,19 @@ void TestShootDeltaTime::reset()
 
 void TestShootDeltaTime::onUpdate(DeltaTime deltaTime)
 {
+
+	// Move projectiles
+	for (Projectile& projectile : tower.getProjectiles())
+	{
+		projectile.move(tower.getPrSpd() * deltaTime);
+	}
+	
+	// Rotate tower towards aimed enemy
+	tower.aimPredictive(enemy);
+	
+	// Enemy moves
+	enemy.move(enemy.getSpeed() * deltaTime);
+	
 	// FPS Timer
 	fpsCounter++;
 	fpsTimer += deltaTime;
@@ -60,8 +74,6 @@ void TestShootDeltaTime::onUpdate(DeltaTime deltaTime)
 	
 	if (shootTimer >= 1/tower.getSpd()) // [Speed] disparos / segundo
 	{
-		std::cout << "Shoot Frecuency: " << (float) fps / frames << std::endl;
-		std::cout << "Shoot Delay: " << (float) frames / fps << "seconds" << std::endl;
 		tower.shoot();
 		shootTimer -= 1/tower.getSpd();
 		frames = 0;
@@ -85,12 +97,22 @@ void TestShootDeltaTime::onRender()
 		m_Texture[i]->Bind(i);
 	}
 
-	glm::mat4 mvp = m_Proj * m_View * m_Model; // MVP
-	
-	mvp = mvp * tower.getSprite().getModelMatrix(); // Tower Model Matrix
-	m_Shader.setUniformMat4f("u_MVP", mvp);
+	const glm::mat4 mvp = m_Proj * m_View * m_Model; // MVP
 
+	const glm::mat4 towerMVP = mvp * tower.getSprite().getModelMatrix(); // Tower Model Matrix
+	m_Shader.setUniformMat4f("u_MVP", towerMVP);
 	m_Renderer.draw(tower.getSprite(), m_Shader);
+
+	const glm::mat4 enemyMVP = mvp * enemy.getSprite().getModelMatrix();
+	m_Shader.setUniformMat4f("u_MVP", enemyMVP);
+	m_Renderer.draw(enemy.getSprite(), m_Shader);
+
+	for (Projectile& projectile : tower.getProjectiles())
+	{
+		const glm::mat4 projectileMVP = mvp * projectile.getSprite().getModelMatrix();
+		m_Shader.setUniformMat4f("u_MVP", projectileMVP);
+		m_Renderer.draw(projectile.getSprite(), m_Shader);
+	}
 }
 
 void TestShootDeltaTime::onImGuiRender()
