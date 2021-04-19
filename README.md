@@ -2,7 +2,7 @@
 
 ## OpenGL Pipeline Framework
 
-![UML Class Diagram OpenGL Pipeline](/img/OpenGL Pipeline.png)
+![OpenGL Pipeline](https://user-images.githubusercontent.com/72341309/115261215-b78ff100-a133-11eb-8c3a-a68c8cc2ca5d.png)
 
 Para facilitar la gestión de cada elemento (Texturas, Shaders,...) he creado Managers mediante los que controlar cada elemento de openGL.
 
@@ -22,11 +22,11 @@ Y el Renderer es una simple herramienta para usar código de openGL encapsulado 
 
 ## Structures:
 
-![UML Class Diagram Game Structure](/img/Game Structure.png)
+![Game Structure](https://user-images.githubusercontent.com/72341309/115261210-b5c62d80-a133-11eb-84ca-052bc2398b3e.png)
 
 ## Objects:
 
-![UML Class Diagram Game Objects](/img/Game Design.png)
+![Game Design](https://user-images.githubusercontent.com/72341309/115261201-b3fc6a00-a133-11eb-9bd4-73440d1a140f.png)
 
 #### Game Controller:
 Controla el flujo del juego a lo largo de un FRAME
