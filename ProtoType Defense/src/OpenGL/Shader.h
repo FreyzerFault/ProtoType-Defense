@@ -5,7 +5,6 @@
 #include "glm.hpp"
 #include "GLDebugging.h"
 
-#define shaderFolderPath Shader::getFolderPath()
 
 // Archivo .shader con codigo del vertex shader y el fragment shader 
 struct ShaderProgramSource
@@ -17,34 +16,31 @@ struct ShaderProgramSource
 
 class Shader
 {
-private:
-	std::string m_FilePath;
-	unsigned int m_RendererID;
-	// UNIFORMS cache = +Efficiency
-	mutable std::unordered_map<std::string, GLint> m_UniformLocationCache;
 public:
 	Shader();
 	Shader(const std::string& filepath);
 	~Shader();
 
 	void Bind() const;
-	void Unbind() const;
 
 	// UNIFORMS
-	void setUniform1i(const std::string& name, int value);
-	void setUniform1iv(const std::string& name, unsigned int count, const int &value);
-	void setUniform1f(const std::string& name, float value);
-	void setUniform4f(const std::string& name, float v0, float v1, float v2, float v3);
-	void setUniformMat4f(const std::string& name, const glm::mat4& matrix);
-
-	void setTextureSlots(const unsigned int count); // Asigna al Uniforme u_Texture el vector de slots usados
-	
-	static std::string getFolderPath() { return "res/shaders/"; }
+	void setUniform1i(const std::string& name, int value) const;
+	void setUniform1iv(const std::string& name, uint32_t count, const int& value) const;
+	void setUniform1f(const std::string& name, float value) const;
+	void setUniform4f(const std::string& name, float f0, float f1, float f2, float f3) const;
+	void setUniformMat4f(const std::string& name, const glm::mat4& matrix) const;
 
 private:
-	ShaderProgramSource ParseShader(const std::string& filepath);
-	unsigned int CreateShader(const std::string& vertexShader, const std::string& fragmentShader);
-	unsigned int CompileShader(unsigned int type, const std::string& source);
+	std::string m_FilePath;
+	uint32_t m_RendererID;
+	
+	// UNIFORMS cache = +Efficiency
+	mutable std::unordered_map<std::string, GLint> m_UniformLocationCache;
+
+	
+	ShaderProgramSource ParseShader(const std::string& filepath) const;
+	uint32_t CreateShader(const std::string& vertexShader, const std::string& fragmentShader);
+	uint32_t CompileShader(uint32_t type, const std::string& source);
 
 	GLint getUniformLocation(const std::string& name) const;
 };

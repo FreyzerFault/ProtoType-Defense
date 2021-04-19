@@ -1,8 +1,6 @@
 #pragma once
 
 #include "Test.h"
-#include "Renderer.h"
-#include "Texture.h"
 #include "glm.hpp"
 #include "gtc/matrix_transform.hpp"
 

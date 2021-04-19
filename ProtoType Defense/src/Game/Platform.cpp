@@ -5,7 +5,7 @@ float Platform::size = 10.0f;
 
 
 Platform::Platform(glm::vec3 position)
-	: m_Position(position), m_Empty(false)
+	: m_Position(position), m_Empty(false), m_Tower(nullptr)
 {
 }
 

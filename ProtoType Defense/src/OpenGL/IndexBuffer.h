@@ -3,21 +3,23 @@
 
 class IndexBuffer
 {
-private:
-	unsigned int m_RendererID;
-	unsigned int m_Count;
-
 public:
-	IndexBuffer(const unsigned int* data, unsigned int count, unsigned int type = GL_STATIC_DRAW);
-	IndexBuffer(unsigned int count); // Buffer de indices vacio con espacio reservado count * sizeof(unsigned int)
+	IndexBuffer(const uint32_t* data, uint32_t count, uint32_t type = GL_STATIC_DRAW);
+	IndexBuffer(uint32_t count); // Buffer de indices vacio con espacio reservado count * sizeof(uint32_t)
 	~IndexBuffer();
 
 	void Bind() const;
 	void Unbind() const;
 
-	inline unsigned int getCount() const { return m_Count; };
+	inline uint32_t getCount() const { return m_Count; };
 
-	void setIndices(const void* data, unsigned int count);
-	void updateIndices(const void* data, unsigned int count);
+	void setIndices(const void* data, uint32_t count);
+	void updateIndices(const void* data, uint32_t count);
+
+private:
+	uint32_t m_RendererID;
+	uint32_t m_Count;
+
+	static IndexBuffer m_DefaultIBO;
 };
 

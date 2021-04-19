@@ -14,27 +14,27 @@ Entity::Entity()
 {
 }
 
-Entity::Entity(vec2 position, const float yaw, const unsigned int texID)
+Entity::Entity(vec2 position, const double yaw, const uint32_t texID)
 	: Entity(vec3(position,0.0f), yaw, texID)
 {
 }
 
-Entity::Entity(vec3 position, const float yaw, const unsigned int texID)
+Entity::Entity(vec3 position, const double yaw, const uint32_t texID)
 	: m_Position(position), m_Yaw(yaw), m_Hitbox(nullptr), m_Sprite(position, 1.0f, 0.0f, texID)
 {
 }
 
-Entity::Entity(vec2 position, vec2 size, const float yaw, const unsigned int texID)
+Entity::Entity(vec2 position, vec2 size, const double yaw, const uint32_t texID)
 	: Entity(vec3(position, 0.0f), size, yaw, texID)
 {
 }
 
-Entity::Entity(vec3 position, vec2 size, const float yaw, const unsigned int texID)
+Entity::Entity(vec3 position, vec2 size, const double yaw, const uint32_t texID)
 	: Entity(position, vec3(size, 0.0f), yaw, texID)
 {
 }
 
-Entity::Entity(vec3 position, vec3 size, const float yaw, const unsigned int texID)
+Entity::Entity(vec3 position, vec3 size, const double yaw, const uint32_t texID)
 	: m_Position(position), m_Yaw(yaw), m_Hitbox(new Hitbox(position, size, yaw)), m_Sprite(position, 1.0f, yaw, texID)
 {
 }
@@ -85,13 +85,16 @@ void Entity::rotate(float X)
 
 void Entity::lookAt(glm::vec3 p)
 {
-	// Position X,Y
-	float X = p.s, Y = p.t;
+	// d = Distance Tower -> Enemy
+	glm::vec3 d(p.s - x, p.t - y, 0.0f);
 	// h = Hipotenusa, c = Cateto continuo
-	float h = sqrt(pow(X - x, 2) + pow(Y - y, 2));
-	float c = X - x;
-	
+	double h = sqrt(pow(d.s, 2) + pow(d.t, 2));
+	double c = d.s;
+		
 	m_Yaw = acos(c / h);
+	// ACOS() returns always positive, so if yaw is over PI, it needs to be inverted
+	if (d.t < 0)
+		m_Yaw = 2 * PI - m_Yaw;
 
 	if (m_Hitbox != nullptr)
 		m_Hitbox->setYaw(m_Yaw);

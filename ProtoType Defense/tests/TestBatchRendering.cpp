@@ -1,6 +1,8 @@
 #include "TestBatchRendering.h"
 #include "GlobalParameters.h"
 #include "imgui.h"
+#include "ShaderManager.h"
+#include "TextureManager.h"
 
 
 static float iniPosition[]{ // Esquina Inf Izq
@@ -20,7 +22,7 @@ static float spriteBoxVertex[] = {
 		200.0f + iniSize,	0.0f + iniSize,		1.0f, 0.0f,		1.0f,
 		200.0f,				0.0f + iniSize,		0.0f, 0.0f,		1.0f,
 };
-static unsigned int spriteBoxIndices[] = {
+static uint32_t spriteBoxIndices[] = {
 		0, 1, 2,
 		2, 3, 0,
 
@@ -57,7 +59,6 @@ test::TestBatchRendering::TestBatchRendering()
 	m_VAO.Unbind();
 	m_IBO.Unbind();
 	m_VBO.Unbind();
-	m_Shader.Unbind();
 }
 
 test::TestBatchRendering::~TestBatchRendering() = default;
@@ -82,8 +83,8 @@ void test::TestBatchRendering::onRender()
 	m_Renderer.clear();
 
 	m_Shader.Bind();
-	m_Texture[0].Bind(0);
-	m_Texture[1].Bind(1);
+	m_Texture[0].Bind();
+	m_Texture[1].Bind();
 	int texIndices[2] = {0, 1};
 	m_Shader.setUniform1iv("u_Texture", 2, texIndices[0]);
 

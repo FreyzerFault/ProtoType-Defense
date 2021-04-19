@@ -5,7 +5,7 @@
 
 using namespace glm;
 
-static vec3 hitboxSize(16.0f);
+static vec3 hitboxSize(32.0f);
 
 Projectile::Projectile(const Tower* tower)
 	: Projectile(tower, vec2(tower->getPosition2D()), hitboxSize, tower->getYaw(), tower->getPierce())
@@ -46,15 +46,34 @@ Projectile& Projectile::operator=(const Projectile& orig)
 }
 
 
-bool Projectile::Impact()
+bool Projectile::impact(Hitbox& hitbox)
 {
-	// IF Piercing:
-	m_Pierce--;
+	if (m_Hitbox->collision(hitbox))
+	{
+		// IF Piercing:
+		m_Pierce--;
+		// If pierced stop pursuing and goes straight
+		m_Homming = false;
+		return true;
+	}
+	return false;
+}
 
-	// If pierced stop pursuing and goes straight
-	m_Homming = false;
+void Projectile::move(const float d)
+{
+	// If the Projectile is Homming, and his tower has an aimed enemy, it follows the enemy
+	if (m_Homming && m_Tower->getEnemy() != nullptr)
+	{
+		Enemy& enemy = *m_Tower->getEnemy();
+		const float predictiveCoefficient = enemy.getSpeed() / 2; // Distance towards the enemy movement
+		
+		glm::vec3 predictedPos(enemy.getPosition3D().x, enemy.getPosition3D().y, 0.0f);
+		predictedPos.x += predictiveCoefficient * cos(enemy.getYaw());
+		predictedPos.y += predictiveCoefficient * sin(enemy.getYaw());
 
-	return true;
+		lookAt(predictedPos);
+	}
+	Entity::move(d);
 }
 
 

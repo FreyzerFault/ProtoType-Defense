@@ -4,9 +4,6 @@
 
 #pragma once
 #include "Test.h"
-#include "Shader.h"
-#include "Texture.h"
-#include "Renderer.h"
 #include "Tower.h"
 
 

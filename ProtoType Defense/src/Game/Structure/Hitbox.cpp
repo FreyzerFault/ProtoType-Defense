@@ -14,7 +14,7 @@ using namespace glm;
 #define sZ m_Size[2]
 
 Hitbox::Hitbox()
-	: Hitbox(vec2(windowCenterX, windowCenterY), vec2(16.0f, 16.0f))
+	: Hitbox(vec2(windowCenterX, windowCenterY), vec2(16.0f))
 {
 }
 
@@ -24,7 +24,13 @@ Hitbox::Hitbox(vec2 position, vec2 size, float yaw)
 }
 
 Hitbox::Hitbox(vec3 position, vec3 size, float yaw)
-	: m_Position(position), m_Size(size), m_Yaw(yaw)
+	: m_Position(position), m_Size(size), m_Yaw(yaw),
+	vertices{
+		vec2(pX - sX/2, pY - sY/2),
+		vec2(pX + sX/2, pY - sY/2),
+		vec2(pX + sX/2, pY + sY/2),
+		vec2(pX - sX/2, pY + sY/2),
+	}
 {
 }
 
@@ -135,4 +141,12 @@ void Hitbox::rotate(float X)
 	m_Yaw += rad(X);
 	// Normalized to [0,2PI] radians
 	m_Yaw -= floor(m_Yaw / (2 * PI)) * 2 * PI;
+}
+
+mat4 Hitbox::getModelMatrix() const
+{
+	mat4 model = glm::translate(mat4(1.0f), m_Position);
+	model = glm::rotate(model, (float)m_Yaw, glm::vec3(0, 0, 1));
+	model = glm::scale(model, vec3(sX/2, sY/2, 1.0f));
+	return model;
 }

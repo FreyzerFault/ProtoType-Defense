@@ -1,6 +1,8 @@
 #include "TestDynamicSprites.h"
 #include "GlobalParameters.h"
 #include "imgui.h"
+#include "ShaderManager.h"
+#include "TextureManager.h"
 
 using namespace test;
 
@@ -31,8 +33,7 @@ TestDynamicSprites::TestDynamicSprites()
 	}
 
 	sprites.emplace_back(Sprite());
-
-	m_Shader.Unbind();
+	
 }
 
 TestDynamicSprites::~TestDynamicSprites() = default;
@@ -65,9 +66,9 @@ void TestDynamicSprites::onRender()
 
 	for (int i = 0; i < numTextures; i++)
 	{
-		m_Texture[i]->Bind(i);
+		m_Texture[i]->Bind();
 	}
-	m_Texture[m_CurrentTexture]->Bind(0);
+	m_Texture[m_CurrentTexture]->Bind();
 
 	const glm::mat4 mvp = m_Proj * m_View * sprites.at(0).getModelMatrix(); // MVP
 

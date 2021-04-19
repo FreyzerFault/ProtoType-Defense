@@ -76,7 +76,7 @@
     <ClCompile Include="tests\TestThreads.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="src\Sprite.cpp">
+    <ClCompile Include="src\Game\Structure\Sprite.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
     <ClCompile Include="src\Game\Platform.cpp">
@@ -92,6 +92,21 @@
       <Filter>Archivos de origen</Filter>
     </ClCompile>
     <ClCompile Include="src\Game\Enemy.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OpenGL\WindowManager.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ImGui\ImGuiManager.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\TestManager.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OpenGL\ShaderManager.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OpenGL\TextureManager.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
   </ItemGroup>
@@ -123,15 +138,23 @@
     <ClInclude Include="tests\TestDynamicBuffer.h" />
     <ClInclude Include="src\GlobalParameters.h" />
     <ClInclude Include="tests\TestThreads.h" />
-    <ClInclude Include="src\Sprite.h" />
+    <ClInclude Include="src\Game\Structure\Sprite.h" />
     <ClInclude Include="src\Game\Platform.h" />
     <ClInclude Include="src\Game\Structure\Entity.h" />
     <ClInclude Include="src\Game\Structure\Hitbox.h" />
     <ClInclude Include="src\Game\DeltaTime.h" />
     <ClInclude Include="tests\TestShootDeltaTime.h" />
     <ClInclude Include="src\Game\Enemy.h" />
+    <ClInclude Include="src\Game\Structure\HitboxGrid.h" />
+    <ClInclude Include="src\OpenGL\DefaultStructures.h" />
+    <ClInclude Include="src\OpenGL\WindowManager.h" />
+    <ClInclude Include="src\ImGui\ImGuiManager.h" />
+    <ClInclude Include="tests\TestManager.h" />
+    <ClInclude Include="src\OpenGL\ShaderManager.h" />
+    <ClInclude Include="src\OpenGL\TextureManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\Basic.shader" />
+    <None Include="res\shaders\NoTexture.shader" />
   </ItemGroup>
 </Project>

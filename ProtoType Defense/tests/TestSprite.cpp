@@ -1,6 +1,8 @@
 #include "TestSprite.h"
 #include "GlobalParameters.h"
 #include "imgui.h"
+#include "ShaderManager.h"
+#include "TextureManager.h"
 
 static float iniPosition[]{ // Esquina Inf Izq
 	0.0f, 0.0f, 0.0f
@@ -15,7 +17,7 @@ static float spriteBoxVertex[] = {
 		0.0f + iniSize,	0.0f + iniSize, 0.0f,0.0f,0.0f, 1.0f, 0.0f, 0.0f,
 		0.0f,			0.0f + iniSize, 0.0f,0.0f,0.0f, 0.0f, 0.0f, 0.0f,
 };
-static unsigned int spriteBoxIndices[] = {
+static uint32_t spriteBoxIndices[] = {
 		0, 1, 2,
 		2, 3, 0,
 };
@@ -47,7 +49,6 @@ test::TestSprite::TestSprite()
 	m_VAO.Unbind();
 	m_IBO.Unbind();
 	m_VBO.Unbind();
-	m_Shader.Unbind();
 }
 
 test::TestSprite::~TestSprite()
@@ -76,8 +77,8 @@ void test::TestSprite::onRender()
 	m_Renderer.clear();
 
 	m_Shader.Bind();
-	m_Texture.Bind(0);
-	m_Shader.setTextureSlots(1);
+	m_Texture.Bind();
+	//shader.setTextureSlots(1);
 
 
 	m_Model = translate(glm::mat4(1.0f), glm::vec3(m_Position[0], m_Position[1], m_Position[2]));

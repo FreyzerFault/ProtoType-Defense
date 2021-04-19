@@ -5,8 +5,6 @@
 
 class VertexArray
 {
-private:
-	unsigned int m_RendererID;
 public:
 	VertexArray();
 	// No se permiten copias porque cada VAO tiene un ID unico
@@ -19,5 +17,9 @@ public:
 
 	void Bind() const;
 	void Unbind() const;
+
+private:
+	uint32_t m_RendererID;
+
 };
 

@@ -4,7 +4,7 @@ using namespace glm;
 
 static vec2 hitboxSize(32,32);
 
-Enemy::Enemy(const vec3 pos, const unsigned int texID, const unsigned life, const float speed)
+Enemy::Enemy(const vec3 pos, const uint32_t texID, const unsigned life, const float speed)
 	: Entity(pos, hitboxSize, 0.0f, texID), life(life), speed(speed)
 {
 }
@@ -16,7 +16,7 @@ Enemy::Enemy(const Enemy& orig)
 
 Enemy::~Enemy() = default;
 
-int Enemy::getHit(const unsigned int hit)
+int Enemy::getHit(const uint32_t hit)
 {
 	if (life <= hit)
 		life = 0;

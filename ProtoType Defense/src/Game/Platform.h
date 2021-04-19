@@ -9,12 +9,6 @@ class Tower;
 
 class Platform
 {
-	static float size;
-private:
-	glm::vec3 m_Position;
-	bool m_Empty;
-	Tower* m_Tower;
-
 public:
 	Platform(glm::vec3 position);
 	Platform(const Platform& orig) = default;
@@ -25,6 +19,15 @@ public:
 	static float getSize() { return size; }
 
 	bool placeTower(Tower& tower);
+
+	static float size;
+
+private:
+	glm::vec3 m_Position;
+	bool m_Empty;
+	Tower* m_Tower;
+
+
 };
 
 #endif

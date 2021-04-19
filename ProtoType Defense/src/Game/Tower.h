@@ -24,32 +24,26 @@ public:
 	
 	static int numTowers; // STATIC = Se comparte entre todas las instancias
 
-private:
-	const unsigned int m_ID; // Unique
-	int m_Damage;
-	float m_AttackSpeed;
-	float m_Range;
-	float m_ProjectileSpeed;
-	int m_ProjectilePierce;
-	int m_Cost;
-
-	Platform* m_Platform;
-
-	std::list<Projectile> m_Projectiles;
-
-	Enemy* aimedEnemy;
-	
 public:
 	Tower();
-	Tower(unsigned int texID, Platform* platform);
+	Tower(uint32_t texID, Platform* platform);
 	Tower(Platform* platform, int damage = baseDamage, float attackSpeed = baseAttackSpeed,
 		float range = baseRange, float projectileSpeed = baseProjectileSpeed,
-		int projectilePierce = baseProjectilePierce, int cost = baseCost, unsigned int texID = 0);
+		int projectilePierce = baseProjectilePierce, int cost = baseCost, uint32_t texID = 0);
 	Tower(const Tower& orig);
 	Tower& operator=(const Tower& orig);
 	virtual ~Tower() override;
 
+	bool placeIn(Platform& platform);
+
+	void shoot();
+	void aim();
+	void aim(Enemy& enemy);
+	// Predict movement
+	void aimPredictive(Enemy& enemy);
+
 	std::list<Projectile>& getProjectiles() { return m_Projectiles; }
+	Enemy* getEnemy() const { return aimedEnemy; }
 
 	int getDmg() const { return m_Damage; }
 	float getSpd() const { return m_AttackSpeed; }
@@ -71,13 +65,23 @@ public:
 	void prSpeedUp(const float percentage) { m_ProjectileSpeed += m_ProjectileSpeed * percentage / 100; }
 	void pierceUp(const int pierce) { m_ProjectilePierce += pierce; }
 
-	bool placeIn(Platform& platform);
 
-	void shoot();
-	void aim();
-	void aim(Enemy& enemy);
-	// Predict movement
-	void aimPredictive(Enemy& enemy);
+private:
+	const uint32_t m_ID; // Unique
+	int m_Damage;
+	float m_AttackSpeed;
+	float m_Range;
+	float m_ProjectileSpeed;
+	int m_ProjectilePierce;
+	int m_Cost;
+
+	Platform* m_Platform;
+
+	std::list<Projectile> m_Projectiles;
+
+	Enemy* aimedEnemy;
+	
+
 };
 
 #endif

@@ -6,6 +6,9 @@
 
 #include <thread>
 
+#include "ShaderManager.h"
+#include "TextureManager.h"
+
 using namespace glm;
 
 static std::string shaderPath = shaderFolderPath + "Basic.shader";
@@ -56,7 +59,7 @@ void test::TestThreads::onRender()
 
 	for (int i = 0; i < numTextures; i++)
 	{
-		m_Texture[i]->Bind(i);
+		m_Texture[i]->Bind();
 	}
 
 	for (int i = 0; i < numTowers; i++)

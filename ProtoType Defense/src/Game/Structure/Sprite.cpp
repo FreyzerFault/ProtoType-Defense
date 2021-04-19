@@ -1,31 +1,33 @@
 #include "Sprite.h"
+
+#include "DefaultStructures.h"
 #include "GlobalParameters.h"
-#include "gtc/matrix_transform.hpp"
 
 // INITIAL PARAMETERS
-static float iniPosition[3]{ 0.0f, 0.0f, 0.0f };
-static float iniSize = 64.0f;
+static float layer = 0.0f;
+static float iniSize = 32.0f;
 
 Sprite::Sprite() // Por defecto, centrado en la ventana
 	: Sprite(glm::vec3(windowCenterX,windowCenterY,0.0f), 1.0f, 0.0f, 0)
 {
 }
 
-Sprite::Sprite(const unsigned int texID) // Por defecto, centrado en la ventana
+Sprite::Sprite(const uint32_t texID) // Por defecto, centrado en la ventana
 	: Sprite(glm::vec3(windowCenterX, windowCenterY, 0.0f), 1.0f, 0.0f, texID)
 {
 }
 
-Sprite::Sprite(const glm::vec3 position, const float scale, const float rotation, unsigned int textureID)
+Sprite::Sprite(const glm::vec3 position, const float scale, const float rotation, uint32_t textureID)
 	: m_Vertices{
-		{{iniPosition[0],				iniPosition[1],				iniPosition[2]}, {0.0f,0.0f,0.0f,0.0f}, {0.0f, 1.0f}, (float)textureID},
-		{{iniPosition[0] + iniSize,		iniPosition[1],				iniPosition[2]}, {0.0f,0.0f,0.0f,0.0f}, {1.0f, 1.0f}, (float)textureID},
-		{{iniPosition[0] + iniSize,		iniPosition[1] + iniSize,	iniPosition[2]}, {0.0f,0.0f,0.0f,0.0f}, {1.0f, 0.0f}, (float)textureID},
-		{{iniPosition[0],				iniPosition[1] + iniSize,	iniPosition[2]}, {0.0f,0.0f,0.0f,0.0f}, {0.0f, 0.0f}, (float)textureID},
+		{{+iniSize,	-iniSize,	layer}, {}, {0.0f, 1.0f}, (float)textureID},
+		{{-iniSize,	-iniSize,	layer}, {}, {1.0f, 1.0f}, (float)textureID},
+		{{-iniSize,	+iniSize,	layer}, {}, {1.0f, 0.0f}, (float)textureID},
+		{{+iniSize,	+iniSize,	layer}, {}, {0.0f, 0.0f}, (float)textureID},
 	  },
 	m_TextureID(textureID), m_Position(position), m_Scale(scale),
 	m_Rotation(rotation),
-	m_VBO(m_Vertices, sizeof(Vertex) * 4 /*GL_STATIC_DRAW*/)
+	m_VBO(m_Vertices, sizeof(Vertex) * 4 /*GL_STATIC_DRAW*/),
+	m_IBO(triangularQuadIndices, 6)
 {	
 	m_VAO.setDefaultBuffer(m_VBO); // Default = 3D RGBA Tex2D texID
 }
@@ -60,7 +62,7 @@ void Sprite::setTransformation(const glm::vec3 position, const float scale, cons
 
 glm::mat4 Sprite::getModelMatrix() const
 {
-	glm::mat4 model = glm::translate(glm::mat4(0.1f), m_Position);
+	glm::mat4 model = glm::translate(glm::mat4(1.0f), m_Position);
 	model = glm::rotate(model, m_Rotation, glm::vec3(0, 0, 1));
 	model = glm::scale(model, glm::vec3(m_Scale, m_Scale, 0));
 	return model;

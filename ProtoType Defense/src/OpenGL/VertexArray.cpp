@@ -17,10 +17,10 @@ void VertexArray::addBuffer(const VertexBuffer& vb, const VertexBufferLayout& la
 	Bind();
 	vb.Bind();
 
-	unsigned int offset = 0;
+	uint32_t offset = 0;
 
 	const auto& elements = layout.getElements();
-	for (unsigned int i = 0; i < elements.size(); i++)
+	for (uint32_t i = 0; i < elements.size(); i++)
 	{
 		const auto& element = elements[i];
 
@@ -49,10 +49,10 @@ void VertexArray::setDefaultBuffer(const VertexBuffer& vb) const
 	layout.Push<float>(2);	// TEXCOORDS
 	layout.Push<float>(1);	// TEXID
 
-	unsigned int offset = 0;
+	uint32_t offset = 0;
 
 	const auto& elements = layout.getElements();
-	for (unsigned int i = 0; i < elements.size(); i++)
+	for (uint32_t i = 0; i < elements.size(); i++)
 	{
 		const auto& element = elements[i];
 

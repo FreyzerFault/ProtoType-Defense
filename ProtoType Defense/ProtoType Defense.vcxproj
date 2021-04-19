@@ -104,7 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions);GLEW_STATIC</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)tests;$(ProjectDir)src\OpenGL;$(ProjectDir)src\Game\Structure;$(ProjectDir)src\Game;$(ProjectDir);$(ProjectDir)src;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\SDL2_image\include;$(SolutionDir)Dependencies\SDL2\include;$(SolutionDir)Dependencies\GLFW\include;$(ProjectDir)imgui;$(SolutionDir)Dependencies\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src\ImGui;$(ProjectDir)tests;$(ProjectDir)src\OpenGL;$(ProjectDir)src\Game\Structure;$(ProjectDir)src\Game;$(ProjectDir);$(ProjectDir)src;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\SDL2_image\include;$(SolutionDir)Dependencies\SDL2\include;$(SolutionDir)Dependencies\GLFW\include;$(ProjectDir)imgui;$(SolutionDir)Dependencies\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -121,7 +121,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions);GLEW_STATIC</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)tests;$(ProjectDir)src\OpenGL;$(ProjectDir)src\Game\Structure;$(ProjectDir)src\Game;$(ProjectDir);$(ProjectDir)src;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\SDL2_image\include;$(SolutionDir)Dependencies\SDL2\include;$(SolutionDir)Dependencies\GLFW\include;$(ProjectDir)imgui;$(SolutionDir)Dependencies\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src\ImGui;$(ProjectDir)tests;$(ProjectDir)src\OpenGL;$(ProjectDir)src\Game\Structure;$(ProjectDir)src\Game;$(ProjectDir);$(ProjectDir)src;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\SDL2_image\include;$(SolutionDir)Dependencies\SDL2\include;$(SolutionDir)Dependencies\GLFW\include;$(ProjectDir)imgui;$(SolutionDir)Dependencies\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -138,7 +138,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);GLEW_STATIC</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)tests;$(ProjectDir)src\OpenGL;$(ProjectDir)src\Game\Structure;$(ProjectDir)src\Game;$(ProjectDir);$(ProjectDir)src;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\SDL2_image\include;$(SolutionDir)Dependencies\SDL2\include;$(SolutionDir)Dependencies\GLFW\include;$(ProjectDir)imgui;$(SolutionDir)Dependencies\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src\ImGui;$(ProjectDir)tests;$(ProjectDir)src\OpenGL;$(ProjectDir)src\Game\Structure;$(ProjectDir)src\Game;$(ProjectDir);$(ProjectDir)src;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\SDL2_image\include;$(SolutionDir)Dependencies\SDL2\include;$(SolutionDir)Dependencies\GLFW\include;$(ProjectDir)imgui;$(SolutionDir)Dependencies\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -155,7 +155,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);GLEW_STATIC</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)tests;$(ProjectDir)src\OpenGL;$(ProjectDir)src\Game\Structure;$(ProjectDir)src\Game;$(ProjectDir);$(ProjectDir)src;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\SDL2_image\include;$(SolutionDir)Dependencies\SDL2\include;$(SolutionDir)Dependencies\GLFW\include;$(ProjectDir)imgui;$(SolutionDir)Dependencies\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src\ImGui;$(ProjectDir)tests;$(ProjectDir)src\OpenGL;$(ProjectDir)src\Game\Structure;$(ProjectDir)src\Game;$(ProjectDir);$(ProjectDir)src;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\SDL2_image\include;$(SolutionDir)Dependencies\SDL2\include;$(SolutionDir)Dependencies\GLFW\include;$(ProjectDir)imgui;$(SolutionDir)Dependencies\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -167,6 +167,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\OpenGL\ShaderManager.cpp" />
+    <ClCompile Include="src\ImGui\ImGuiManager.cpp" />
     <ClCompile Include="src\Game\Enemy.cpp" />
     <ClCompile Include="src\Game\Structure\Hitbox.cpp" />
     <ClCompile Include="src\Game\Structure\Entity.cpp" />
@@ -178,7 +180,7 @@
     <ClCompile Include="imgui\imgui_tables.cpp" />
     <ClCompile Include="imgui\imgui_widgets.cpp" />
     <ClCompile Include="src\Game\Platform.cpp" />
-    <ClCompile Include="src\Sprite.cpp" />
+    <ClCompile Include="src\Game\Structure\Sprite.cpp" />
     <ClCompile Include="src\OpenGL\Shader.cpp" />
     <ClCompile Include="src\OpenGL\IndexBuffer.cpp" />
     <ClCompile Include="src\Game\Projectile.cpp" />
@@ -188,6 +190,7 @@
     <ClCompile Include="src\OpenGL\VertexBuffer.cpp" />
     <ClCompile Include="src\OpenGL\VertexArray.cpp" />
     <ClCompile Include="src\OpenGL\Texture.cpp" />
+    <ClCompile Include="tests\TestManager.cpp" />
     <ClCompile Include="tests\Test.cpp" />
     <ClCompile Include="tests\TestDynamicBuffer.cpp" />
     <ClCompile Include="tests\TestDynamicSprites.cpp" />
@@ -196,8 +199,12 @@
     <ClCompile Include="tests\TestClearColor.cpp" />
     <ClCompile Include="tests\TestBatchRendering.cpp" />
     <ClCompile Include="tests\TestThreads.cpp" />
+    <ClCompile Include="src\OpenGL\WindowManager.cpp" />
+    <ClCompile Include="src\OpenGL\TextureManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\OpenGL\ShaderManager.h" />
+    <ClInclude Include="src\ImGui\ImGuiManager.h" />
     <ClInclude Include="src\Game\Enemy.h" />
     <ClInclude Include="src\Game\Structure\Hitbox.h" />
     <ClInclude Include="src\Game\Structure\Entity.h" />
@@ -210,7 +217,9 @@
     <ClInclude Include="imgui\imstb_textedit.h" />
     <ClInclude Include="imgui\imstb_truetype.h" />
     <ClInclude Include="src\Game\Platform.h" />
-    <ClInclude Include="src\Sprite.h" />
+    <ClInclude Include="src\Game\Structure\HitboxGrid.h" />
+    <ClInclude Include="src\Game\Structure\Sprite.h" />
+    <ClInclude Include="src\OpenGL\DefaultStructures.h" />
     <ClInclude Include="src\OpenGL\GLDebugging.h" />
     <ClInclude Include="src\GlobalParameters.h" />
     <ClInclude Include="src\OpenGL\Shader.h" />
@@ -224,6 +233,7 @@
     <ClInclude Include="src\OpenGL\VertexBufferLayout.h" />
     <ClInclude Include="src\OpenGL\Texture.h" />
     <ClInclude Include="src\Game\DeltaTime.h" />
+    <ClInclude Include="tests\TestManager.h" />
     <ClInclude Include="tests\TestDynamicBuffer.h" />
     <ClInclude Include="tests\TestDynamicSprites.h" />
     <ClInclude Include="tests\TestShootDeltaTime.h" />
@@ -232,9 +242,12 @@
     <ClInclude Include="tests\Test.h" />
     <ClInclude Include="tests\TestBatchRendering.h" />
     <ClInclude Include="tests\TestThreads.h" />
+    <ClInclude Include="src\OpenGL\WindowManager.h" />
+    <ClInclude Include="src\OpenGL\TextureManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\Basic.shader" />
+    <None Include="res\shaders\NoTexture.shader" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

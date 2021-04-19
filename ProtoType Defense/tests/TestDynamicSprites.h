@@ -1,10 +1,7 @@
 #pragma once
 
 #include "Test.h"
-#include "Renderer.h"
-#include "Texture.h"
 #include "glm.hpp"
-#include "gtc/matrix_transform.hpp"
 #include "Sprite.h"
 
 
@@ -43,7 +40,7 @@ namespace test {
 		void onRender() override;
 		void onImGuiRender() override;
 
-		static void addSprite(unsigned int textureID) = delete;
+		static void addSprite(uint32_t textureID) = delete;
 	};
 
 }

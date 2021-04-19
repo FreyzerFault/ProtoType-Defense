@@ -1,15 +1,10 @@
 #pragma once
-#include <vec2.hpp>
-#include <vec3.hpp>
-
+#include "glm.hpp"
+#include "HitboxGrid.h"
+#include "Renderer.h"
 
 class Hitbox
 {
-private:
-	glm::vec3 m_Position; // Center
-	glm::vec3 m_Size;
-	float m_Yaw;
-
 public:
 	// 16x16 in Center of window
 	Hitbox();
@@ -24,7 +19,6 @@ public:
 	// SAT (Separating Axis Theorem) based Collision detector
 	bool SATcollision(Hitbox& object);
 	// Vertices for SAT collisions
-	glm::vec2 vertices[4];
 	void updateVertices();
 
 	glm::vec2 getPosition2D() const { return glm::vec2(m_Position); }
@@ -39,12 +33,23 @@ public:
 	float getsZ() const { return m_Size.z; }
 
 	void setPosition(const glm::vec3 pos) { m_Position = pos; }
-	void setYaw(const float yaw) { m_Yaw = yaw; }
-	
+	void setYaw(const double yaw) { m_Yaw = yaw; }
 	
 	void move(const float X, const float Y, const float Z = 0.0f);
 	void move(const float d);
 	
 	void rotate(float X);
+	
+	glm::mat4 getModelMatrix() const;
+
+private:
+
+	glm::vec3 m_Position; // Center
+	glm::vec3 m_Size;
+	double m_Yaw;
+
+	// Position of vertices for SAT collision detector
+	glm::vec2 vertices[4];
+
 };
 

@@ -5,6 +5,8 @@
 #include "gtc/matrix_transform.hpp"
 #include "GlobalParameters.h"
 
+#define shader shaderManager.getShader()
+
 using namespace glm;
 
 using namespace test;
@@ -15,22 +17,31 @@ static float fpsTimer = 0;
 static int fpsCounter = 0;
 static int fps = 60;
 
-static std::string shaderPath = shaderFolderPath + "Basic.shader";
-
 TestShootDeltaTime::TestShootDeltaTime()
-	: m_Shader(shaderPath),
-	m_Proj(glm::ortho(0.0f, (float)windowWidth, 0.0f, (float)windowHeight, -200.0f, 2000.0f)),
-	m_View(glm::lookAt(glm::vec3(0.0f, 0.0f, 1000.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f))),
+	: m_View(glm::lookAt(glm::vec3(0.0f, 0.0f, 1000.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f))),
 	m_Model(glm::mat4(1.0f)),
-	tower(0, new Platform(vec3(50.0f))),
-	enemy(vec3(200), 2)
+	tower(0, new Platform(vec3(500.0f, 300.0f, 0.0f))),
+	enemy(vec3(200, 100, 0), 10)
 {
+	// SHADERS
+	shaderManager.add("Basic");
+	shaderManager.add("NoTexture");
+	
 	// TEXTURAS
+	shaderManager.Bind("Basic");
+
 	for (int i = 0; i < numTextures; i++)
 	{
-		m_Texture[i] = new Texture(textureFolderPath + std::to_string(i) + ".png");
-		m_TexIndices[i] = i;
+		textureManager.add(std::to_string(i), i);
+		std::cout << "Added texture " << textureManager.getTextureName(i) << " to Slot " << i << std::endl;
 	}
+	for (int i = 0; i < numTextures; i++)
+	{
+		textureManager.Bind(std::to_string(i), i);
+	}
+	//shader.setUniform1iv("u_Texture", MAX_TEXTURE_SLOTS, *textureManager.getTexIndeces());
+	shaderManager.setTextureSlots(32);
+	
 }
 
 TestShootDeltaTime::~TestShootDeltaTime() = default;
@@ -43,18 +54,32 @@ void TestShootDeltaTime::reset()
 
 void TestShootDeltaTime::onUpdate(DeltaTime deltaTime)
 {
-
 	// Move projectiles
-	for (Projectile& projectile : tower.getProjectiles())
+	auto i = tower.getProjectiles().begin();
+	while (i != tower.getProjectiles().end())
 	{
-		projectile.move(tower.getPrSpd() * deltaTime);
+		if (i->impact(enemy.getHitbox()))
+		{
+			enemy.getHit(tower.getDmg());
+			
+			if (i->getPierce() <= 0)
+			{
+				const std::list<Projectile>::iterator iErased = i;
+				++i;
+				tower.getProjectiles().erase(iErased);
+			}
+			continue;
+		}
+		i->move(tower.getPrSpd() * deltaTime);
+		++i;
 	}
 	
 	// Rotate tower towards aimed enemy
 	tower.aimPredictive(enemy);
 	
 	// Enemy moves
-	enemy.move(enemy.getSpeed() * deltaTime);
+	enemy.move(enemy.getSpeed() * 5 * deltaTime);
+	enemy.rotate(enemy.getSpeed() * PI/200 * deltaTime);
 	
 	// FPS Timer
 	fpsCounter++;
@@ -87,32 +112,37 @@ void TestShootDeltaTime::onRender()
 {
 	Renderer::setClearColor();
 	Renderer::clear();
-
-	m_Shader.Bind();
-
-	m_Shader.setUniform1iv("u_Texture", numTextures, m_TexIndices[0]);
-
-	for (int i = 0; i < numTextures; i++)
-	{
-		m_Texture[i]->Bind(i);
-	}
+	
+	shaderManager.Bind("Basic");
 
 	const glm::mat4 mvp = m_Proj * m_View * m_Model; // MVP
 
 	const glm::mat4 towerMVP = mvp * tower.getSprite().getModelMatrix(); // Tower Model Matrix
-	m_Shader.setUniformMat4f("u_MVP", towerMVP);
-	m_Renderer.draw(tower.getSprite(), m_Shader);
+	shader.setUniformMat4f("u_MVP", towerMVP);
+	Renderer::draw(tower.getSprite(), shader);
 
 	const glm::mat4 enemyMVP = mvp * enemy.getSprite().getModelMatrix();
-	m_Shader.setUniformMat4f("u_MVP", enemyMVP);
-	m_Renderer.draw(enemy.getSprite(), m_Shader);
+	shader.setUniformMat4f("u_MVP", enemyMVP);
+	Renderer::draw(enemy.getSprite(), shader);
 
 	for (Projectile& projectile : tower.getProjectiles())
 	{
+		shaderManager.Bind("Basic");
 		const glm::mat4 projectileMVP = mvp * projectile.getSprite().getModelMatrix();
-		m_Shader.setUniformMat4f("u_MVP", projectileMVP);
-		m_Renderer.draw(projectile.getSprite(), m_Shader);
+		shader.setUniformMat4f("u_MVP", projectileMVP);
+		Renderer::draw(projectile.getSprite(), shader);
+
+		shaderManager.Bind("NoTexture");
+		shader.setUniformMat4f("u_MVP", mvp * projectile.getHitbox().getModelMatrix());
+		Renderer::draw(hbGrid.VAO, hbGrid.IBO, shader, GL_LINE_LOOP);
 	}
+	
+	// Hitbox Grids
+	shaderManager.Bind("NoTexture");
+	const glm::mat4 hitboxMVP = mvp * enemy.getHitbox().getModelMatrix();
+	shader.setUniformMat4f("u_MVP", hitboxMVP);
+	Renderer::draw(hbGrid.VAO, hbGrid.IBO, shader, GL_LINE_LOOP);
+
 }
 
 void TestShootDeltaTime::onImGuiRender()

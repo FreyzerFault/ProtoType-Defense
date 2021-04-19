@@ -1,13 +1,12 @@
 #pragma once
 
 #include "Test.h"
-#include "Renderer.h"
 
 namespace test {
 	class TestClearColor final : public Test
 	{
 	private:
-		float m_ClearColor[4];
+		glm::vec4 m_ClearColor;
 		Renderer m_Renderer;
 	public:
 		TestClearColor();

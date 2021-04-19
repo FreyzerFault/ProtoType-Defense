@@ -6,10 +6,6 @@
 
 #include "GlobalParameters.h"
 
-#define x m_Position.x
-#define y m_Position.y
-#define z m_Position.z
-
 int Tower::numTowers = 0;
 
 const int Tower::baseDamage = 50;
@@ -25,15 +21,15 @@ Tower::Tower()
 {
 }
 
-Tower::Tower(const unsigned int texID, Platform* platform)
+Tower::Tower(const uint32_t texID, Platform* platform)
 	: Tower(platform, baseDamage, baseAttackSpeed, baseRange,
 		baseProjectileSpeed, baseProjectilePierce, baseCost, texID)
 {
 }
 
 Tower::Tower(Platform* platform, const int damage, float const attackSpeed, float const range,
-	float const projectileSpeed, int const projectilePierce, const int cost, const unsigned int texID)
-	: Entity(platform->getPosition(), 0.0f, texID), // No Hitbox
+	float const projectileSpeed, int const projectilePierce, const int cost, const uint32_t texID)
+	: Entity(platform->getPosition(), 0, texID), // No Hitbox
 	m_ID(numTowers++), m_Damage(damage),
 	m_AttackSpeed(attackSpeed), m_Range(range), m_ProjectileSpeed(projectileSpeed),
 	m_ProjectilePierce(projectilePierce), m_Cost(cost),
@@ -82,14 +78,15 @@ void Tower::shoot() {
 	if (m_Platform)
 	{
 		m_Projectiles.emplace_back(this);
+		m_Projectiles.back().setHomming(true);
 		
 		// Remove the first Projectile like a queue if a projectile have passed the range radious
 		// 
 		// Nº projectiles in radious = AttackSpeed * Radious / ProjSpeed
 		//	[Projs/secs] * [~pixels~] / [~pixels~/secs]  -->  [Projs] * [~secs~] / [~secs~]  -->  [Projectiles in radius]
 		
-		if (m_Projectiles.size() > ceil(m_AttackSpeed * m_Range / m_ProjectileSpeed))
-			m_Projectiles.pop_front();
+		if (m_Projectiles.size() > ceil(m_AttackSpeed * m_Range / m_ProjectileSpeed));
+			//m_Projectiles.pop_front();
 
 	}
 	else
@@ -115,12 +112,13 @@ void Tower::aim(Enemy& enemy)
 
 void Tower::aimPredictive(Enemy& enemy)
 {
+	aimedEnemy = &enemy;
+	
 	const float predictiveCoefficient = enemy.getSpeed() / 2; // Distance towards the enemy movement
-
-	// Position X,Y
-	glm::vec3 predictedPos(enemy.getPosition3D().s, enemy.getPosition3D().t, 0.0f);
-	predictedPos.s += predictiveCoefficient * cos(enemy.getYaw());
-	predictedPos.t += predictiveCoefficient * sin(enemy.getYaw());
+	
+	glm::vec3 predictedPos(enemy.getPosition3D().x, enemy.getPosition3D().y, 0.0f);
+	predictedPos.x += predictiveCoefficient * cos(enemy.getYaw());
+	predictedPos.y += predictiveCoefficient * sin(enemy.getYaw());
 	
 	lookAt(predictedPos);
 }

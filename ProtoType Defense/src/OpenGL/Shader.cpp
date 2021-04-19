@@ -4,8 +4,10 @@
 #include <string>
 #include <sstream>
 
+#include "ShaderManager.h"
+
 Shader::Shader()
-	: m_FilePath(""), m_RendererID(0)
+	: Shader(shaderFolderPath + "Basic.shader")
 {
 
 }
@@ -13,7 +15,7 @@ Shader::Shader()
 Shader::Shader(const std::string& filepath)
 	:m_FilePath(filepath), m_RendererID(0)
 {
-	ShaderProgramSource source = ParseShader(filepath);
+	const ShaderProgramSource source = ParseShader(filepath);
 	m_RendererID = CreateShader(source.VertexSource, source.FragmentSource);
 }
 
@@ -27,11 +29,6 @@ void Shader::Bind() const
 	GLCall(glUseProgram(m_RendererID));
 }
 
-void Shader::Unbind() const
-{
-	GLCall(glUseProgram(0));
-
-}
 
 
 
@@ -39,27 +36,27 @@ void Shader::Unbind() const
 
 // UNIFORMS:
 
-void Shader::setUniform1i(const std::string& name, int value)
+void Shader::setUniform1i(const std::string& name, int value) const
 {
 	GLCall(glUniform1i(getUniformLocation(name), value));
 }
 
-void Shader::setUniform1iv(const std::string& name, unsigned int count, const int& value)
+void Shader::setUniform1iv(const std::string& name, uint32_t count, const int& value) const
 {
 	GLCall(glUniform1iv(getUniformLocation(name), count, &value));
 }
 
-void Shader::setUniform1f(const std::string& name, float value)
+void Shader::setUniform1f(const std::string& name, float value) const
 {
 	GLCall(glUniform1f(getUniformLocation(name), value));
 }
 
-void Shader::setUniform4f(const std::string& name, float f0, float f1, float f2, float f3)
+void Shader::setUniform4f(const std::string& name, float f0, float f1, float f2, float f3) const
 {
 	GLCall(glUniform4f(getUniformLocation(name), f0, f1, f2, f3));
 }
 
-void Shader::setUniformMat4f(const std::string& name, const glm::mat4& matrix)
+void Shader::setUniformMat4f(const std::string& name, const glm::mat4& matrix) const
 {
 	GLCall(glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE, &matrix[0][0]));
 }
@@ -83,20 +80,9 @@ GLint Shader::getUniformLocation(const std::string& name) const
 }
 
 
-
-void Shader::setTextureSlots(const unsigned int count)
-{
-	int slots[31];
-	for (int i = 0; i < count; i++)
-	{
-		slots[i] = i;
-	}
-	setUniform1iv("u_Texture", count, slots[0]);
-}
-
 // Processing Shader
 
-ShaderProgramSource Shader::ParseShader(const std::string& filepath)
+ShaderProgramSource Shader::ParseShader(const std::string& filepath) const
 {
 	std::ifstream stream(filepath);
 
@@ -127,11 +113,11 @@ ShaderProgramSource Shader::ParseShader(const std::string& filepath)
 	return { ss[0].str(), ss[1].str() };
 }
 
-unsigned int Shader::CreateShader(const std::string& vertexShader, const std::string& fragmentShader)
+uint32_t Shader::CreateShader(const std::string& vertexShader, const std::string& fragmentShader)
 {
-	unsigned int program = glCreateProgram();
-	unsigned int vs = CompileShader(GL_VERTEX_SHADER, vertexShader);
-	unsigned int fs = CompileShader(GL_FRAGMENT_SHADER, fragmentShader);
+	uint32_t program = glCreateProgram();
+	uint32_t vs = CompileShader(GL_VERTEX_SHADER, vertexShader);
+	uint32_t fs = CompileShader(GL_FRAGMENT_SHADER, fragmentShader);
 
 	GLCall(glAttachShader(program, vs));
 	GLCall(glAttachShader(program, fs));
@@ -144,9 +130,9 @@ unsigned int Shader::CreateShader(const std::string& vertexShader, const std::st
 	return program;
 }
 
-unsigned int Shader::CompileShader(unsigned int type, const std::string& source)
+uint32_t Shader::CompileShader(uint32_t type, const std::string& source)
 {
-	GLCall(unsigned int id = glCreateShader(type));
+	GLCall(uint32_t id = glCreateShader(type));
 
 	const char* src = source.c_str(); // c_str() = puntero a principio del string (Tener cuidao de que el string no se elimine)
 

@@ -1,8 +1,6 @@
 #pragma once
 
 #include "Test.h"
-#include "Renderer.h"
-#include "Texture.h"
 #include "glm.hpp"
 #include "gtc/matrix_transform.hpp"
 
@@ -20,7 +18,7 @@ static std::string shaderPath = "res/shaders/Basic.shader";
 
 static const int numTextures = 2;
 
-static const unsigned int MAX_QUADS = 4096;
+static const uint32_t MAX_QUADS = 4096;
 
 
 namespace test {
@@ -55,7 +53,7 @@ namespace test {
 		glm::mat4 m_Model;
 
 		Vertex m_BoardVertices[MAX_QUADS * 4];
-		unsigned int m_BoardIndices[MAX_QUADS * 6];
+		uint32_t m_BoardIndices[MAX_QUADS * 6];
 
 	public:
 		TestDynamicBuffer();

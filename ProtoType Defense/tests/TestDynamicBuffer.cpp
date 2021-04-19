@@ -1,6 +1,7 @@
 #include "TestDynamicBuffer.h"
 #include "GlobalParameters.h"
 #include "imgui.h"
+#include "TextureManager.h"
 
 using namespace glm;
 using namespace test;
@@ -45,7 +46,6 @@ test::TestDynamicBuffer::TestDynamicBuffer()
 	m_VAO.Unbind();
 	m_IBO.Unbind();
 	m_VBO.Unbind();
-	m_Shader.Unbind();
 }
 
 test::TestDynamicBuffer::~TestDynamicBuffer() = default;
@@ -81,11 +81,11 @@ void test::TestDynamicBuffer::onRender()
 	int texIndices[numTextures];
 	for (int i = 0; i < numTextures; i++)
 	{
-		m_Texture[i]->Bind(i);
+		m_Texture[i]->Bind();
 		texIndices[i] = i;
 	}
-	m_Texture[m_CurrentTexture]->Bind(0);
-	m_Texture[(m_CurrentTexture+5) % numTextures]->Bind(1);
+	m_Texture[m_CurrentTexture]->Bind();
+	m_Texture[(m_CurrentTexture+5) % numTextures]->Bind();
 	m_Shader.setUniform1iv("u_Texture", numTextures, texIndices[0]);
 
 
