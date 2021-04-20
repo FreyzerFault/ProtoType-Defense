@@ -12,11 +12,15 @@ void ShaderManager::add(const std::string& name)
 	currentShaderName = name;
 }
 
-void ShaderManager::Bind(std::string name)
+void ShaderManager::Bind(std::string& name)
 {
-	currentShader = &shaderList.find(name)->second;
-	currentShaderName = name;
-	currentShader->Bind();
+	// Skip Binding if it's already binded
+	if (currentShaderName != name)
+	{
+		currentShader = &shaderList.find(name)->second;
+		currentShaderName = name;
+		currentShader->Bind();
+	}
 }
 
 void ShaderManager::setTextureSlots(const uint32_t count) const

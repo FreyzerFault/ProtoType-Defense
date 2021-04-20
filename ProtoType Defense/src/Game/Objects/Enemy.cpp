@@ -5,7 +5,7 @@ using namespace glm;
 static vec2 hitboxSize(32,32);
 
 Enemy::Enemy(const vec3 pos, const uint32_t texID, const unsigned life, const float speed)
-	: Entity(pos, hitboxSize, 0.0f, texID), life(life), speed(speed)
+	: Entity(pos, hitboxSize, texID, 32.0f, 0.0f), life(life), speed(speed)
 {
 }
 

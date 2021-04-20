@@ -2,12 +2,10 @@
 #include "Test.h"
 
 #include "TestClearColor.h"
-#include "TestSprite.h"
 #include "TestBatchRendering.h"
-#include "TestDynamicSprites.h"
 #include "TestDynamicBuffer.h"
-#include "TestThreads.h"
 #include "TestShootDeltaTime.h"
+#include "TestSendingWaves.h"
 
 using namespace test;
 

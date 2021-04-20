@@ -17,6 +17,7 @@ public:
 	glm::vec3 getPosition() const { return m_Position; };
 	bool isEmpty() const { return m_Empty; }
 	static float getSize() { return size; }
+	Tower& getTower() const { return *m_Tower; }
 
 	bool placeTower(Tower& tower);
 

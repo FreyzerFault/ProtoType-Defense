@@ -15,16 +15,10 @@ namespace test {
 		void onRender() override;
 		void onImGuiRender() override;
 
-		static const int numTextures = 10;
+		static const int numTextures = 12;
 
 	private:
 
-		Shader m_Shader;
-		Renderer m_Renderer;
-		Texture* m_Texture[numTextures];
-		int m_TexIndices[numTextures];
-
-		glm::mat4 m_Proj;
 		glm::mat4 m_View;
 		glm::mat4 m_Model;
 

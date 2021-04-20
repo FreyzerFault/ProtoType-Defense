@@ -1,6 +1,13 @@
 #pragma once
-#include "Entity.h"
+#include "Structure/Entity.h"
 
+enum TypeEnemy
+{
+	basic,
+	tank,
+	sneaky,
+	flying
+};
 
 class Enemy: public Entity
 {
@@ -12,7 +19,7 @@ public:
 	static const uint32_t baseMoney = 20;
 	static const uint32_t baseDamage = 1; // User Life loss if scapepublic:
 
-	Enemy(const glm::vec3 pos, const uint32_t texID = 0, const uint32_t life = baseLife, const float speed = baseSpeed);
+	Enemy(const glm::vec3 pos, const uint32_t texID = 2, const uint32_t life = baseLife, const float speed = baseSpeed);
 	Enemy(const Enemy& orig);
 	~Enemy() override;
 

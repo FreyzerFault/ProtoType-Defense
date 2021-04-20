@@ -11,7 +11,7 @@ public:
 	
 	void add(const std::string& name);
 
-	void Bind(std::string name);
+	void Bind(std::string& name);
 	void Bind() const { currentShader->Bind(); }
 	static void unBind() { GLCall(glUseProgram(0)); }
 

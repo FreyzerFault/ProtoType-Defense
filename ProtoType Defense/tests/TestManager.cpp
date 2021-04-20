@@ -21,6 +21,7 @@ void TestManager::addTests()
 	testMenu.addTest<TestDynamicBuffer>("Dynamic Buffer");
 	testMenu.addTest<TestThreads>("Threads");*/
 	testMenu.addTest<TestShootDeltaTime>("Delta Time Shooting");
+	testMenu.addTest<TestSendingWaves>("Waves and Path Test");
 }
 
 void TestManager::onImGuiRender()

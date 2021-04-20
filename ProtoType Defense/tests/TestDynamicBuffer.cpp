@@ -73,8 +73,8 @@ void test::TestDynamicBuffer::onUpdate(DeltaTime deltaTime)
 
 void test::TestDynamicBuffer::onRender()
 {
-	m_Renderer.setClearColor();
-	m_Renderer.clear();
+	Renderer::setClearColor();
+	Renderer::clear();
 
 	m_Shader.Bind();
 
@@ -97,7 +97,7 @@ void test::TestDynamicBuffer::onRender()
 	m_Shader.setUniformMat4f("u_MVP", mvp);
 
 
-	m_Renderer.draw(m_VAO, m_IBO, m_Shader);
+	Renderer::draw(m_VAO, m_IBO, m_Shader);
 }
 
 void test::TestDynamicBuffer::onImGuiRender()

@@ -3,35 +3,25 @@
 
 namespace test {
 
-	class TestShootDeltaTime : public Test
+	class TestSendingWaves : public test::Test
 	{
-	
 	public:
-		TestShootDeltaTime();
-		virtual ~TestShootDeltaTime() override;
+		TestSendingWaves();
+		virtual ~TestSendingWaves() override;
 
 		void reset() override;
 
 		void onUpdate(DeltaTime deltaTime) override;
 		void onRender() override;
 		void onImGuiRender() override;
-
+		
 		static const int numTextures = 12;
-	
-	private:
 
+	private:
+		
 		glm::mat4 m_View;
 		glm::mat4 m_Model;
 
-		Tower tower;
-
-		Enemy enemy;
-
-		float atkSpd = (float)Tower::baseAttackSpeed;
-
 		GameController gameController;
-	
 	};
-
 }
-

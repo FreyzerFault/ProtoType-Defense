@@ -16,8 +16,8 @@ void test::TestClearColor::onUpdate(DeltaTime deltaTime)
 
 void test::TestClearColor::onRender()
 {
-	m_Renderer.setClearColor(m_ClearColor);
-	m_Renderer.clear();
+	Renderer::setClearColor(m_ClearColor);
+	Renderer::clear();
 }
 
 void test::TestClearColor::onImGuiRender()

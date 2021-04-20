@@ -4,9 +4,9 @@
 
 #include <list>
 
-#include "Entity.h"
-#include "Platform.h"
-#include "Enemy.h"
+#include "Structure/Entity.h"
+#include "Map/Platform.h"
+#include "Objects/Enemy.h"
 
 class Projectile;
 

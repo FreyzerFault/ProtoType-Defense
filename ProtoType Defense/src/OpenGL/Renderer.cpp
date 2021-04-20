@@ -5,17 +5,40 @@
 #include "VertexArray.h"
 #include "IndexBuffer.h"
 #include "Shader.h"
+#include "ShaderManager.h"
 
-#include "Sprite.h"
-#include "HitboxGrid.h"
+#include "Structure/Sprite.h"
+#include "Structure/HitboxGrid.h"
+#include "Structure/Hitbox.h"
 
 using namespace glm;
 
+Renderer::Renderer() = default;
 
-
-Renderer::Renderer()
+Renderer::Renderer(const int numTextures)
 {
+	// SpriteModels (texID)
+	for (int i = 0; i < numTextures; ++i)
+	{
+		spriteModels.try_emplace(i, i);
+	}
+
+	// SHADERS
+	shaderManager.add("NoTexture");
+	shaderManager.add("Basic");
+	// MAX Texture Slots
+	shaderManager.setTextureSlots(numTextures);
 	
+	// TEXTURAS
+	for (int i = 0; i < numTextures; i++)
+	{
+		textureManager.add(std::to_string(i), i);
+		std::cout << "Added texture " << textureManager.getTextureName(i) << " to Slot " << i << std::endl;
+	}
+	for (int i = 0; i < numTextures; i++)
+	{
+		textureManager.Bind(std::to_string(i), i);
+	}
 }
 
 Renderer::~Renderer() = default;
@@ -35,7 +58,6 @@ void Renderer::draw(const VertexArray& va, const IndexBuffer& ib, const Shader& 
 	shader.Bind();
 	va.Bind();
 	ib.Bind();
-	glPointSize(5.0f);
 
 	GLCall(glDrawElements(mode, ib.getCount(), GL_UNSIGNED_INT, nullptr));
 }
@@ -53,29 +75,41 @@ void Renderer::draw(const VertexArray& va, const Shader& shader)
 {
 	shader.Bind();
 	va.Bind();
-	IndexBuffer IBO(triangularQuadIndices, 6);
+	const IndexBuffer IBO(triangularQuadIndices, 6);
 	IBO.Bind();
 
 	GLCall(glDrawElements(GL_TRIANGLES, IBO.getCount(), GL_UNSIGNED_INT, nullptr));
 }
 
-void Renderer::draw(Sprite& sprite, const Shader& shader)
-{
-	shader.Bind();
-	sprite.bind(); // VAO.Bind() del Sprite
-	sprite.getIBO().Bind();
 
-	GLCall(glDrawElements(GL_TRIANGLES, sprite.getIBO().getCount(), GL_UNSIGNED_INT, nullptr));
+
+void Renderer::draw(const Sprite& sprite)
+{
+	std::string shaderName = "Basic";
+	shaderManager.Bind(shaderName);
+	
+	spriteModels.at(sprite.getTexID()).VAO.Bind();
+	spriteModels.at(sprite.getTexID()).IBO.Bind();
+	
+	shaderManager.setUniformMat4f("u_MVP", defaultMVP * sprite.getModelMatrix());
+
+	GLCall(glDrawElements(GL_TRIANGLES, spriteModels.at(sprite.getTexID()).IBO.getCount(), GL_UNSIGNED_INT, nullptr));
 }
 
-void Renderer::draw(HitboxGrid& grid, const Shader& shader)
+
+void Renderer::draw(const Hitbox& hitbox)
 {
-	shader.Bind();
-	grid.VAO.Bind(); // VAO.Bind() del Sprite
-	grid.IBO.Bind();
-	glPointSize(5.0f);
-	GLCall(glDrawElements(GL_POINTS, grid.IBO.getCount(), GL_UNSIGNED_INT, nullptr));
+	std::string shaderName = "NoTexture";
+	shaderManager.Bind(shaderName);
+	
+	hitboxGrid.VAO.Bind();
+	hitboxGrid.IBO.Bind();
+	
+	shaderManager.setUniformMat4f("u_MVP", defaultMVP * hitbox.getModelMatrix());
+	
+	GLCall(glDrawElements(GL_LINE_LOOP, hitboxGrid.IBO.getCount(), GL_UNSIGNED_INT, nullptr));
 }
+
 
 
 // Enable OpenGL Flags like Blending, Textures,...
@@ -88,5 +122,5 @@ void Renderer::glEnableFlags()
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // src * alpha + destination * (1 - alpha)
 
-	glEnable(GL_POINT_SMOOTH);
+	//glEnable(GL_POINT_SMOOTH);
 }

@@ -79,8 +79,8 @@ void test::TestBatchRendering::onUpdate(DeltaTime deltaTime)
 
 void test::TestBatchRendering::onRender()
 {
-	m_Renderer.setClearColor();
-	m_Renderer.clear();
+	Renderer::setClearColor();
+	Renderer::clear();
 
 	m_Shader.Bind();
 	m_Texture[0].Bind();
@@ -95,7 +95,7 @@ void test::TestBatchRendering::onRender()
 	const glm::mat4 mvp = m_Proj * m_View * m_Model; // MVP
 
 	m_Shader.setUniformMat4f("u_MVP", mvp);
-	m_Renderer.draw(m_VAO, m_IBO, m_Shader);
+	Renderer::draw(m_VAO, m_IBO, m_Shader);
 }
 
 void test::TestBatchRendering::onImGuiRender()

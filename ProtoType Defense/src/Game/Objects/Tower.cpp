@@ -29,7 +29,7 @@ Tower::Tower(const uint32_t texID, Platform* platform)
 
 Tower::Tower(Platform* platform, const int damage, float const attackSpeed, float const range,
 	float const projectileSpeed, int const projectilePierce, const int cost, const uint32_t texID)
-	: Entity(platform->getPosition(), 0, texID), // No Hitbox
+	: Entity(platform->getPosition(), texID, 32.0f, 0.0f), // No Hitbox
 	m_ID(numTowers++), m_Damage(damage),
 	m_AttackSpeed(attackSpeed), m_Range(range), m_ProjectileSpeed(projectileSpeed),
 	m_ProjectilePierce(projectilePierce), m_Cost(cost),

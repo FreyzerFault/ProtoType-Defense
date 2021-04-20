@@ -14,28 +14,28 @@ Entity::Entity()
 {
 }
 
-Entity::Entity(vec2 position, const double yaw, const uint32_t texID)
-	: Entity(vec3(position,0.0f), yaw, texID)
+Entity::Entity(vec2 position, const uint32_t texID, const float spriteScale, const double yaw)
+	: Entity(vec3(position,0.0f), texID, spriteScale, yaw)
 {
 }
 
-Entity::Entity(vec3 position, const double yaw, const uint32_t texID)
-	: m_Position(position), m_Yaw(yaw), m_Hitbox(nullptr), m_Sprite(position, 1.0f, 0.0f, texID)
+Entity::Entity(vec3 position, const uint32_t texID, const float spriteScale, const double yaw)
+	: m_Position(position), m_Yaw(yaw), m_Hitbox(nullptr), m_Sprite(position, spriteScale, yaw, texID)
 {
 }
 
-Entity::Entity(vec2 position, vec2 size, const double yaw, const uint32_t texID)
-	: Entity(vec3(position, 0.0f), size, yaw, texID)
+Entity::Entity(vec2 position, vec2 size, const uint32_t texID, const float spriteScale, const double yaw)
+	: Entity(vec3(position, 0.0f), size, texID, spriteScale, yaw)
 {
 }
 
-Entity::Entity(vec3 position, vec2 size, const double yaw, const uint32_t texID)
-	: Entity(position, vec3(size, 0.0f), yaw, texID)
+Entity::Entity(vec3 position, vec2 size, const uint32_t texID, const float spriteScale, const double yaw)
+	: Entity(position, vec3(size, 0.0f), texID, spriteScale, yaw)
 {
 }
 
-Entity::Entity(vec3 position, vec3 size, const double yaw, const uint32_t texID)
-	: m_Position(position), m_Yaw(yaw), m_Hitbox(new Hitbox(position, size, yaw)), m_Sprite(position, 1.0f, yaw, texID)
+Entity::Entity(vec3 position, vec3 size, const uint32_t texID, const float spriteScale, const double yaw)
+	: m_Position(position), m_Yaw(yaw), m_Hitbox(new Hitbox(position, size, yaw)), m_Sprite(position, spriteScale, yaw, texID)
 {
 }
 

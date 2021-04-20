@@ -17,6 +17,7 @@ Shader::Shader(const std::string& filepath)
 {
 	const ShaderProgramSource source = ParseShader(filepath);
 	m_RendererID = CreateShader(source.VertexSource, source.FragmentSource);
+	Bind();
 }
 
 Shader::~Shader()

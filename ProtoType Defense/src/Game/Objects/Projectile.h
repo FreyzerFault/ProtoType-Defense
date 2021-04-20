@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Entity.h"
-#include "Tower.h"
+#include "Structure/Entity.h"
+#include "Objects/Tower.h"
 
 class Projectile : public Entity
 {

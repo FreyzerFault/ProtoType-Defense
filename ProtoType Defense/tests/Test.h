@@ -9,6 +9,11 @@
 #include "Renderer.h"
 #include "ShaderManager.h"
 #include "TextureManager.h"
+#include "VertexArray.h"
+#include "VertexBuffer.h"
+#include "IndexBuffer.h"
+
+#include "GameController.h"
 
 namespace test {
 	class Test
@@ -26,8 +31,13 @@ namespace test {
 	protected:
 		static glm::mat4 m_Proj;
 
-		TextureManager textureManager;
-		ShaderManager shaderManager;
+		// TIMERS
+		float shootTimer = 0;
+		float enemyTimer = 0;
+		
+		int fps = 60;
+		float fpsTimer = 0;
+		int fpsCounter = 0;
 	};
 
 	// Menu para elegir Tests
