@@ -9,6 +9,7 @@ class Texture
 public:
 	Texture();
 	Texture(const std::string& path);
+	Texture(const Texture& orig);
 	~Texture();
 
 	Texture& operator=(const Texture& orig);

@@ -11,12 +11,36 @@ static int numRounds = 5;
 static int numTextures = 16;
 
 GameController::GameController()
-	: money(600), lives(100), speed(1), active(false), currentRound(nullptr), renderer(numTextures)
+	: money(600), lives(100), speed(1), active(false), renderer(numTextures)
 {
 	for (int i = 0; i < numRounds; i++)
 	{
-		rounds.emplace_back(getPath());
+		int reward = 100;
+		rounds.emplace_back(i+1, reward);
+		roundStack.push_back(&rounds.back());
 	}
+	currentRound = *roundStack.front();
+}
+
+void GameController::update(float deltaTime)
+{
+	deltaTime *= speed;
+	
+	getPath().moveEnemies(deltaTime);
+	
+	if (!roundStack.empty())
+	{
+		if (currentRound.isEnded())
+		{
+			if (getPath().noEnemiesLeft())
+				nextRound();
+		}
+		else
+			currentRound.sendEnemy(deltaTime);
+	}
+	else
+		if (getPath().noEnemiesLeft())
+			endGame(); // End when the Enemies from last Round disapear;
 }
 
 void GameController::render(mat4 mvp)
@@ -50,43 +74,52 @@ void GameController::render(mat4 mvp)
 	}
 }
 
+
+void GameController::reset()
+{
+	getPath().removeEnemies();
+	
+	roundStack.clear();
+	for (Round& round: rounds)
+	{
+		roundStack.push_back(&round);
+	}
+	startGame();
+}
+
+
+
 void GameController::startGame()
 {
-	std::cout << "Game Started: " << rounds.size() << " rounds" << std::endl;
+	std::cout << "Game Started: " << roundStack.size() << " rounds" << std::endl;
 	
-	currentRound = &rounds.front();
-	currentRound->startRound();
-	std::cout << "Starting Round " << numRounds - rounds.size() + 1 << std::endl;
+	currentRound = *roundStack.front();
+	currentRound.startRound(getPath());
 
 	active = true;
 }
 
-void GameController::endGame() const
+void GameController::endGame()
 {
 	std::cout << "Game Ended. Lives left = " << lives << std::endl;
+	active = false;
 }
 
 void GameController::nextRound()
 {
-	rounds.pop_front();
+	money += currentRound.getReward();
+	roundStack.pop_front();
 	
-	if (!rounds.empty())
+	if (!roundStack.empty())
 	{
-		currentRound = &rounds.front();
-		std::cout << "Starting Round " << numRounds - rounds.size() + 1 << std::endl;
-		return;
+		currentRound = *roundStack.front();
+		currentRound.startRound(getPath());
 	}
-	std::cout << "All " << numRounds << " Rounds completed " << std::endl;
-}
-
-void GameController::sendEnemy() const
-{
-	currentRound->sendEnemy();
 }
 
 void GameController::fastForward(float speedPercent)
 {
-	speed *= speedPercent;
+	speed *= speedPercent / 100;
 }
 
 std::string GameController::getStatus() const

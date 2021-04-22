@@ -33,6 +33,7 @@ public:
 	
 	void move(const float X, const float Y, const float Z = 0.0f);
 	virtual void move(const float d);
+	virtual void move(const float d, const double yaw);
 
 	void rotate(float X); // X in Degrees
 	void lookAt(glm::vec3 position);

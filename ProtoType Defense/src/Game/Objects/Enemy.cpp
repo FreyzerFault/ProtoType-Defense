@@ -1,16 +1,18 @@
 #include "Enemy.h"
 
+#include "Map/Path.h"
+
 using namespace glm;
 
 static vec2 hitboxSize(32,32);
 
-Enemy::Enemy(const vec3 pos, const uint32_t texID, const unsigned life, const float speed)
-	: Entity(pos, hitboxSize, texID, 32.0f, 0.0f), life(life), speed(speed)
+Enemy::Enemy(const vec3 pos, float spriteScale, double yaw, const uint32_t texID, const unsigned life, const float speed)
+	: Entity(pos, hitboxSize, texID, spriteScale, yaw), life(life), speed(speed), tile(nullptr)
 {
 }
 
-Enemy::Enemy(const Enemy& orig)
-	: Entity(orig.m_Position, orig.getSize2D()), life(orig.life), speed(orig.speed)
+Enemy::Enemy(Tile& tile, float spriteScale, const uint32_t texID, const uint32_t life, const float speed)
+	: Entity(tile.getPosition(), hitboxSize, texID, spriteScale, tile.getYaw()), life(life), speed(speed), tile(&tile)
 {
 }
 
@@ -28,4 +30,11 @@ int Enemy::getHit(const uint32_t hit)
 void Enemy::slow(const float slowPercentage)
 {
 	speed -= speed * slowPercentage / 100;
+}
+
+void Enemy::move(const float d)
+{
+	if (tile != nullptr)
+		Entity::move(d, tile->getYaw());
+	Entity::move(d);
 }

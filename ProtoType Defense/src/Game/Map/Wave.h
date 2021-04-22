@@ -4,14 +4,21 @@
 class Wave
 {
 public:
-	Wave(Path& path);
-	Wave(Path& path, TypeEnemy type, int numEnemies, float delay, float frecuency);
+	Wave() = delete; // Can't exists a Wave without a Path
+	
+	Wave(Path& path, int numWave = 0, TypeEnemy type = TypeEnemy::basic, int numEnemies = 5, float delay = 3, float frecuency = 1);
 
 	void startWave() const;
-	void sendEnemy();
+	void endWave();
+	void sendEnemy() const;
+	void sendEnemy(float deltaTime);
 
 	float getDelay() const { return delay; }
 	float getFrecuency() const { return frecuency; }
+
+	bool isEnded() const { return ended; }
+
+	std::string toString() const;
 
 private:
 	Path* path;
@@ -21,8 +28,15 @@ private:
 	
 	TypeEnemy type;
 	
-	float delay;
-	float frecuency;
+	float delay; // Seconds until First Enemy is sent
+	float frecuency; // enemies / second
+
+	int numWave;
+
+	float enemyTimer = 0;
+	float delayTimer = 0;
+
+	bool ended = false;
 
 };
 

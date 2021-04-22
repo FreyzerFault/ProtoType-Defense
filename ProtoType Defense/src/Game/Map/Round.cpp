@@ -1,46 +1,82 @@
 #include "Round.h"
 
-static int numWaves = 2;
-static int baseReward = 100;
+#include <sstream>
 
-Round::Round(Path& path)
+static int numWaves = 2;
+
+Round::Round()
+	: Round(0)
+{
+}
+
+Round::Round(int numRound, int reward)
+	: currentWave(nullptr), numRound(numRound), reward(reward)
+{
+}
+
+Round::Round(const Round& orig) = default;
+
+Round& Round::operator=(const Round& round)
+{
+	if (this != &round)
+	{
+		this->numRound = round.numRound;
+		this->reward = round.reward;
+		this->ended = round.ended;
+		this->waves = round.waves;
+		this->currentWave = round.currentWave;
+	}
+	return *this;
+}
+
+
+void Round::startRound(Path& path)
 {
 	for (int i = 0; i < numWaves; ++i)
 	{
-		waves.emplace_back(path, basic, 5, 5, 1);
+		TypeEnemy type = TypeEnemy::basic;
+		int numEnemies = 5;
+		float delay = 5;
+		float frecuency = 1;
+		waves.emplace_back(path, i + 1, type, numEnemies, delay, frecuency);
 	}
-}
-
-
-void Round::startRound()
-{
+	
 	currentWave = &waves.front();
-	std::cout << "Waves: " << numWaves << std::endl;
-	std::cout << "Wave " << numWaves - waves.size() + 1 << " started" << std::endl;
+	
+	std::cout << toString() << std::endl;
+	currentWave->startWave();
 }
 
-void Round::sendWave()
+void Round::endRound()
 {
-	currentWave->startWave();
+	ended = true;
+}
 
+void Round::nextWave()
+{
 	waves.pop_front();
+
 	if (!waves.empty())
 	{
 		currentWave = &waves.front();
-		std::cout << "Wave " << numWaves - waves.size() + 1 << " started" << std::endl;
-		return;
+		currentWave->startWave();
 	}
-	std::cout << "Round completed" << std::endl;
-	std::cout << "Reward: " << getReward() << "$" << std::endl;
+	else
+		endRound();
 }
 
-void Round::sendEnemy() const
+
+void Round::sendEnemy(float deltaTime)
 {
-	currentWave->sendEnemy();
+	if (currentWave->isEnded())
+		nextWave();
+	else
+		currentWave->sendEnemy(deltaTime);
 }
 
-int Round::getReward()
+std::string Round::toString() const
 {
-	return baseReward;
+	std::stringstream ss;
+	ss << "  Round " << numRound << " => " << reward << "$ ";
+	return ss.str();
 }
-

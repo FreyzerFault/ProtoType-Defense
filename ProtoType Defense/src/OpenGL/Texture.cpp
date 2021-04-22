@@ -41,6 +41,11 @@ Texture::Texture(const std::string& path)
 	}
 }
 
+Texture::Texture(const Texture& orig)
+	: m_RendererID(orig.m_RendererID)
+{
+}
+
 Texture::~Texture()
 {
 	GLCall(glDeleteTextures(1, &m_RendererID));

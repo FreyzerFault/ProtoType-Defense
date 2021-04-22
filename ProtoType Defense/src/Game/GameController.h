@@ -20,23 +20,25 @@ class GameController
 {
 public:
 	GameController();
-	
+
+	void update(float deltaTime);
 	void render(glm::mat4 mvp);
+	void reset();
 	
 	void startGame();
-	void endGame() const;
+	void endGame();
 	void nextRound();
-	void sendEnemy() const;
 	void fastForward(float speedPercent);
 
-	Round& getRound() const { return *currentRound; }
-	Wave& getWave() const { return currentRound->getWave(); }
+	Round& getRound() { return currentRound; }
+	Wave& getWave() const { return currentRound.getWave(); }
 	Path& getPath() const { return map.getPath(); }
 	Renderer& getRenderer() const { return renderer; }
 
 	void addMoney(int gain) { money += gain; }
 	int getMoney() const { return money; }
 
+	float getSpeed() { return speed; }
 	std::string getStatus() const;
 
 	bool isActive() const { return active; }
@@ -52,8 +54,11 @@ private:
 
 	Map map;
 	std::list<Platform> platforms;
+	
+	// Rounds are kept for reset so currentRound is a copy to modify
 	std::list<Round> rounds;
-	Round* currentRound;
+	std::list<Round*> roundStack;
+	Round currentRound;
 
 	mutable Renderer renderer;
 };

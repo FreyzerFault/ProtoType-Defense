@@ -10,18 +10,19 @@ TestSendingWaves::TestSendingWaves()
 	: m_View(glm::lookAt(glm::vec3(0.0f, 0.0f, 1000.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f))),
 	m_Model(glm::mat4(1.0f))
 {
+	gameController.startGame();
 }
 
 TestSendingWaves::~TestSendingWaves() = default;
 
 void TestSendingWaves::reset()
 {
-
+	gameController.reset();
 }
 
 void TestSendingWaves::onUpdate(DeltaTime deltaTime)
 {
-	if (!gameController.isActive()) gameController.startGame();
+	
 	
 	// FPS Timer
 	fpsCounter++;
@@ -30,23 +31,18 @@ void TestSendingWaves::onUpdate(DeltaTime deltaTime)
 	if (fpsTimer >= 1) // Every Sec
 	{
 		fps = fpsCounter;
-		std::cout << fps << "fps" << std::endl;
+		//std::cout << fps << "fps" << std::endl;
 		fpsTimer -= 1;
 		fpsCounter = 0;
 	}
 	
 	// OTHER TIMERS
 	shootTimer += deltaTime;
-	enemyTimer += deltaTime;
-	if (enemyTimer >= 1 / gameController.getRound().getWave().getFrecuency()) // [Speed] disparos / segundo
-	{
-		gameController.sendEnemy();
-		enemyTimer -= 1 / gameController.getRound().getWave().getFrecuency();
-		std::cout << "Sending Enemy" << std::endl;
-	}
-	
+
 	// EACH FRAME CALCULATIONS
-	gameController.getPath().moveEnemies(deltaTime);
+
+	if (gameController.isActive())
+		gameController.update(deltaTime);
 	
 }
 
@@ -65,4 +61,13 @@ void TestSendingWaves::onImGuiRender()
 	// GUI Buttons
 
 	if (ImGui::Button("Reset")) reset();
+
+	ImGui::LabelText("Game Speed", std::to_string(gameController.getSpeed()).c_str());
+	
+	if (ImGui::Button("<<")) gameController.fastForward(25);
+	if (ImGui::Button("<")) gameController.fastForward(50);
+	if (ImGui::Button(">")) gameController.fastForward(200);
+	if (ImGui::Button(">>")) gameController.fastForward(400);
+
+	
 }

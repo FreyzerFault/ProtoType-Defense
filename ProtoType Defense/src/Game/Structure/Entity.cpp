@@ -71,6 +71,12 @@ void Entity::move(const float d)
 		m_Hitbox->setPosition(m_Position);
 }
 
+void Entity::move(const float d, const double yaw)
+{
+	m_Yaw = yaw;
+	Entity::move(d);
+}
+
 
 void Entity::rotate(float X)
 {

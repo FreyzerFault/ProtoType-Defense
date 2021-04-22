@@ -27,7 +27,7 @@ public:
 	static void clear();
 	static void setClearColor(glm::vec3 color = defaultClearColor);
 
-	void setMVP(glm::mat4& mvp) { defaultMVP = mvp; }
+	void setMVP(const glm::mat4& mvp) { defaultMVP = mvp; }
 	glm::mat4 getMVP() const { return defaultMVP; }
 
 	// Generic VAO Drawing
