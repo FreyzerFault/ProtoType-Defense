@@ -36,10 +36,9 @@ public:
 
 	bool placeIn(Platform& platform);
 
-	void shoot();
+	void shoot(float deltaTime);
 	void aim();
 	void aim(Enemy& enemy);
-	// Predict movement
 	void aimPredictive(Enemy& enemy);
 
 	std::list<Projectile>& getProjectiles() { return m_Projectiles; }
@@ -65,6 +64,9 @@ public:
 	void prSpeedUp(const float percentage) { m_ProjectileSpeed += m_ProjectileSpeed * percentage / 100; }
 	void pierceUp(const int pierce) { m_ProjectilePierce += pierce; }
 
+	void updateShootTimer(float deltaTime) { shootTimer += deltaTime; }
+	void resetShootTimer() { shootTimer -= 1 / m_AttackSpeed; }
+	float getShootTimer() const { return shootTimer; }
 
 private:
 	const uint32_t m_ID; // Unique
@@ -80,7 +82,10 @@ private:
 	std::list<Projectile> m_Projectiles;
 
 	Enemy* aimedEnemy;
-	
+
+
+	// TIMERS
+	float shootTimer = 0;
 
 };
 

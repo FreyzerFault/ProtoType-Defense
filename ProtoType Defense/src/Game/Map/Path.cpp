@@ -22,7 +22,16 @@ Path::Path(std::list<Tile*>& tileList)
 
 void Path::spawnEnemy(TypeEnemy type)
 {
-	enemies.emplace_back(getFirstTile());
+	enemies.emplace_back(*getFirstTile());
+}
+
+void Path::addTile(Tile* tile)
+{
+	if (pathMap.find(tile->getPosition()) == pathMap.end())
+	{
+		path.push_back(tile);
+		pathMap.insert_or_assign(tile->getPosition(), tile);
+	}
 }
 
 float Path::getTileSize() const
@@ -33,8 +42,8 @@ float Path::getTileSize() const
 glm::vec2 Path::getStartingPosition() const
 {
 	// Enemy starts from left to right, up to down...
-	const vec2 tileCenter((*path.begin())->getCenter());
-	switch ((*path.begin())->getDirection())
+	const vec2 tileCenter(firstTile->getCenter());
+	switch (firstTile->getDirection())
 	{
 	case right:
 		return vec2(tileCenter.x - getTileSize() / 2, tileCenter.y);
@@ -57,7 +66,7 @@ Tile* Path::getEnemyTile(const Enemy& enemy) const
 	//   y volvemos a mover el mapa donde estaba
 
 	const vec2 tileSize(getTileSize());
-	const vec2 firstTilePosition(getFirstTile().getPosition());
+	const vec2 firstTilePosition(getFirstTile()->getPosition());
 
 	const vec2 relativePos(floor((enemy.getPosition2D() - firstTilePosition) / tileSize));
 	const vec2 tilePos(relativePos * tileSize + firstTilePosition);
@@ -108,7 +117,7 @@ void Path::moveEnemies(float deltaTime)
 
 
 
-const Enemy& Path::getFirstEnemy() const
+Enemy& Path::getFirstEnemy()
 {
 	// 1º: Search for the last Tile with Enemies (List order)
 
@@ -136,9 +145,9 @@ const Enemy& Path::getFirstEnemy() const
 
 	// 2º: Compare with other enemies in the same Tile
 
-	const Enemy* firstEnemy = nullptr;
+	Enemy* firstEnemy = nullptr;
 
-	for (const Enemy& enemy : enemies)
+	for (Enemy& enemy : enemies)
 	{
 		if (enemy.getTile() == maxTile)
 		{
@@ -172,7 +181,7 @@ const Enemy& Path::getFirstEnemy() const
 	return *firstEnemy;
 }
 
-const Enemy& Path::getLastEnemy() const
+Enemy& Path::getLastEnemy()
 {
 	// 1º: Search for the first Tile with Enemies (List order)
 
@@ -200,9 +209,9 @@ const Enemy& Path::getLastEnemy() const
 
 	// 2º: Compare with other enemies in the same Tile
 
-	const Enemy* lastEnemy = nullptr;
+	Enemy* lastEnemy = nullptr;
 
-	for (const Enemy& enemy : enemies)
+	for (Enemy& enemy : enemies)
 	{
 		if (enemy.getTile() == minTile)
 		{
@@ -236,10 +245,10 @@ const Enemy& Path::getLastEnemy() const
 	return *lastEnemy;
 }
 
-const Enemy& Path::getStrongEnemy() const
+Enemy& Path::getStrongEnemy()
 {
-	const Enemy* strongEnemy = nullptr;
-	for (const Enemy& enemy : enemies)
+	Enemy* strongEnemy = nullptr;
+	for (Enemy& enemy : enemies)
 	{
 		if (strongEnemy == nullptr)
 			strongEnemy = &enemy;
@@ -250,10 +259,10 @@ const Enemy& Path::getStrongEnemy() const
 	return *strongEnemy;
 }
 
-const Enemy& Path::getWeakEnemy() const
+Enemy& Path::getWeakEnemy()
 {
-	const Enemy* weakEnemy = nullptr;
-	for (const Enemy& enemy : enemies)
+	Enemy* weakEnemy = nullptr;
+	for (Enemy& enemy : enemies)
 	{
 		if (weakEnemy == nullptr)
 			weakEnemy = &enemy;

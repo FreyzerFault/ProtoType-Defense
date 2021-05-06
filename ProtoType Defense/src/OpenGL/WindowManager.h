@@ -17,6 +17,11 @@ public:
 
 	void setup();
 	void shutdown() const;
+
+	// FPS
+	DeltaTime getDeltaTime();
+	void updateFPS(DeltaTime deltaTime);
+	int getFPS() const { return fps; }
 	
 	GLFWwindow* getWindow() const { return window; }
 
@@ -26,5 +31,12 @@ private:
 	ImGuiManager GUI;
 
 	TestManager testManager;
+
+	// Program Time
+	float time;
+	// FPS
+	float fpsTimer = 0;
+	int fpsCounter = 0;
+	int fps;
 };
 

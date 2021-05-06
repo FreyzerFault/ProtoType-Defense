@@ -25,15 +25,16 @@ public:
 
 
 	static void clear();
-	static void setClearColor(glm::vec3 color = defaultClearColor);
+	static void setClearColor(glm::vec3 color = defaultBackgroundColor);
 
 	void setMVP(const glm::mat4& mvp) { defaultMVP = mvp; }
 	glm::mat4 getMVP() const { return defaultMVP; }
 
 	// Generic VAO Drawing
-	static void draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader, GLenum mode);
-	static void draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader);
-	static void draw(const VertexArray& va, const Shader& shader); // with Default IBO
+	void draw(const VertexArray& va, const IndexBuffer& ib, const std::string& shaderName, GLenum mode);
+	void draw(const VertexArray& va, const IndexBuffer& ib, const std::string& shaderName);
+	void draw(const VertexArray& va, const IndexBuffer& ib, const std::string& shaderName, uint32_t* ptr);
+	void draw(const VertexArray& va, const std::string& shaderName); // with Default IBO
 
 	// Sprite Drawing
 	void draw(const Sprite& sprite);

@@ -97,7 +97,7 @@ void test::TestDynamicBuffer::onRender()
 	m_Shader.setUniformMat4f("u_MVP", mvp);
 
 
-	Renderer::draw(m_VAO, m_IBO, m_Shader);
+	m_Renderer.draw(m_VAO, m_IBO, "Basic");
 }
 
 void test::TestDynamicBuffer::onImGuiRender()

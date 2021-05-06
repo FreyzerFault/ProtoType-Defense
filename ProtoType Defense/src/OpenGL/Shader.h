@@ -18,7 +18,7 @@ class Shader
 {
 public:
 	Shader();
-	Shader(const std::string& filepath);
+	explicit Shader(const std::string& filepath);
 	~Shader();
 
 	void Bind() const;

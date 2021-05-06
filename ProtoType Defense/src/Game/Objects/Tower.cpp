@@ -74,23 +74,35 @@ bool Tower::placeIn(Platform& platform)
 }
 
 
-void Tower::shoot() {
-	if (m_Platform)
+void Tower::shoot(float deltaTime)
+{
+	// Update ShootTimer
+	shootTimer += deltaTime;
+	
+	// If ShootTimer reach the time needed, it can shoot
+	if (shootTimer >= 1 / m_AttackSpeed) // [Speed] disparos / segundo
 	{
-		m_Projectiles.emplace_back(this);
-		m_Projectiles.back().setHomming(true);
+		// Reset the ShootTimer
+		shootTimer -= 1 / m_AttackSpeed;
 		
-		// Remove the first Projectile like a queue if a projectile have passed the range radious
-		// 
-		// Nº projectiles in radious = AttackSpeed * Radious / ProjSpeed
-		//	[Projs/secs] * [~pixels~] / [~pixels~/secs]  -->  [Projs] * [~secs~] / [~secs~]  -->  [Projectiles in radius]
-		
-		if (m_Projectiles.size() > ceil(m_AttackSpeed * m_Range / m_ProjectileSpeed));
+		if (m_Platform)
+		{
+			// Create a Projectile
+			m_Projectiles.emplace_back(this);
+			m_Projectiles.back().setHomming(true);
+
+			// Remove the first Projectile like a queue if a projectile have passed the range radious
+			// 
+			// Nº projectiles in radious = AttackSpeed * Radious / ProjSpeed
+			//	[Projs/secs] * [~pixels~] / [~pixels~/secs]  -->  [Projs] * [~secs~] / [~secs~]  -->  [Projectiles in radius]
+
+			if (m_Projectiles.size() > ceil(m_AttackSpeed * m_Range / m_ProjectileSpeed));
 			//m_Projectiles.pop_front();
 
+		}
+		else
+			std::cout << "Tower (" << m_ID << "): [ERROR] Not placed in any platform" << std::endl;
 	}
-	else
-		std::cout << "Tower (" << m_ID << "): [ERROR] Not placed in any platform" << std::endl;
 }
 
 

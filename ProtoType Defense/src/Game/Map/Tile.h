@@ -12,11 +12,6 @@ public:
 	{
 		left, right, up, down
 	};
-	
-	struct Vertex {
-		float position[3];
-		float color[4];
-	};
 
 	Tile();
 	Tile(glm::vec2 pos, float size = 32.0f, glm::vec3 color = glm::vec3(0.1f, 0.2f, 0.6f));
@@ -41,8 +36,6 @@ private:
 
 	// Direction that will go an Enemy above it
 	Direction direction;
-	
-	Vertex vertices[4];
 	
 };
 

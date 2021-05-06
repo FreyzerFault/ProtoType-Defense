@@ -10,7 +10,7 @@ namespace test {
 		virtual ~TestSendingWaves() override;
 
 		void reset() override;
-
+		
 		void onUpdate(DeltaTime deltaTime) override;
 		void onRender() override;
 		void onImGuiRender() override;

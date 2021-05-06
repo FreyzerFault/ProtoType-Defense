@@ -23,7 +23,7 @@ namespace test {
 		virtual ~Test() = default;
 
 		virtual void reset() {}
-
+		
 		virtual void onUpdate(DeltaTime deltaTime) {}
 		virtual void onRender() {}
 		virtual void onImGuiRender() {}
@@ -34,10 +34,6 @@ namespace test {
 		// TIMERS
 		float shootTimer = 0;
 		float enemyTimer = 0;
-		
-		int fps = 60;
-		float fpsTimer = 0;
-		int fpsCounter = 0;
 	};
 
 	// Menu para elegir Tests

@@ -24,20 +24,23 @@ public:
 	void update(float deltaTime);
 	void render(glm::mat4 mvp);
 	void reset();
-	
+
+	// Round Control
 	void startGame();
 	void endGame();
 	void nextRound();
+	void pauseGame();
 	void fastForward(float speedPercent);
 
+	// Player Control
+	void addMoney(int gain) { money += gain; }
+	
 	Round& getRound() { return currentRound; }
 	Wave& getWave() const { return currentRound.getWave(); }
-	Path& getPath() const { return map.getPath(); }
+	Path& getPath() { return map.getPath(); }
 	Renderer& getRenderer() const { return renderer; }
 
-	void addMoney(int gain) { money += gain; }
 	int getMoney() const { return money; }
-
 	float getSpeed() { return speed; }
 	std::string getStatus() const;
 
@@ -53,7 +56,6 @@ private:
 	bool active;
 
 	Map map;
-	std::list<Platform> platforms;
 	
 	// Rounds are kept for reset so currentRound is a copy to modify
 	std::list<Round> rounds;
@@ -61,5 +63,7 @@ private:
 	Round currentRound;
 
 	mutable Renderer renderer;
+
+	bool firstFrame = true;
 };
 

@@ -12,7 +12,7 @@ Enemy::Enemy(const vec3 pos, float spriteScale, double yaw, const uint32_t texID
 }
 
 Enemy::Enemy(Tile& tile, float spriteScale, const uint32_t texID, const uint32_t life, const float speed)
-	: Entity(tile.getPosition(), hitboxSize, texID, spriteScale, tile.getYaw()), life(life), speed(speed), tile(&tile)
+	: Entity(tile.getCenter() , hitboxSize, texID, spriteScale, tile.getYaw()), life(life), speed(speed), tile(&tile)
 {
 }
 

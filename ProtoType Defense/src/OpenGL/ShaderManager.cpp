@@ -12,7 +12,7 @@ void ShaderManager::add(const std::string& name)
 	currentShaderName = name;
 }
 
-void ShaderManager::Bind(std::string& name)
+void ShaderManager::Bind(const std::string& name)
 {
 	// Skip Binding if it's already binded
 	if (currentShaderName != name)

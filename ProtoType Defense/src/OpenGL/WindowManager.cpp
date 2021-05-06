@@ -12,7 +12,8 @@ WindowManager::WindowManager()
 WindowManager::WindowManager(const uint32_t width, const uint32_t height, const std::string& title, const uint32_t monitor)
 	: window(glfwCreateWindow(
 		width, height,
-		title.c_str(),nullptr, nullptr)), GUI(window)
+		title.c_str(),nullptr, nullptr)), GUI(window),
+	time((float)glfwGetTime())
 {
 	glfwMakeContextCurrent(window);
 }
@@ -36,6 +37,29 @@ void WindowManager::shutdown() const
 	ImGui::DestroyContext();
 }
 
+DeltaTime WindowManager::getDeltaTime()
+{
+	const float lastFrameTime = time;
+	const float frameTime = (float)glfwGetTime(); // Secs
+	const DeltaTime deltaTime = frameTime - lastFrameTime;
+	time = frameTime;
+	return deltaTime;
+}
+
+void WindowManager::updateFPS(DeltaTime deltaTime)
+{
+	fpsCounter++;
+	fpsTimer += deltaTime;
+
+	if (fpsTimer >= 1) // Every Sec
+	{
+		fps = fpsCounter;
+		//std::cout << "FPS: " << getFPS() << std::endl;
+		fpsTimer -= 1;
+		fpsCounter = 0;
+	}
+}
+
 
 void WindowManager::renderingLoop()
 {
@@ -49,10 +73,11 @@ void WindowManager::renderingLoop()
 		GUI.startFrame();
 
 		// DELTA TIME
-		const float time = (float)glfwGetTime(); // Secs
-		const DeltaTime deltaTime = time - lastFrameTime;
-		lastFrameTime = time;
-		
+		DeltaTime deltaTime = getDeltaTime();
+
+		// FPS
+		updateFPS(deltaTime);
+
 		if (testManager.isActive())
 		{
 			testManager.onUpdate(deltaTime);

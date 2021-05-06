@@ -20,24 +20,11 @@ void TestSendingWaves::reset()
 	gameController.reset();
 }
 
+
 void TestSendingWaves::onUpdate(DeltaTime deltaTime)
 {
-	
-	
-	// FPS Timer
-	fpsCounter++;
-	fpsTimer += deltaTime;
-
-	if (fpsTimer >= 1) // Every Sec
-	{
-		fps = fpsCounter;
-		//std::cout << fps << "fps" << std::endl;
-		fpsTimer -= 1;
-		fpsCounter = 0;
-	}
-	
 	// OTHER TIMERS
-	shootTimer += deltaTime;
+	shootTimer += deltaTime; // TODO dentro de update()
 
 	// EACH FRAME CALCULATIONS
 

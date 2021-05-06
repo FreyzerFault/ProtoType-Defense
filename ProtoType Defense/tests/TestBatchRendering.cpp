@@ -95,7 +95,7 @@ void test::TestBatchRendering::onRender()
 	const glm::mat4 mvp = m_Proj * m_View * m_Model; // MVP
 
 	m_Shader.setUniformMat4f("u_MVP", mvp);
-	Renderer::draw(m_VAO, m_IBO, m_Shader);
+	m_Renderer.draw(m_VAO, m_IBO, "Basic");
 }
 
 void test::TestBatchRendering::onImGuiRender()

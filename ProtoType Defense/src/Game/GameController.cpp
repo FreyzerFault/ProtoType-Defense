@@ -22,12 +22,36 @@ GameController::GameController()
 	currentRound = *roundStack.front();
 }
 
+
+void GameController::startGame()
+{
+	std::cout << "Game Started: " << roundStack.size() << " rounds" << std::endl;
+
+	currentRound = *roundStack.front();
+	currentRound.startRound(getPath());
+
+	active = true;
+}
+
 void GameController::update(float deltaTime)
 {
 	deltaTime *= speed;
-	
+
+	// Towers Shoot
+	for (Platform& platform: map.getPlatforms())
+	{
+		if (!platform.isEmpty())
+		{
+			Tower* tower = platform.getTower();
+			tower->shoot(deltaTime);
+			tower->aimPredictive(getPath().getFirstEnemy());
+		}
+	}
+
+	// Enemies Move
 	getPath().moveEnemies(deltaTime);
-	
+
+	// Round Control
 	if (!roundStack.empty())
 	{
 		if (currentRound.isEnded())
@@ -47,21 +71,30 @@ void GameController::render(mat4 mvp)
 {
 	// Scene MVP
 	renderer.setMVP(mvp);
+	
+	if (firstFrame)
+	{
+		map.setupRendering(renderer);
+		firstFrame = false;
+	}
 
 	// TILEMAP
-	
+	map.render(renderer);
 
 	// TOWERS
-	for (const Platform& platform : platforms)
+	for (const Platform& platform : map.getPlatforms())
 	{
-		Tower& tower = platform.getTower();
-		renderer.draw(tower.getSprite());
-
-		// PROJECTILES
-		for (Projectile& projectile : tower.getProjectiles())
+		if (!platform.isEmpty())
 		{
-			renderer.draw(projectile.getSprite());
-			renderer.draw(projectile.getHitbox());
+			Tower* tower = platform.getTower();
+			renderer.draw(tower->getSprite());
+
+			// PROJECTILES
+			for (Projectile& projectile : tower->getProjectiles())
+			{
+				renderer.draw(projectile.getSprite());
+				renderer.draw(projectile.getHitbox());
+			}
 		}
 	}
 
@@ -89,16 +122,6 @@ void GameController::reset()
 
 
 
-void GameController::startGame()
-{
-	std::cout << "Game Started: " << roundStack.size() << " rounds" << std::endl;
-	
-	currentRound = *roundStack.front();
-	currentRound.startRound(getPath());
-
-	active = true;
-}
-
 void GameController::endGame()
 {
 	std::cout << "Game Ended. Lives left = " << lives << std::endl;
@@ -115,6 +138,11 @@ void GameController::nextRound()
 		currentRound = *roundStack.front();
 		currentRound.startRound(getPath());
 	}
+}
+
+void GameController::pauseGame()
+{
+	active = false;
 }
 
 void GameController::fastForward(float speedPercent)

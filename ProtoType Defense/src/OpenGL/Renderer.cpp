@@ -53,40 +53,44 @@ void Renderer::setClearColor(vec3 color)
 	GLCall(glClearColor(color.r, color.g, color.b, 1.0f));
 }
 
-void Renderer::draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader, GLenum mode)
+void Renderer::draw(const VertexArray& va, const IndexBuffer& ib, const std::string& shaderName, GLenum mode)
 {
-	shader.Bind();
+	shaderManager.Bind(shaderName);
 	va.Bind();
 	ib.Bind();
+
+	shaderManager.setUniformMat4f("u_MVP", defaultMVP);
 
 	GLCall(glDrawElements(mode, ib.getCount(), GL_UNSIGNED_INT, nullptr));
 }
 
-void Renderer::draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader)
+void Renderer::draw(const VertexArray& va, const IndexBuffer& ib, const std::string& shaderName)
 {
-	shader.Bind();
+	shaderManager.Bind(shaderName);
 	va.Bind();
 	ib.Bind();
-	
+
+	shaderManager.setUniformMat4f("u_MVP", defaultMVP);
+
 	GLCall(glDrawElements(GL_TRIANGLES, ib.getCount(), GL_UNSIGNED_INT, nullptr));
 }
 
-void Renderer::draw(const VertexArray& va, const Shader& shader)
+void Renderer::draw(const VertexArray& va, const std::string& shaderName)
 {
-	shader.Bind();
+	shaderManager.Bind(shaderName);
 	va.Bind();
 	const IndexBuffer IBO(triangularQuadIndices, 6);
 	IBO.Bind();
+
+	shaderManager.setUniformMat4f("u_MVP", defaultMVP);
 
 	GLCall(glDrawElements(GL_TRIANGLES, IBO.getCount(), GL_UNSIGNED_INT, nullptr));
 }
 
 
-
 void Renderer::draw(const Sprite& sprite)
 {
-	std::string shaderName = "Basic";
-	shaderManager.Bind(shaderName);
+	shaderManager.Bind("Basic");
 	
 	spriteModels.at(sprite.getTexID()).VAO.Bind();
 	spriteModels.at(sprite.getTexID()).IBO.Bind();
@@ -99,8 +103,7 @@ void Renderer::draw(const Sprite& sprite)
 
 void Renderer::draw(const Hitbox& hitbox)
 {
-	std::string shaderName = "NoTexture";
-	shaderManager.Bind(shaderName);
+	shaderManager.Bind("NoTexture");
 	
 	hitboxGrid.VAO.Bind();
 	hitboxGrid.IBO.Bind();
@@ -109,6 +112,8 @@ void Renderer::draw(const Hitbox& hitbox)
 	
 	GLCall(glDrawElements(GL_LINE_LOOP, hitboxGrid.IBO.getCount(), GL_UNSIGNED_INT, nullptr));
 }
+
+
 
 
 

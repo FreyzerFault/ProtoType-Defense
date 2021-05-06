@@ -1,5 +1,10 @@
 #include "IndexBuffer.h"
 
+IndexBuffer::IndexBuffer(): m_Count(0)
+{
+	glGenBuffers(1, &m_RendererID);
+}
+
 IndexBuffer::IndexBuffer(const uint32_t* data, uint32_t count, uint32_t type)
 	: m_Count(count)
 {
@@ -38,10 +43,14 @@ void IndexBuffer::Unbind()const
 
 void IndexBuffer::setIndices(const void* data, uint32_t count)
 {
+	m_Count = count;
+	Bind();
 	GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(uint32_t), data, GL_DYNAMIC_DRAW));
 }
 
 void IndexBuffer::updateIndices(const void* data, uint32_t count)
 {
+	m_Count = count;
+	Bind();
 	GLCall(glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, count * sizeof(uint32_t), data));
 }

@@ -27,20 +27,24 @@ public:
 
 	void spawnEnemy(TypeEnemy type);
 
-	const std::list<Enemy>& getEnemyList() const { return enemies; }
+	std::list<Enemy>& getEnemyList() { return enemies; }
 
-	float getTileSize() const;
-	Tile& getFirstTile() const { return **path.begin(); }
+	void addTile(Tile* tile);
+
+	Tile* getFirstTile() const { return firstTile; }
+	void setFirstTile(Tile* tile) { firstTile = tile; }
 	glm::vec2 getStartingPosition() const;
+	
+	float getTileSize() const;
 	Tile* getEnemyTile(const Enemy& enemy) const;
 	
 	void moveEnemies(float deltaTime);
 	void removeEnemies() { enemies.clear(); }
 
-	const Enemy& getFirstEnemy() const;
-	const Enemy& getLastEnemy() const;
-	const Enemy& getStrongEnemy() const;
-	const Enemy& getWeakEnemy() const;
+	Enemy& getFirstEnemy();
+	Enemy& getLastEnemy();
+	Enemy& getStrongEnemy();
+	Enemy& getWeakEnemy();
 
 	bool noEnemiesLeft() const { return enemies.empty(); }
 	
@@ -49,5 +53,7 @@ private:
 	std::list<Tile*> path;
 	std::unordered_map<glm::vec2, Tile*, KeyFuncs, KeyFuncs> pathMap;
 	std::list<Enemy> enemies;
+
+	Tile* firstTile;
 };
 

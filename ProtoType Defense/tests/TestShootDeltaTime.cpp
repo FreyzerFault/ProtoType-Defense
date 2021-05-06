@@ -56,28 +56,7 @@ void TestShootDeltaTime::onUpdate(DeltaTime deltaTime)
 	enemy.move(enemy.getSpeed() * 5 * deltaTime);
 	enemy.rotate(enemy.getSpeed() * PI/200 * deltaTime);
 	
-	// FPS Timer
-	fpsCounter++;
-	fpsTimer += deltaTime;
-	
-	if (fpsTimer >= 1) // Every Sec
-	{
-		fps = fpsCounter;
-		std::cout << fps << "fps" << std::endl;
-		fpsTimer -= 1;
-		fpsCounter = 0;
-	}
-
-	// Shooting Timer
-	shootTimer += deltaTime;
-	
-	if (shootTimer >= 1/tower.getSpd()) // [Speed] disparos / segundo
-	{
-		tower.shoot();
-		shootTimer -= 1/tower.getSpd();
-
-		tower.setSpd(atkSpd);
-	}
+	tower.shoot(deltaTime);
 
 }
 
@@ -96,7 +75,6 @@ void TestShootDeltaTime::onRender()
 
 
 	// TOWERS
-	
 	renderer.draw(tower.getSprite());
 
 	// PROJECTILES

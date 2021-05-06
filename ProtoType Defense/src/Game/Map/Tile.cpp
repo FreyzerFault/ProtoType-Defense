@@ -8,24 +8,12 @@ Tile::Tile()
 }
 
 Tile::Tile(glm::vec2 pos, float size, vec3 color)
-	: position(pos), size(size), color(color), direction(Direction::right),
-	  vertices{
-		{{position.x,			position.y, 0.0f},			{color.r, color.g, color.b, 1.0f}},
-		{{position.x + size,	position.y, 0.0f},			{color.r, color.g, color.b, 1.0f}},
-		{{position.x + size,	position.y + size, 0.0f},	{color.r, color.g, color.b, 1.0f}},
-		{{position.x,			position.y + size, 0.0f},	{color.r, color.g, color.b, 1.0f}},
-	  }
+	: position(pos), size(size), color(color), direction(Direction::right)
 {
 }
 
 Tile::Tile(glm::vec2 pos, Direction dir, float size, glm::vec3 color)
-	: position(pos), size(size), color(color), direction(dir),
-	vertices{
-	  {{position.x,			position.y, 0.0f},			{color.r, color.g, color.b, 1.0f}},
-	  {{position.x + size,	position.y, 0.0f},			{color.r, color.g, color.b, 1.0f}},
-	  {{position.x + size,	position.y + size, 0.0f},	{color.r, color.g, color.b, 1.0f}},
-	  {{position.x,			position.y + size, 0.0f},	{color.r, color.g, color.b, 1.0f}},
-}
+	: position(pos), size(size), color(color), direction(dir)
 {
 }
 
