@@ -1,5 +1,10 @@
 # Prototype Defence
 
+## Aclaraciones:
+
+Más de un 90% de comentarios y nombres de variables/métodos están en inglés por pura inercia. Me manejo mejor llamando a ciertas variables por su nombre en inglés (center, position, tile, move,...) y no me gusta intercalarlo con el español si no es necesario. Además es bueno para practicar. Escribir todo en inglés es intencional, todo lo que hay en las carpetas src, tests y res y está escrito por mí.
+
+
 ## OpenGL Pipeline Framework
 
 ![OpenGL Pipeline](https://user-images.githubusercontent.com/72341309/115261897-50bf0780-a134-11eb-9e5e-406c372e2ac4.png)
