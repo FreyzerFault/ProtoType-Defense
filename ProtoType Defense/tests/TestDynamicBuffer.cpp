@@ -1,6 +1,7 @@
+#include "pch.h"
 #include "TestDynamicBuffer.h"
+
 #include "GlobalParameters.h"
-#include "imgui.h"
 #include "TextureManager.h"
 
 using namespace glm;

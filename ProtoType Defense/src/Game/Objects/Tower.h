@@ -1,8 +1,5 @@
 #pragma once
-#ifndef Tower_H
-#define Tower_H
-
-#include <list>
+#include "pch.h"
 
 #include "Structure/Entity.h"
 #include "Map/Platform.h"
@@ -10,6 +7,19 @@
 
 class Projectile;
 
+enum class TypeTower
+{
+	basic,
+	piercer,
+	bomb,
+	sniper,
+	antifly
+};
+
+enum class Priority
+{
+	first, last, strong, weak
+};
 
 class Tower : public Entity
 {
@@ -26,67 +36,101 @@ public:
 
 public:
 	Tower();
-	Tower(uint32_t texID, Platform* platform);
+	Tower(int texID, Platform* platform);
 	Tower(Platform* platform, int damage = baseDamage, float attackSpeed = baseAttackSpeed,
 		float range = baseRange, float projectileSpeed = baseProjectileSpeed,
-		int projectilePierce = baseProjectilePierce, int cost = baseCost, uint32_t texID = 0);
+		int projectilePierce = baseProjectilePierce, int cost = baseCost, int texID = 1);
 	Tower(const Tower& orig);
+	virtual ~Tower();
 	Tower& operator=(const Tower& orig);
-	virtual ~Tower() override;
 
-	bool placeIn(Platform& platform);
 
+	
+	// Shooting
 	void shoot(float deltaTime);
+	bool shoot();
+	
+	void updateShootTimer(float deltaTime) { shootTimer += deltaTime; }
+	void resetShootTimer() { shootTimer -= 1 / atkSpd; }
+	float getShootTimer() const { return shootTimer; }
+	
 	void aim();
-	void aim(Enemy& enemy);
+	void aim(Path& path);
+	void aim(Enemy* enemy);
 	void aimPredictive(Enemy& enemy);
+	bool enemyOnRange() const;
 
-	std::list<Projectile>& getProjectiles() { return m_Projectiles; }
+	void moveProjectiles(float deltaTime);
+	std::list<Projectile>& getProjectiles() { return projectiles; }
+	void clearProjectiles();
+
+
+	// Enemy Priority
+	void setPriority(Priority pr) { priority = pr; }
+	Priority getPriority() const { return priority; }
+
+
+	
+	// Player Selection
+	void select() { selected = true; }
+	void deselect() { selected = false; }
+	bool isSelected() const { return selected; }
+
+	
+
+	// Drawing
+	void draw(Renderer& renderer) const;
+	void drawRangeCircle(Renderer& renderer) const;
+
 	Enemy* getEnemy() const { return aimedEnemy; }
 
-	int getDmg() const { return m_Damage; }
-	float getSpd() const { return m_AttackSpeed; }
-	float getRange() const { return m_Range; }
-	float getPrSpd() const { return m_ProjectileSpeed; }
-	int getPierce() const { return m_ProjectilePierce; }
-	int getCost() const { return m_Cost; }
 
-	void setDmg(const int dmg) { m_Damage = dmg; }
-	void setSpd(const float spd) { m_AttackSpeed = spd; }
-	void setRange(const float range) { m_Range = range; }
-	void setPrSpd(const float prSpd) { m_ProjectileSpeed = prSpd; }
-	void setPierce(const int pierce) { m_ProjectilePierce = pierce; }
-	void setCost(const int cost) { m_Cost = cost; }
+	
+	// Stats
+	int getDmg() const { return damage; }
+	float getSpd() const { return atkSpd; }
+	float getRange() const { return range; }
+	float getPrSpd() const { return prjSpd; }
+	int getPierce() const { return prjPierce; }
+	int getCost() const { return cost; }
 
-	void dmgUp(const int damage) { m_Damage += damage; }
-	void speedUp(const float percentage) { m_AttackSpeed += m_AttackSpeed * percentage / 100; }
-	void rangeUP(const float percentage) { m_Range += m_Range * percentage / 100; }
-	void prSpeedUp(const float percentage) { m_ProjectileSpeed += m_ProjectileSpeed * percentage / 100; }
-	void pierceUp(const int pierce) { m_ProjectilePierce += pierce; }
+	void setDmg(const int dmg) { damage = dmg; }
+	void setSpd(const float spd) { atkSpd = spd; }
+	void setRange(const float rng) { range = rng; }
+	void setPrSpd(const float prSpd) { prjSpd = prSpd; }
+	void setPierce(const int pierce) { prjPierce = pierce; }
+	void setCost(const int c) { cost = c; }
 
-	void updateShootTimer(float deltaTime) { shootTimer += deltaTime; }
-	void resetShootTimer() { shootTimer -= 1 / m_AttackSpeed; }
-	float getShootTimer() const { return shootTimer; }
+	void dmgUp(const int dmg) { damage += dmg; }
+	void speedUp(const float percentage) { atkSpd += atkSpd * percentage / 100; }
+	void rangeUP(const float percentage) { range += range * percentage / 100; }
+	void prSpeedUp(const float percentage) { prjSpd += prjSpd * percentage / 100; }
+	void pierceUp(const int pierce) { prjPierce += pierce; }
+
+	
+	// Platform
+	bool placeIn(Platform& platf);
+	Platform* getPlatform() const { return platform; }
+	void sell() const;
 
 private:
-	const uint32_t m_ID; // Unique
-	int m_Damage;
-	float m_AttackSpeed;
-	float m_Range;
-	float m_ProjectileSpeed;
-	int m_ProjectilePierce;
-	int m_Cost;
+	Platform* platform;
 
-	Platform* m_Platform;
-
-	std::list<Projectile> m_Projectiles;
+	std::list<Projectile> projectiles;
 
 	Enemy* aimedEnemy;
+	
+	Priority priority = Priority::first;
 
-
-	// TIMERS
+	
+	bool selected = false;
+	
 	float shootTimer = 0;
-
+	
+	int damage;
+	float atkSpd;
+	float range;
+	float prjSpd;
+	int prjPierce;
+	int cost;
 };
-
-#endif

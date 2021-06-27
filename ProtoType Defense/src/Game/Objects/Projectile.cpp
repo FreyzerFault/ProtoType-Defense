@@ -1,35 +1,36 @@
+#include "pch.h"
 #include "Projectile.h"
-
-#include <trigonometric.hpp>
-#include "GlobalParameters.h"
 
 using namespace glm;
 
-static vec3 hitboxSize(32.0f);
-static float spriteSize(16.0f);
+static vec2 hitboxSize(24.f, 16.f);
+static vec2 spriteSize(24.f);
 
+static int texID = 0;
+
+static float delayImpact = 0.5;
 
 
 Projectile::Projectile(const Tower* tower)
-	: Projectile(tower, vec2(tower->getPosition2D()), hitboxSize, tower->getYaw(), tower->getPierce())
+	: Projectile(tower, vec3(tower->getPosition3D()), hitboxSize, tower->getYaw(), tower->getPierce())
 {
 }
 
 // 2D
 Projectile::Projectile(const Tower* tower, vec2 position, vec2 size, float orientation, bool homming)
-	: Entity(position, size, 1, spriteSize, orientation), m_Pierce(tower->getPierce()), m_Homming(homming), m_Tower(tower)
+	: Entity(vec3(position, 2.0f), size, texID, spriteSize, orientation), m_Pierce(tower->getPierce()), m_Homming(homming), m_Tower(tower)
 {
 }
 
 // 3D Flat Hitbox
 Projectile::Projectile(const Tower* tower, vec3 position, vec2 size, float orientation, bool homming)
-	: Entity(position, size, 1, spriteSize, orientation), m_Pierce(tower->getPierce()), m_Homming(homming), m_Tower(tower)
+	: Entity(position, size, texID, spriteSize, orientation), m_Pierce(tower->getPierce()), m_Homming(homming), m_Tower(tower)
 {
 }
 
 // 3D
 Projectile::Projectile(const Tower* tower, vec3 position, vec3 size, float orientation, bool homming)
-	: Entity(position, size, 1, spriteSize, orientation), m_Pierce(tower->getPierce()), m_Homming(homming), m_Tower(tower)
+	: Entity(position, size, texID, spriteSize, orientation), m_Pierce(tower->getPierce()), m_Homming(homming), m_Tower(tower)
 {
 }
 
@@ -53,13 +54,47 @@ bool Projectile::impact(Hitbox& hitbox)
 {
 	if (m_Hitbox->collision(hitbox))
 	{
-		// IF Piercing:
+		for (Hitbox* hb : impacted)
+		{
+			// If still colliding the same hitbox, don't trigger the hit
+			if (hb == &hitbox)
+				return false;
+		}
+		// If first time hitting hitbox
 		m_Pierce--;
+
 		// If pierced stop pursuing and goes straight
 		m_Homming = false;
+
+		impacted.push_back(&hitbox);
+
 		return true;
 	}
+	
+	auto it = impacted.begin();
+	while (it != impacted.end())
+	{
+		// When stops colliding remove from the list so the projectile can hit later
+		if (*it == &hitbox)
+		{
+			it = impacted.erase(it);
+			m_Homming = true;
+		}
+		else
+			++it;
+    }
+
 	return false;
+}
+
+Enemy* Projectile::impact(std::list<Enemy>& enemies)
+{
+	for (Enemy& enemy : enemies)
+	{
+		if (impact(enemy.getHitbox()))
+			return &enemy;
+	}
+	return nullptr;
 }
 
 void Projectile::move(const float d)
@@ -74,6 +109,16 @@ void Projectile::move(const float d)
 		predictedPos.x += predictiveCoefficient * cos(enemy.getYaw());
 		predictedPos.y += predictiveCoefficient * sin(enemy.getYaw());
 
+		// Check the angle between Projectile Direction and Direction towards Enemy
+		const vec2 projToEnemyDir = normalize(vec2(predictedPos - m_Position));
+		const vec2 projMovementDir = vec2(cos(m_Yaw), sin(m_Yaw));
+		const float angle = orientedAngle(projMovementDir, projToEnemyDir);
+		
+		// If angle is to big, Projectile moves towards a minimun angle
+		const float minAngle = d / 100;
+		if (angle > minAngle)
+			predictedPos = vec3(vec2(m_Position) + glm::rotate(projMovementDir, minAngle), predictedPos.z);
+		
 		lookAt(predictedPos);
 	}
 	Entity::move(d);

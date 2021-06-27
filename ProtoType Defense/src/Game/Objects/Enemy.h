@@ -1,4 +1,7 @@
 #pragma once
+#include "pch.h"
+
+#include "HealthBar.h"
 #include "Map/Tile.h"
 #include "Structure/Entity.h"
 
@@ -12,7 +15,7 @@ enum class TypeEnemy
 	flying
 };
 
-static std::string typeToString(const TypeEnemy& type)
+static std::string typeToString(TypeEnemy& type)
 {
 	switch (type)
 	{
@@ -25,44 +28,72 @@ static std::string typeToString(const TypeEnemy& type)
 	case TypeEnemy::flying:
 		return "Flying";
 	}
+	return "";
 }
 
 class Enemy: public Entity
 {
 public:
-	// BASE STATS
-	static const int baseLife = 100;
-	static const int baseSpeed = 50;
+	
 
-	static const uint32_t baseMoney = 20;
-	static const uint32_t baseDamage = 1; // User Life loss if scapepublic:
-
-	Enemy(const glm::vec3 pos, float spriteScale = 32.0f, double yaw = 0, const uint32_t texID = 2, const uint32_t life = baseLife, const float speed = baseSpeed);
-	Enemy(Tile& tile, float spriteScale = 32.0f, const uint32_t texID = 10, const uint32_t life = baseLife, const float speed = baseSpeed);
+	Enemy(glm::vec3 pos, int texID = 2, double yaw = 0, glm::vec2 spriteScale = glm::vec2(64.0f), int life = baseLife, float speed = baseSpeed);
+	Enemy(Tile& tile, int texID = 2, glm::vec2 spriteScale = glm::vec2(64.0f), int life = baseLife, float speed = baseSpeed);
 	~Enemy() override;
 
-	int getHit(const uint32_t hit);
-	void slow(const float slowPercentage);
+	
+	// Hit
+	int getHit(float hitDmg);
+	void endHit() { hit = false; }
 
-	uint32_t getLife() const { return life; }
-	float getSpeed() const { return speed; }
-	static uint32_t getMoney() { return baseMoney; }
-	static uint32_t getDamage() { return baseDamage; }
+	
+	// Move
+	void move(float d) override;
+	void setPosition(glm::vec3 pos) override;
 
+	void slow(float slowPercentage);
+	
 	void setTile(Tile* tileOcuppied) { tile = tileOcuppied; }
 	Tile* getTile() const { return tile; }
 
+
+	// True if distance(center, enemy) < range
+	bool inRange(glm::vec2 center, float range) const;
+	
+	
+	// STATS
+	int getLife() const { return life; }
+	float getSpeed() const { return speed; }
+	int getReward() const { return reward; }
+	int getDamage() const { return damage; }
 	void setLife(const uint32_t l) { life = l; }
 	void setSpeed(const float spd) { speed = spd; }
 
-	void move(const float d) override;
+	// BASE STATS
+	static const int baseLife = 500;
+	static const int baseSpeed = 50;
+	static const uint32_t baseReward = 20;
+	static const uint32_t baseDamage = 1; // User Life loss if scape
+
+
+	// DRAW
+	void draw(Renderer& renderer) const;
+	void drawHitbox(Renderer& renderer) const;
 
 private:
-
-	uint32_t life;
-	float speed;
-
+	
 	Tile* tile;
 
+	HealthBar healthBar;
+
+	int life;
+	int iniLife;
+	float speed;
+	int reward;
+	int damage;
+
+	bool hit = false; // Flag if is was hit this frame
+	
+	// Frames that lasts the red flash when is hit an enemy
+	int framesHitCounter = 20;
 };
 

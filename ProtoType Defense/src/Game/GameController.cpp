@@ -1,17 +1,21 @@
+#include "pch.h"
 #include "GameController.h"
 
-#include "ShaderManager.h"
-
-#include <sstream>
+#include "Objects/Projectile.h"
 
 using namespace glm;
 
 static int numRounds = 5;
+static int numTextures = 3;
 
-static int numTextures = 16;
+static int startingLives = 100;
+static int startingMoney = 2000;
+
+static float maxGameSpeed = 20;
+static float minGameSpeed = 0.01;
 
 GameController::GameController()
-	: money(600), lives(100), speed(1), active(false), renderer(numTextures)
+	: money(startingMoney), lives(startingLives), speed(1), active(false), map(vec2(10,10), &renderer), renderer(numTextures)
 {
 	for (int i = 0; i < numRounds; i++)
 	{
@@ -20,12 +24,31 @@ GameController::GameController()
 		roundStack.push_back(&rounds.back());
 	}
 	currentRound = *roundStack.front();
+
+	audioManager.addSong("Blue Sphere Stage (8-BIT) - Sonic Mania");
+	audioManager.addSong("Donkey Kong Country Theme Restored to HD");
+	audioManager.addSong("Hi-Spec Robo Go 8-bit - Sonic Mania [Hardboiled Heavies Theme] (0CC-Famitracker, 2A03)");
+	audioManager.addSong("Nokia 3220 Ringtone - Espionage  (Audio Original)");
+	audioManager.addSong("Sonic Mania - Stardust Speedway Act 1 8 Bit Remix");
+	audioManager.addSong("Studiopolis Act 1 (8-BIT) - Sonic Mania");
 }
 
+
+void GameController::clearTower()
+{
+	for (Tower* tower : towers)
+	{
+		tower->sell();
+	}
+	towers.clear();
+	selectedTower = nullptr;
+}
 
 void GameController::startGame()
 {
 	std::cout << "Game Started: " << roundStack.size() << " rounds" << std::endl;
+
+	audioManager.playSong("Blue Sphere Stage (8-BIT) - Sonic Mania");
 
 	currentRound = *roundStack.front();
 	currentRound.startRound(getPath());
@@ -36,22 +59,76 @@ void GameController::startGame()
 void GameController::update(float deltaTime)
 {
 	deltaTime *= speed;
+	
+	// TOWERS
 
-	// Towers Shoot
-	for (Platform& platform: map.getPlatforms())
+	for (Tower* tower : towers)
 	{
-		if (!platform.isEmpty())
+		// If a projectile collide with an Enemy: pierce-- & Enemy lose health
+		std::list<Enemy*>& enemies = getPath().getEnemyList();
+		auto itE = enemies.begin();
+		while (itE != enemies.end())
 		{
-			Tower* tower = platform.getTower();
-			tower->shoot(deltaTime);
-			tower->aimPredictive(getPath().getFirstEnemy());
+			Enemy* enemy = *itE;
+
+			auto itP = tower->getProjectiles().begin();
+
+			while (itP != tower->getProjectiles().end())
+			{
+				Projectile& projectile = *itP;
+
+				if (projectile.impact(enemy->getHitbox()))
+				{
+					enemy->getHit(tower->getDmg());
+					audioManager.playSound("pop");
+				}
+				else
+					// Get a 0 damage hit to unmark enemy as hit, so flashy red color disappear
+					enemy->getHit(0);
+
+				// If projectile pierce is <= 0, it's removed
+				if (projectile.getPierce() <= 0)
+				{
+					const auto itaux = itP;
+					++itP;
+					tower->getProjectiles().erase(itaux);
+				}
+				else
+					++itP;
+			}
+
+			// If enemy is dead, it's removed from Path
+			if (enemy->getLife() <= 0)
+			{
+				const auto it = itE;
+				++itE;
+				money += getPath().deleteEnemy(enemy);
+				audioManager.playSound("coin");
+			}
+			else
+				++itE;
 		}
+
+
+		// Towers aim enemies if exist
+		if (!getPath().noEnemiesLeft())
+			tower->aim(getPath());
+		else
+			tower->aim(nullptr);
+
+		// Towers try to Shoot
+		tower->shoot(deltaTime);
+
+		// Projectiles move
+		tower->moveProjectiles(deltaTime);
 	}
 
-	// Enemies Move
-	getPath().moveEnemies(deltaTime);
+	
+	// ENEMIES
+	moveEnemies(deltaTime);
 
-	// Round Control
+	
+	// ROUNDS
 	if (!roundStack.empty())
 	{
 		if (currentRound.isEnded())
@@ -79,39 +156,36 @@ void GameController::render(mat4 mvp)
 	}
 
 	// TILEMAP
-	map.render(renderer);
+	map.draw(renderer);
 
 	// TOWERS
-	for (const Platform& platform : map.getPlatforms())
-	{
-		if (!platform.isEmpty())
-		{
-			Tower* tower = platform.getTower();
-			renderer.draw(tower->getSprite());
-
-			// PROJECTILES
-			for (Projectile& projectile : tower->getProjectiles())
-			{
-				renderer.draw(projectile.getSprite());
-				renderer.draw(projectile.getHitbox());
-			}
-		}
-	}
+	map.drawTowerRange(renderer);
+	map.drawTowers(renderer);
 
 	// ENEMIES
-	const std::list<Enemy>& enemyList = getPath().getEnemyList();
-	for (const Enemy& enemy : enemyList)
-	{
-		renderer.draw(enemy.getSprite());
-		renderer.draw(enemy.getHitbox());
-	}
+	map.drawEnemies(renderer);
+
+	// HITBOXES
+	if (activeHitbox)
+		map.drawHitboxes(renderer);
 }
 
 
 void GameController::reset()
 {
-	getPath().removeEnemies();
+	AudioManager::pauseMusic();
 	
+	// Clear Enemies
+	getPath().clearEnemies();
+
+	// Clear Towers
+	clearTower();
+
+	// Reset Player Resources
+	lives = startingLives;
+	money = startingMoney;
+
+	// Reset rounds
 	roundStack.clear();
 	for (Round& round: rounds)
 	{
@@ -120,6 +194,94 @@ void GameController::reset()
 	startGame();
 }
 
+bool GameController::placeTower(glm::vec2 pos, TypeTower type)
+{
+	// If Tower there is already a Tower return true
+	if (getTower(pos) != nullptr)
+		return false;
+	
+	Platform* platform = map.getPlatform(pos);
+	// If there's not platform don't place it
+	if (platform == nullptr)
+		return false;
+
+	platform->placeTower(type);
+	
+	// Select it
+	selectTower(pos);
+	towers.push_back(selectedTower);
+
+	money -= selectedTower->getCost();
+	
+	return true;
+}
+
+bool GameController::sellTower(glm::vec2 pos)
+{
+	Tower* tower = getTower(pos);
+	
+	// If no tower return false
+	if (tower == nullptr) return false;
+
+	// If selected deselect
+	if (selectedTower == tower)
+		selectedTower = nullptr;
+
+	// Delete from the list
+	for (auto it = towers.begin(); it != towers.end(); ++it)
+		if (tower == *it)
+		{
+			towers.erase(it);
+			break;
+		}
+
+	// Erase from the platform
+	Platform* platform = tower->getPlatform();
+	const int sellprice = platform->sellTower();
+
+	// Update Money with the sell price
+	money += sellprice;
+
+	return true;
+}
+
+bool GameController::selectTower(glm::vec2 pos)
+{
+	deselectTower();
+	
+	selectedTower = getTower(pos);
+	if (selectedTower != nullptr)
+	{
+		selectedTower->select();
+		return true;
+	}
+	return false;
+}
+
+bool GameController::deselectTower()
+{
+	if (selectedTower == nullptr)
+		return false;
+	
+	selectedTower->deselect();
+	selectedTower = nullptr;
+	
+	return true;
+}
+
+Tower* GameController::getTower(glm::vec2 pos)
+{
+	Platform* pl = map.getPlatform(pos);
+	if (pl != nullptr)
+		return pl->getTower();
+	return nullptr;
+}
+
+
+void GameController::moveEnemies(float deltaTime)
+{
+	lives -= getPath().moveEnemies(deltaTime);
+}
 
 
 void GameController::endGame()
@@ -143,11 +305,22 @@ void GameController::nextRound()
 void GameController::pauseGame()
 {
 	active = false;
+	AudioManager::pauseMusic();
+}
+
+void GameController::resumeGame()
+{
+	active = true;
+	AudioManager::resumeMusic();
 }
 
 void GameController::fastForward(float speedPercent)
 {
 	speed *= speedPercent / 100;
+	
+	// Limited to a Min-Max Speed
+	if (speed >= maxGameSpeed) speed = maxGameSpeed;
+	if (speed <= minGameSpeed) speed = minGameSpeed;
 }
 
 std::string GameController::getStatus() const

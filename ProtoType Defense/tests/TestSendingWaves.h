@@ -1,4 +1,8 @@
 #pragma once
+#include "pch.h"
+
+#include "GameController.h"
+#include "InputManager.h"
 #include "Test.h"
 
 namespace test {
@@ -7,7 +11,7 @@ namespace test {
 	{
 	public:
 		TestSendingWaves();
-		virtual ~TestSendingWaves() override;
+		~TestSendingWaves() override;
 
 		void reset() override;
 		
@@ -18,10 +22,13 @@ namespace test {
 		static const int numTextures = 12;
 
 	private:
-		
-		glm::mat4 m_View;
-		glm::mat4 m_Model;
 
 		GameController gameController;
+
+		bool viewPerspective = false;
+
+		int selectedPrior = 0;
+
+		InputManager inputManager;
 	};
 }

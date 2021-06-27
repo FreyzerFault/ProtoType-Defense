@@ -1,27 +1,18 @@
 #pragma once
-
-#include <vector>
-#include <string>
-#include <functional>
-#include <iostream>
+#include "pch.h"
 
 #include "DeltaTime.h"
-#include "Renderer.h"
-#include "ShaderManager.h"
-#include "TextureManager.h"
-#include "VertexArray.h"
-#include "VertexBuffer.h"
-#include "IndexBuffer.h"
-
-#include "GameController.h"
 
 namespace test {
 	class Test
 	{
 	public:
-		Test() = default;
+		Test();
+		Test(glm::mat4 proj, glm::mat4 view, glm::mat4 model);
 		virtual ~Test() = default;
 
+		void setWindow(GLFWwindow* window) { this->window = window; };
+		
 		virtual void reset() {}
 		
 		virtual void onUpdate(DeltaTime deltaTime) {}
@@ -29,11 +20,16 @@ namespace test {
 		virtual void onImGuiRender() {}
 
 	protected:
-		static glm::mat4 m_Proj;
+		glm::mat4 proj;
+		glm::mat4 view;
+		glm::mat4 model;
+		
 
 		// TIMERS
 		float shootTimer = 0;
 		float enemyTimer = 0;
+
+		GLFWwindow* window;
 	};
 
 	// Menu para elegir Tests
@@ -54,16 +50,18 @@ namespace test {
 		Test* getTest() const { return m_CurrentTest; }
 		
 	private:
-		Test*& m_CurrentTest; // Referencia al puntero en main (permite modificarlo)
+		Test*& m_CurrentTest; // Referencia al currentTest del TestManager (permite modificarlo)
 		std::string m_CurrentTestName;
-		std::vector< std::pair<std::string, Test*> > m_Tests; // Lista de Tests disponibles
+		std::vector< std::pair<std::string, std::function<Test*()>> > m_Tests; // Lista de Tests disponibles
 	};
 
 	template <typename T>
 	void TestMenu::addTest(const std::string& name)
 	{
 		std::cout << "Adding test " << name << std::endl;
-		T* newTest = new T();
+		// Stores the function that initialize the Test of type T
+		// Therefor the test only initialize when we call for it
+		auto newTest = []() { return new T(); };
 		m_Tests.push_back(
 			std::make_pair(name, newTest /*Test sin crear*/)
 		);

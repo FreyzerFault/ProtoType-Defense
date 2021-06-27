@@ -1,8 +1,5 @@
 #pragma once
-#include "trigonometric.hpp" // rad() & degrees()
-#include <ext/scalar_constants.hpp> // PI()
-#include <ext/matrix_clip_space.hpp>
-#include <ext/matrix_transform.hpp>
+#include "pch.h"
 
 #define PI glm::pi<float>()
 #define rad(x) glm::radians<float>(x) // º -> radians

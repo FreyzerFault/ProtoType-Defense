@@ -1,34 +1,38 @@
 #pragma once
-#ifndef Platform_H
-#define Platform_H
+#include "pch.h"
 
-#include "glm.hpp"
-
+enum class TypeTower;
 class Tower;
-
 
 class Platform
 {
 public:
-	Platform(glm::vec3 position);
+	Platform(glm::vec3 position, float tileSize);
 	Platform(const Platform& orig) = default;
 	~Platform() = default;
 
-	glm::vec3 getPosition() const { return m_Position; };
 	bool isEmpty() const { return m_Empty; }
-	static float getSize() { return size; }
+	
+	glm::vec3 getPosition() const { return m_Position; }
+	glm::vec3 getCenter() const { return glm::vec3(glm::vec2(m_Position + tileSize / 2), m_Position.z); }
+
+
+	// Tower
+	Tower* placeTower(Tower& tower);
+	Tower* placeTower(TypeTower type);
+	
+	int sellTower();
+
 	Tower* getTower() const { return m_Tower; }
 
-	bool placeTower(Tower& tower);
-
-	static float size;
 
 private:
 	glm::vec3 m_Position;
+	float tileSize;
+	
 	bool m_Empty;
+	
 	Tower* m_Tower;
 
 
 };
-
-#endif

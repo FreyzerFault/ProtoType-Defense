@@ -1,6 +1,11 @@
+#include "pch.h"
 #include "TestManager.h"
 
-#include "imgui.h"
+
+#include "TestAudio.h"
+#include "TestClearColor.h"
+#include "TestSendingWaves.h"
+#include "TestShootDeltaTime.h"
 
 using namespace test;
 
@@ -10,7 +15,10 @@ TestManager::TestManager()
 	currentTest = &testMenu;
 }
 
-TestManager::~TestManager() = default;
+TestManager::~TestManager()
+{
+	if (currentTest != &testMenu) delete currentTest;
+}
 
 void TestManager::addTests()
 {
@@ -18,19 +26,20 @@ void TestManager::addTests()
 	/*testMenu.addTest<TestSprite>("Sprite");
 	testMenu.addTest<TestBatchRendering>("Batch Rendering");
 	testMenu.addTest<TestDynamicSprites>("Dynamic Sprites");
-	testMenu.addTest<TestDynamicBuffer>("Dynamic Buffer");
-	testMenu.addTest<TestThreads>("Threads");*/
-	testMenu.addTest<TestShootDeltaTime>("Delta Time Shooting");
-	testMenu.addTest<TestSendingWaves>("Waves and Path Test");
+	testMenu.addTest<TestDynamicBuffer>("Dynamic Buffer");*/
+	testMenu.addTest<TestShootDeltaTime>("Shooting Test");
+	testMenu.addTest<TestAudio>("Audio Test");
+	testMenu.addTest<TestSendingWaves>("Game Demo");
 }
 
 void TestManager::onImGuiRender()
 {
 	ImGui::Begin("Test");
-
+	
 	// Return to Tests Menu
 	if (currentTest != &testMenu && ImGui::Button("<-"))
 	{
+		delete currentTest;
 		currentTest = &testMenu;
 	}
 

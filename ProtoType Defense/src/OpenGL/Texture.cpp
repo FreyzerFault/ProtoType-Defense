@@ -1,6 +1,7 @@
+#include "pch.h"
 #include "Texture.h"
+
 #include "GLDebugging.h"
-#include "SDL_image.h"
 
 Texture::Texture()
 	: Texture("res/textures/0.png")
@@ -25,6 +26,8 @@ Texture::Texture(const std::string& path)
 		printf("Loading Image %s: %dx%d %dbpp\n", path.c_str(),
 			imagen->w, imagen->h, imagen->format->BitsPerPixel);
 
+		width = imagen->w; height = imagen->h;
+		
 		// TEXTURE:
 		GLCall(glGenTextures(1, &m_RendererID));
 		GLCall(glBindTexture(GL_TEXTURE_2D, m_RendererID));

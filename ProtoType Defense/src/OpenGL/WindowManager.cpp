@@ -1,11 +1,12 @@
+#include "pch.h"
 #include "WindowManager.h"
 
 #include "GlobalParameters.h"
-
+#include "Renderer.h"
 
 WindowManager::WindowManager()
 	: WindowManager(windowWidth, windowHeight,
-		"Guapo el que lo lea", 1)
+		"Prototype Defence DEMO", 1)
 {
 }
 
@@ -54,7 +55,6 @@ void WindowManager::updateFPS(DeltaTime deltaTime)
 	if (fpsTimer >= 1) // Every Sec
 	{
 		fps = fpsCounter;
-		//std::cout << "FPS: " << getFPS() << std::endl;
 		fpsTimer -= 1;
 		fpsCounter = 0;
 	}
@@ -63,30 +63,34 @@ void WindowManager::updateFPS(DeltaTime deltaTime)
 
 void WindowManager::renderingLoop()
 {
-	float lastFrameTime = (float)glfwGetTime();
-	
+	time = (float)glfwGetTime();
+
 	while (!glfwWindowShouldClose(window))
 	{
 		Renderer::clear();
 		Renderer::setClearColor();
 
-		GUI.startFrame();
+		ImGuiManager::startFrame();
 
-		// DELTA TIME
-		DeltaTime deltaTime = getDeltaTime();
-
+		const DeltaTime deltaTime = getDeltaTime();
+		
 		// FPS
 		updateFPS(deltaTime);
-
+		
 		if (testManager.isActive())
 		{
+			testManager.getTest()->setWindow(window);
+			
 			testManager.onUpdate(deltaTime);
 			testManager.onRender();
 			testManager.onImGuiRender();
+
+			ImGui::Begin("FPS");
+			ImGui::LabelText("FPS", std::to_string(fps).c_str());
+			ImGui::End();
 		}
 
-
-		GUI.endFrame();
+		ImGuiManager::endFrame();
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

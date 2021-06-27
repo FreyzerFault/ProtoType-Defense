@@ -1,22 +1,23 @@
+#include "pch.h"
 #include "Sprite.h"
 
-#include "DefaultStructures.h"
 #include "GlobalParameters.h"
 
+using namespace glm;
 
 Sprite::Sprite() // Por defecto, centrado en la ventana
-	: Sprite(glm::vec3(windowCenterX,windowCenterY,0.0f), 1.0f, 0.0f, 0)
+	: Sprite(glm::vec3(windowCenterX,windowCenterY, 1.0f), vec2(1.0f), 0.0f, 0)
 {
 }
 
 Sprite::Sprite(const uint32_t texID) // Por defecto, centrado en la ventana
-	: Sprite(glm::vec3(windowCenterX, windowCenterY, 0.0f), 1.0f, 0.0f, texID)
+	: Sprite(glm::vec3(windowCenterX, windowCenterY, 0.0f), vec2(1.0f), 0.0f, texID)
 {
 }
 
-Sprite::Sprite(const glm::vec3 position, const float scale, const float rotation, uint32_t textureID)
+Sprite::Sprite(const glm::vec3 position, vec2 scale, const float rotation, uint32_t textureID)
 	: m_TextureID(textureID), m_Position(position), m_Scale(scale), m_Rotation(rotation)
-{	
+{
 }
 
 Sprite::Sprite(const Sprite& orig)
@@ -35,18 +36,26 @@ Sprite& Sprite::operator=(const Sprite& orig)
 }
 
 
-void Sprite::setTransformation(const glm::vec3 position, const float scale, const float rotation)
+void Sprite::setTransformation(const glm::vec3 position, const vec2 scale, const float rotation)
 {
 	m_Position = position;
 	m_Scale = scale;
 	m_Rotation = rotation;
 }
 
+void Sprite::setRelativeScale(float width, float height)
+{
+	if (width > height)
+		m_Scale = vec2(m_Scale.x, m_Scale.y * height / width);
+	else
+		m_Scale = vec2(m_Scale.y * width / height, m_Scale.y);
+}
+
 glm::mat4 Sprite::getModelMatrix() const
 {
-	glm::mat4 model = glm::translate(glm::mat4(1.0f), m_Position);
-	model = glm::rotate(model, m_Rotation, glm::vec3(0, 0, 1));
-	model = glm::scale(model, glm::vec3(m_Scale, m_Scale, 0));
+	mat4 model = translate(glm::mat4(1.0f), m_Position);
+	model = rotate(model, m_Rotation, vec3(0, 0, 1));
+	model = scale(model, vec3(m_Scale, 0));
 	return model;
 }
 

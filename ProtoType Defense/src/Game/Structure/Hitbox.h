@@ -1,6 +1,6 @@
 #pragma once
-#include "glm.hpp"
-#include "HitboxGrid.h"
+#include "pch.h"
+
 #include "Renderer.h"
 
 class Hitbox
@@ -8,14 +8,16 @@ class Hitbox
 public:
 	// 16x16 in Center of window
 	Hitbox();
-	// 2D Hitbox
-	Hitbox(glm::vec2 position, glm::vec2 size, float yaw = 0.0f);
+	// Flat Hitbox
+	Hitbox(glm::vec3 position, glm::vec2 size, float yaw = 0.0f);
 	// 3D Hitbox
 	Hitbox(glm::vec3 position, glm::vec3 size, float yaw = 0.0f);
 
+
+	// COLLIDERS are calculated in 2D
+	// 
 	// Checks if object collide with Hitbox
 	bool collision(Hitbox& object);
-	
 	// SAT (Separating Axis Theorem) based Collision detector
 	bool SATcollision(Hitbox& object);
 	// Vertices for SAT collisions

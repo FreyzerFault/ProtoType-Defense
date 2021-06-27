@@ -1,6 +1,7 @@
+#include "pch.h"
 #include "TestBatchRendering.h"
+
 #include "GlobalParameters.h"
-#include "imgui.h"
 #include "ShaderManager.h"
 #include "TextureManager.h"
 
@@ -93,9 +94,8 @@ void test::TestBatchRendering::onRender()
 	m_Model = rotate(m_Model, rad(m_Rotation), glm::vec3(0, 0, 1));
 	m_Model = scale(m_Model, glm::vec3(m_Size, m_Size, 0));
 	const glm::mat4 mvp = m_Proj * m_View * m_Model; // MVP
-
-	m_Shader.setUniformMat4f("u_MVP", mvp);
-	m_Renderer.draw(m_VAO, m_IBO, "Basic");
+	
+	m_Renderer.draw(m_VAO, m_IBO, "Basic", mvp);
 }
 
 void test::TestBatchRendering::onImGuiRender()

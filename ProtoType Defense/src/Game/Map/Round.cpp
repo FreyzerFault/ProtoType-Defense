@@ -1,6 +1,5 @@
+#include "pch.h"
 #include "Round.h"
-
-#include <sstream>
 
 static int numWaves = 2;
 
@@ -34,7 +33,7 @@ void Round::startRound(Path& path)
 {
 	for (int i = 0; i < numWaves; ++i)
 	{
-		TypeEnemy type = TypeEnemy::basic;
+		TypeEnemy type = TypeEnemy::sneaky;
 		int numEnemies = 5;
 		float delay = 5;
 		float frecuency = 1;

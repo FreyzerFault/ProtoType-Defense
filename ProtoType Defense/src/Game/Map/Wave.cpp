@@ -1,6 +1,5 @@
+#include "pch.h"
 #include "Wave.h"
-
-#include <sstream>
 
 Wave::Wave(Path& path, int numWave, TypeEnemy type, int numEnemies, float delay, float frecuency)
 	: path(&path), numEnemies(numEnemies), enemiesLeft(numEnemies), type(type), delay(delay), frecuency(frecuency), numWave(numWave)
@@ -49,6 +48,6 @@ void Wave::sendEnemy(float deltaTime)
 std::string Wave::toString() const
 {
 	std::stringstream ss;
-	ss << "    Wave " << numWave << " [ " << numEnemies << " " << typeToString(type) << " - " << frecuency << "/sec ]";
+	ss << "    Wave " << numWave << " [ " << numEnemies << " " << typeToString(const_cast<TypeEnemy&>(type)) << " - " << frecuency << "/sec ]";
 	return ss.str();
 }

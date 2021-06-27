@@ -1,4 +1,6 @@
 #pragma once
+#include "pch.h"
+
 #include "Map/Path.h"
 
 class Wave
@@ -10,33 +12,37 @@ public:
 
 	void startWave() const;
 	void endWave();
-	void sendEnemy() const;
-	void sendEnemy(float deltaTime);
+	
+	bool isEnded() const { return ended; }
 
 	float getDelay() const { return delay; }
 	float getFrecuency() const { return frecuency; }
 
-	bool isEnded() const { return ended; }
+	void sendEnemy() const;
+	void sendEnemy(float deltaTime);
 
 	std::string toString() const;
 
 private:
 	Path* path;
-	
+
+	// Enemies
 	int numEnemies;
 	int enemiesLeft;
 	
 	TypeEnemy type;
-	
+
+	// Timing
 	float delay; // Seconds until First Enemy is sent
 	float frecuency; // enemies / second
-
-	int numWave;
 
 	float enemyTimer = 0;
 	float delayTimer = 0;
 
 	bool ended = false;
+
+	int numWave;
+
 
 };
 

@@ -1,8 +1,8 @@
 #pragma once
+#include "pch.h"
 
 #include "Test.h"
-#include "glm.hpp"
-#include "gtc/matrix_transform.hpp"
+#include "Renderer.h"
 
 namespace test {
 

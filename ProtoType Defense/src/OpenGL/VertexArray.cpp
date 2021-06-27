@@ -1,4 +1,6 @@
+#include "pch.h"
 #include "VertexArray.h"
+
 #include "GLDebugging.h"
 
 VertexArray::VertexArray()

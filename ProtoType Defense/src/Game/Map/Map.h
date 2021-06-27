@@ -1,7 +1,5 @@
 #pragma once
-#include <map>
-#include <vec2.hpp>
-
+#include "pch.h"
 
 #include "Path.h"
 #include "Platform.h"
@@ -25,32 +23,44 @@ class Map
 	};
 	
 public:
-	Map();
-	Map(glm::vec2 dimension);
+	Map(Renderer* renderer);
+	Map(glm::vec2 dimension, Renderer* renderer);
 
-	Path& getPath() { return path; }
-	std::list<Platform>& getPlatforms() { return platforms; }
-
-	void setupRendering(Renderer& renderer);
 	
-	void render(Renderer& renderer);
+	// Tiles
+	Platform* getPlatform(glm::vec2 pos);
+	Tile* getTile(glm::vec2 pos);
+	
+	// Tile Corner Pos (down-left) (key of the maps)
+	glm::vec2 getTilePos(glm::vec2 pos) const;
+	float getTileSize() const { return tileSize; }
+	
+	Path& getPath() { return path; }
+	std::map<glm::vec2, Platform, cmpVec2>& getPlatforms() { return platforms; }
+
+
+	// Draw
+	void setupRendering(Renderer& renderer);
+	void draw(Renderer& renderer);
+	void drawTowers(Renderer& renderer);
+	void drawEnemies(Renderer& renderer);
+	void drawTowerRange(Renderer& renderer);
+	void drawHitboxes(Renderer& renderer);
 
 private:
 
-	void addTileVertexData(int tileX, int tileY, glm::vec2 position, glm::vec3 color) const;
-	
-	void addTileToPath(glm::vec3 position, Tile::Direction direction);
-	
 	glm::vec2 dimension;
 	float tileSize;
-	
+
+	// EEDDs
 	std::map<glm::vec2, Tile, cmpVec2> tileMap;
 
 	std::list<Tile*> pathTiles;
 	Path path;
 
-	std::list<Platform> platforms;
-	
+	std::map<glm::vec2, Platform, cmpVec2> platforms;
+
+	// Rendering
 	Vertex* vertices;
 	uint32_t* indices;
 	
@@ -58,5 +68,9 @@ private:
 	VertexBuffer VBO;
 	VertexBufferLayout layout;
 	IndexBuffer IBO;
+
+
+	void addTileVertexData(int tileX, int tileY, glm::vec3 position, glm::vec3 color) const;
+	void addTileToPath(glm::vec3 position, Tile::Direction direction);
 };
 

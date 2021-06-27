@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "Path.h"
 
 
@@ -9,12 +10,13 @@
 using namespace glm;
 
 
-Path::Path()
+Path::Path(Renderer* renderer)
+	: renderer(renderer), firstTile(nullptr)
 {
 }
 
-Path::Path(std::list<Tile*>& tileList)
-	: path(tileList)
+Path::Path(std::list<Tile*>& tileList, Renderer* renderer)
+	: path(tileList), renderer(renderer), firstTile(*tileList.begin())
 {
 	for (Tile* tile : tileList)
 		pathMap.insert_or_assign(tile->getPosition(), tile);
@@ -22,7 +24,21 @@ Path::Path(std::list<Tile*>& tileList)
 
 void Path::spawnEnemy(TypeEnemy type)
 {
-	enemies.emplace_back(*getFirstTile());
+	std::string name = std::to_string((int)type);
+	const vec2 texSize = renderer->getTextureManager().getSize(name);
+	const float resolution = texSize.x / texSize.y;
+	
+	float max = 64.f;
+	vec2 scale;
+	if (texSize.x > texSize.y)
+		scale = vec2(max, max * resolution);
+	else
+		scale = vec2(max * resolution, max);
+
+	Enemy* newEnemy = new Enemy(*getFirstTile(), (int)type, scale);
+	
+	enemies.emplace_back(newEnemy);
+	orderedEnemies.push_back(newEnemy);
 }
 
 void Path::addTile(Tile* tile)
@@ -89,186 +105,356 @@ bool enemyOutOfTile(Enemy& enemy)
 		enemyPos.y > tilePos.y + tileSize.y;
 }
 
-void Path::moveEnemies(float deltaTime)
+int Path::moveEnemies(float deltaTime)
 {
+	int enemiesEnded = 0;
+	
 	for (auto i = enemies.begin(); i != enemies.end(); ++i)
 	{
-		Enemy& enemy = *i;
+		Enemy* enemy = *i;
 		// An enemy could be on the path or wandering on it's own (Tile* == nullptr)
-		if (enemy.getTile() != nullptr)
+		if (enemy->getTile() != nullptr)
 		{
-			if (enemyOutOfTile(enemy))
+			if (enemyOutOfTile(*enemy))
 			{
-				Tile* tile = getEnemyTile(enemy);
-				// Si no encuentra Tile es porque salio del camino, osea que termino y lo eliminams
+				Tile* tile = getEnemyTile(*enemy);
+				// Si no encuentra Tile es porque salio del camino, osea que termino y lo eliminamos
 				if (tile == nullptr)
 				{
 					i = enemies.erase(i);
+					orderedEnemies.pop_front();
+
+					enemiesEnded++;
+					
 					if (i == enemies.end()) break; // Si continua el for, lo primero que hace es ++i antes de i != end(), por lo que da error
 					continue;
 				}
-				enemy.setTile(tile);
+				enemy->setTile(tile);
 			}
 		}
 		
-		enemy.move(enemy.getSpeed() * deltaTime);
+		enemy->move(enemy->getSpeed() * deltaTime);
 	}
+	return enemiesEnded;
 }
 
 
-
-Enemy& Path::getFirstEnemy()
+Enemy* Path::getEnemy(Priority prior, glm::vec2 center, float range)
 {
-	// 1º: Search for the last Tile with Enemies (List order)
-
-	Tile* maxTile = *path.begin();
-	int maxCount = 0;
-
-	for (const Enemy& enemy : enemies)
+	switch (prior)
 	{
-		// Contamos por cada enemigo como de lejos esta su Tile en la lista
-		int tileCount = 0;
-		for (Tile* tile : path)
-		{
-			if (tile == enemy.getTile()) // Encontro su Tile
-			{
-				if (tileCount > maxCount) // Esta mas lejos
-				{
-					maxCount = tileCount;
-					maxTile = tile;
-				}
-				break;
-			}
-			tileCount++;
-		}
+	case Priority::first:
+		return getFirstEnemy(center, range);
+	case Priority::last:
+		return getLastEnemy(center, range);
+	case Priority::strong:
+		return getStrongEnemy(center, range);
+	case Priority::weak:
+		return getWeakEnemy(center, range);
 	}
 
-	// 2º: Compare with other enemies in the same Tile
-
-	Enemy* firstEnemy = nullptr;
-
-	for (Enemy& enemy : enemies)
-	{
-		if (enemy.getTile() == maxTile)
-		{
-			if (firstEnemy == nullptr)
-			{
-				firstEnemy = &enemy;
-				continue;
-			}
-			switch (maxTile->getDirection())
-			{
-			case right:
-				if (enemy.getPosition2D().x > firstEnemy->getPosition2D().x)
-					firstEnemy = &enemy;
-				break;
-			case left:
-				if (enemy.getPosition2D().x < firstEnemy->getPosition2D().x)
-					firstEnemy = &enemy;
-				break;
-			case up:
-				if (enemy.getPosition2D().y > firstEnemy->getPosition2D().y)
-					firstEnemy = &enemy;
-				break;
-			case down:
-				if (enemy.getPosition2D().y < firstEnemy->getPosition2D().y)
-					firstEnemy = &enemy;
-				break;
-			}
-		}
-	}
-
-	return *firstEnemy;
 }
 
-Enemy& Path::getLastEnemy()
+Enemy* Path::getFirstEnemy()
 {
-	// 1º: Search for the first Tile with Enemies (List order)
-
-	Tile* minTile = *path.begin();
-	int minCount = (int)INFINITY;
-
-	for (const Enemy& enemy : enemies)
-	{
-		// Contamos por cada enemigo como de lejos esta su Tile en la lista
-		int tileCount = 0;
-		for (Tile* tile : path)
-		{
-			if (tile == enemy.getTile()) // Encontro su Tile
-			{
-				if (tileCount < minCount) // Esta mas lejos
-				{
-					minCount = tileCount;
-					minTile = tile;
-				}
-				break;
-			}
-			tileCount++;
-		}
-	}
-
-	// 2º: Compare with other enemies in the same Tile
-
-	Enemy* lastEnemy = nullptr;
-
-	for (Enemy& enemy : enemies)
-	{
-		if (enemy.getTile() == minTile)
-		{
-			if (lastEnemy == nullptr)
-			{
-				lastEnemy = &enemy;
-				continue;
-			}
-			switch (minTile->getDirection())
-			{
-			case right:
-				if (enemy.getPosition2D().x < lastEnemy->getPosition2D().x)
-					lastEnemy = &enemy;
-				break;
-			case left:
-				if (enemy.getPosition2D().x > lastEnemy->getPosition2D().x)
-					lastEnemy = &enemy;
-				break;
-			case up:
-				if (enemy.getPosition2D().y < lastEnemy->getPosition2D().y)
-					lastEnemy = &enemy;
-				break;
-			case down:
-				if (enemy.getPosition2D().y > lastEnemy->getPosition2D().y)
-					lastEnemy = &enemy;
-				break;
-			}
-		}
-	}
-
-	return *lastEnemy;
+	return orderedEnemies.empty() ? nullptr : *orderedEnemies.begin();
 }
 
-Enemy& Path::getStrongEnemy()
+Enemy* Path::getLastEnemy()
+{
+	return orderedEnemies.empty() ? nullptr : orderedEnemies.back();
+}
+
+Enemy* Path::getStrongEnemy()
 {
 	Enemy* strongEnemy = nullptr;
-	for (Enemy& enemy : enemies)
+	for (Enemy* enemy : orderedEnemies) // If there are enemies with same Life, takes the FIRST one of the Path
 	{
 		if (strongEnemy == nullptr)
-			strongEnemy = &enemy;
+			strongEnemy = enemy;
 
-		if (enemy.getLife() > strongEnemy->getLife())
-			strongEnemy = &enemy;
+		if (enemy->getLife() > strongEnemy->getLife())
+			strongEnemy = enemy;
 	}
-	return *strongEnemy;
+	return strongEnemy;
 }
 
-Enemy& Path::getWeakEnemy()
+Enemy* Path::getWeakEnemy()
 {
 	Enemy* weakEnemy = nullptr;
-	for (Enemy& enemy : enemies)
+	for (Enemy* enemy : orderedEnemies) // If there are enemies with same Life, takes the FIRST one of the Path
 	{
 		if (weakEnemy == nullptr)
-			weakEnemy = &enemy;
+			weakEnemy = enemy;
 
-		if (enemy.getLife() < weakEnemy->getLife())
-			weakEnemy = &enemy;
+		if (enemy->getLife() < weakEnemy->getLife())
+			weakEnemy = enemy;
 	}
-	return *weakEnemy;
+	return weakEnemy;
+}
+
+Enemy* Path::getFirstEnemy(glm::vec2 center, float range)
+{
+	// Select the simple method if Range = 0
+	if (range <= 0)
+		return getFirstEnemy();
+	
+	// Sort the Enemy List if not sorted
+	sortEnemies();
+
+	// The first enemy in LIST is the first enemy in PATH
+	auto it = orderedEnemies.begin();
+	// Search for the first one inside RANGE 
+	while (it != orderedEnemies.end())
+	{
+		Enemy& enemy = **it;
+		vec2 enemySize = enemy.getSize2D();
+		const float margin = enemySize.x < enemySize.y ? enemySize.x : enemySize.y; // Smallest size as enemy MARGIN
+
+		if (distance(enemy.getPosition2D(), center) - margin < range) // If enters inside the range
+			return &enemy;
+		++it;
+	}
+	// If no enemy in range:
+	return nullptr;
+}
+
+Enemy* Path::getLastEnemy(glm::vec2 center, float range)
+{
+	// Select the simple method if Range = 0
+	if (range <= 0)
+		return getLastEnemy();
+	
+	// Sort the Enemy List if not sorted
+	sortEnemies();
+
+	// The first enemy in LIST is the first enemy in PATH
+	auto it = orderedEnemies.begin();
+	// Search for the last one inside RANGE
+	Enemy* last = nullptr;
+	while (it != orderedEnemies.end())
+	{
+		Enemy& enemy = **it;
+		vec2 enemySize = enemy.getSize2D();
+		const float margin = enemySize.x < enemySize.y ? enemySize.x : enemySize.y; // Smallest size as enemy MARGIN
+
+		if (distance(enemy.getPosition2D(), center) - margin < range) // If enters inside the range
+			last = &enemy;
+		++it;
+	}
+	// If no enemy in range returns nullptr
+	return last;
+}
+
+Enemy* Path::getStrongEnemy(glm::vec2 center, float range)
+{
+	// Select the simple method if Range = 0
+	if (range <= 0)
+		return getStrongEnemy();
+
+	// Sort the Enemy List if not sorted
+	sortEnemies();
+
+	// The first enemy in LIST is the first enemy in PATH
+	auto it = orderedEnemies.begin();
+	// Search for the strongest one inside RANGE
+	Enemy* strong = nullptr;
+	while (it != orderedEnemies.end())
+	{
+		if ((*it)->inRange(center, range)) // If enters inside the range
+			if (strong == nullptr)
+				strong = *it;
+			else
+				if ((*it)->getLife() > strong->getLife())
+					strong = *it;
+		++it;
+	}
+	// If no enemy in range returns nullptr
+	return strong;
+}
+
+Enemy* Path::getWeakEnemy(glm::vec2 center, float range)
+{
+	// Select the simple method if Range = 0
+	if (range <= 0)
+		return getWeakEnemy();
+
+	// Sort the Enemy List if not sorted
+	sortEnemies();
+
+	// The first enemy in LIST is the first enemy in PATH
+	auto it = orderedEnemies.begin();
+	// Search for the weakest one inside RANGE
+	Enemy* weak = nullptr;
+	while (it != orderedEnemies.end())
+	{
+		if ((*it)->inRange(center, range)) // If enters inside the range
+			if (weak == nullptr)
+				weak = *it;
+			else
+				if ((*it)->getLife() < weak->getLife())
+					weak = *it;
+		++it;
+	}
+	// If no enemy in range returns nullptr
+	return weak;
+}
+
+void Path::sortEnemies()
+{
+	if (enemiesSorted())
+		return;
+	
+	orderedEnemies.clear();
+	
+	for (Tile* tile : path) // Path is ordered
+	{
+		std::list<Enemy*> enemyBuffer; // Temporal buffer to sort Enemies in the same Tile
+		for (Enemy* enemy : enemies)
+		{
+			// Ignore enemies out the Tile
+			if (enemy->getTile() != tile)
+				continue;
+
+			// First enemy in Tile inserts automatically
+			if (enemyBuffer.empty())
+			{
+				enemyBuffer.push_back(enemy);
+				continue;
+			}
+
+			// For every enemy in the same Tile, insert sorted comparing to other enemies
+			auto it = enemyBuffer.begin();
+			while (it != enemyBuffer.end())
+			{
+				switch (tile->getDirection()) // Depending on the Tile Direction
+				{
+				case right:
+					if (enemy->getPosition2D().x > (*it)->getPosition2D().x)
+					{
+						enemyBuffer.insert(it, enemy);
+						it = enemyBuffer.end(); // When inserted -> End searching
+						continue;
+					}
+					break;
+				case left:
+					if (enemy->getPosition2D().x < (*it)->getPosition2D().x)
+					{
+						enemyBuffer.insert(it, enemy);
+						it = enemyBuffer.end();
+						continue;
+					}
+					break;
+				case up:
+					if (enemy->getPosition2D().y > (*it)->getPosition2D().y)
+					{
+						enemyBuffer.insert(it, enemy);
+						it = enemyBuffer.end();
+						continue;
+					}
+					break;
+				case down:
+					if (enemy->getPosition2D().y < (*it)->getPosition2D().y)
+					{
+						enemyBuffer.insert(it, enemy);
+						it = enemyBuffer.end();
+						continue;
+					}
+					break;
+				}
+				++it;
+				
+				// If enemy is the last one in Tile push at the end of buffer
+				enemyBuffer.push_back(enemy);
+			}
+		}
+		
+		// Pass the buffer to the LIST of ordered enemies (First Tile is the last)
+		orderedEnemies.insert(orderedEnemies.begin(), enemyBuffer.begin(), enemyBuffer.end());
+		enemyBuffer.clear();
+	}
+}
+
+bool Path::enemiesSorted()
+{
+	auto it = orderedEnemies.begin();
+	while(it != orderedEnemies.end())
+	{
+		const auto itAux = it;
+		++it;
+		if (it != orderedEnemies.end() && enemyGoesFirst(**it, **itAux))
+			return false;
+	}
+	return true;
+}
+
+bool Path::enemyGoesFirst(Enemy& a, Enemy& b)
+{
+	Tile* tilea = a.getTile();
+	Tile* tileb = b.getTile();
+
+	// If not the same Tile:
+	if (tilea != tileb)
+	{
+		for (Tile* tile : path) // From last to First
+		{
+			if (tile == tilea) // A have the last Tile
+				return false;
+			if (tile == tileb) // A have the first Tile
+				return true;
+		}
+	}
+
+	// If SAME TILE:
+	Tile* tile = tilea;
+	
+	bool goesFirst;
+	
+	switch (tile->getDirection()) // Depending on the Tile Direction
+	{
+		case right:
+			goesFirst = a.getPosition2D().x > b.getPosition2D().x;
+			break;
+		case left:
+			goesFirst = a.getPosition2D().x < b.getPosition2D().x;
+			break;
+		case up:
+			goesFirst = a.getPosition2D().y > b.getPosition2D().y;
+			break;
+		case down:
+			goesFirst = a.getPosition2D().y < b.getPosition2D().y;
+			break;
+		default:
+			goesFirst = true;
+			std::cout << "!!! ERROR !!! in enemyGoesFirst(), DEFAULT switch triggered" << std::endl;
+	}
+
+	return goesFirst;
+}
+
+int Path::deleteEnemy(Enemy* enemy)
+{
+	int reward = enemy->getReward();
+	
+	auto it = enemies.begin();
+	while(it != enemies.end())
+	{
+		if (enemy == *it)
+			it = enemies.erase(it);
+		else
+			++it;
+	}
+	it = orderedEnemies.begin();
+	while (it != orderedEnemies.end())
+	{
+		if (enemy == *it)
+		{
+			delete *it;
+			it = orderedEnemies.erase(it);
+		}
+		else
+			++it;
+	}
+
+	return reward;
 }

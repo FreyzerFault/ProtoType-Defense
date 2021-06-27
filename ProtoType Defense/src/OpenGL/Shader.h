@@ -1,9 +1,7 @@
 #pragma once
+#include "pch.h"
 
-#include <string>
-#include <unordered_map>
-#include "glm.hpp"
-#include "GLDebugging.h"
+#include "VertexBufferLayout.h"
 
 
 // Archivo .shader con codigo del vertex shader y el fragment shader 
@@ -30,9 +28,15 @@ public:
 	void setUniform4f(const std::string& name, float f0, float f1, float f2, float f3) const;
 	void setUniformMat4f(const std::string& name, const glm::mat4& matrix) const;
 
+	//LAYOUT
+	VertexBufferLayout& getLayout() { return layout; }
+	void setLayout(VertexBufferLayout& newlayout) { layout = newlayout; }
+
 private:
 	std::string m_FilePath;
 	uint32_t m_RendererID;
+
+	VertexBufferLayout layout;
 	
 	// UNIFORMS cache = +Efficiency
 	mutable std::unordered_map<std::string, GLint> m_UniformLocationCache;

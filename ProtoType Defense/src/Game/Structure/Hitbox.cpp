@@ -1,6 +1,5 @@
+#include "pch.h"
 #include "Hitbox.h"
-
-#include <algorithm>
 
 #include "GlobalParameters.h"
 
@@ -14,12 +13,12 @@ using namespace glm;
 #define sZ m_Size[2]
 
 Hitbox::Hitbox()
-	: Hitbox(vec2(windowCenterX, windowCenterY), vec2(16.0f))
+	: Hitbox(vec3(windowCenterX, windowCenterY, 1.0f), vec2(32.0f))
 {
 }
 
-Hitbox::Hitbox(vec2 position, vec2 size, float yaw)
-	: Hitbox(vec3(position, 0.0f), vec3(size, 0.0f), yaw)
+Hitbox::Hitbox(vec3 position, vec2 size, float yaw)
+	: Hitbox(position, vec3(size, 0.0f), yaw)
 {
 }
 
@@ -111,15 +110,15 @@ bool Hitbox::SATcollision(Hitbox& object)
 		}
 	}
 	
-	return false;
+	return true;
 }
 
 void Hitbox::updateVertices()
 {
-	vertices[0] = vec2(pX - sX / 2 * cos(m_Yaw), pY - sY / 2 * sin(m_Yaw));
-	vertices[1] = vec2(pX + sX / 2 * cos(m_Yaw), pY - sY / 2 * sin(m_Yaw));
-	vertices[2] = vec2(pX + sX / 2 * cos(m_Yaw), pY + sY / 2 * sin(m_Yaw));
-	vertices[3] = vec2(pX - sX / 2 * cos(m_Yaw), pY + sY / 2 * sin(m_Yaw));
+	vertices[0] = vec2(pX - sX  * cos(m_Yaw) / 2, pY - sY  * sin(m_Yaw) / 2);
+	vertices[1] = vec2(pX + sX  * cos(m_Yaw) / 2, pY - sY  * sin(m_Yaw) / 2);
+	vertices[2] = vec2(pX + sX  * cos(m_Yaw) / 2, pY + sY  * sin(m_Yaw) / 2);
+	vertices[3] = vec2(pX - sX  * cos(m_Yaw) / 2, pY + sY  * sin(m_Yaw) / 2);
 }
 
 
@@ -145,8 +144,8 @@ void Hitbox::rotate(float X)
 
 mat4 Hitbox::getModelMatrix() const
 {
-	mat4 model = glm::translate(mat4(1.0f), m_Position);
+	mat4 model = translate(mat4(1.0f), m_Position);
 	model = glm::rotate(model, (float)m_Yaw, glm::vec3(0, 0, 1));
-	model = glm::scale(model, vec3(sX/2, sY/2, 1.0f));
+	model = scale(model, vec3(m_Size));
 	return model;
 }

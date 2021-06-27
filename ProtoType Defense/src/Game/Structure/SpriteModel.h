@@ -1,4 +1,5 @@
 #pragma once
+#include "pch.h"
 
 #include "VertexArray.h"
 #include "IndexBuffer.h"
@@ -26,10 +27,10 @@ public:
 
 	SpriteModel(uint32_t texID)
 		: vertices{
-			{{-1.0f, -1.0f, 1.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, {0.0f, 1.0f}, (float)texID},
-			{{+1.0f, -1.0f, 1.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, {1.0f, 1.0f}, (float)texID},
-			{{+1.0f, +1.0f, 1.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, {1.0f, 0.0f}, (float)texID},
-			{{-1.0f, +1.0f, 1.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, {0.0f, 0.0f}, (float)texID},
+			{{-0.5f, -0.5f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, {0.0f, 1.0f}, (float)texID},
+			{{+0.5f, -0.5f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, {1.0f, 1.0f}, (float)texID},
+			{{+0.5f, +0.5f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, {1.0f, 0.0f}, (float)texID},
+			{{-0.5f, +0.5f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, {0.0f, 0.0f}, (float)texID},
 		},
 		indices{
 			0, 1, 2,

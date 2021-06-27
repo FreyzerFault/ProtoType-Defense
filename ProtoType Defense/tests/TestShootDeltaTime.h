@@ -1,5 +1,8 @@
 #pragma once
+#include "pch.h"
+
 #include "Test.h"
+#include "GameController.h"
 
 namespace test {
 
@@ -28,6 +31,7 @@ namespace test {
 		Enemy enemy;
 
 		float atkSpd = (float)Tower::baseAttackSpeed;
+		int pierce = 3;
 
 		GameController gameController;
 	

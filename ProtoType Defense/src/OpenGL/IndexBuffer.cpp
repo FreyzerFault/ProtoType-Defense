@@ -1,4 +1,6 @@
+#include "pch.h"
 #include "IndexBuffer.h"
+#include "GLDebugging.h"
 
 IndexBuffer::IndexBuffer(): m_Count(0)
 {

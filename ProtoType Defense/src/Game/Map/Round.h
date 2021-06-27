@@ -1,5 +1,5 @@
 #pragma once
-#include <list>
+#include "pch.h"
 
 #include "Wave.h"
 
@@ -19,13 +19,13 @@ public:
 	void startRound(Path& path);
 	void endRound();
 	void nextWave();
-	void sendEnemy(float deltaTime);
-	
-	int getReward() const { return reward; }
 
 	Wave& getWave() const { return *currentWave; }
+	int getReward() const { return reward; }
 
 	bool isEnded() const { return ended; }
+
+	void sendEnemy(float deltaTime);
 
 	std::string toString() const;
 

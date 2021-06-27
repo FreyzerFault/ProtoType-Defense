@@ -1,11 +1,7 @@
 #pragma once
-#include "Test.h"
+#include "pch.h"
 
-#include "TestClearColor.h"
-#include "TestBatchRendering.h"
-#include "TestDynamicBuffer.h"
-#include "TestShootDeltaTime.h"
-#include "TestSendingWaves.h"
+#include "Test.h"
 
 using namespace test;
 
@@ -17,8 +13,8 @@ public:
 
 	void addTests();
 
-	void onUpdate(DeltaTime deltaTime) { currentTest->onUpdate(deltaTime); }
-	void onRender() { currentTest->onRender(); }
+	void onUpdate(DeltaTime deltaTime) const { currentTest->onUpdate(deltaTime); }
+	void onRender() const { currentTest->onRender(); }
 	void onImGuiRender();
 
 	template <typename T>

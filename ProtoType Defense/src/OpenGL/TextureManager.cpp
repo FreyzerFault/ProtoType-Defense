@@ -1,4 +1,6 @@
+#include "pch.h"
 #include "TextureManager.h"
+
 #include "GLDebugging.h"
 
 TextureManager::TextureManager()
@@ -42,4 +44,10 @@ void TextureManager::Bind(int slot)
 void TextureManager::unBind()
 {
 	GLCall(glBindTexture(GL_TEXTURE_2D, 0));
+}
+
+glm::vec2 TextureManager::getSize(std::string& texName)
+{
+	Texture& texture = getTexture(texName);
+	return glm::vec2(texture.getWidth(), texture.getHeight());
 }

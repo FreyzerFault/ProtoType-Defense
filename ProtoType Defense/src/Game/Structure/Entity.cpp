@@ -1,5 +1,5 @@
+#include "pch.h"
 #include "Entity.h"
-
 
 #include "GlobalParameters.h"
 
@@ -10,32 +10,22 @@ using namespace glm;
 #define z m_Position.z
 
 Entity::Entity()
-	: Entity(vec2(windowCenterX, windowCenterY))
+	: Entity(vec3(windowCenterX, windowCenterY, 1.0f))
 {
 }
 
-Entity::Entity(vec2 position, const uint32_t texID, const float spriteScale, const double yaw)
-	: Entity(vec3(position,0.0f), texID, spriteScale, yaw)
-{
-}
-
-Entity::Entity(vec3 position, const uint32_t texID, const float spriteScale, const double yaw)
+Entity::Entity(vec3 position, const uint32_t texID, vec2 spriteScale, const double yaw)
 	: m_Position(position), m_Yaw(yaw), m_Hitbox(nullptr), m_Sprite(position, spriteScale, yaw, texID)
 {
 }
 
-Entity::Entity(vec2 position, vec2 size, const uint32_t texID, const float spriteScale, const double yaw)
-	: Entity(vec3(position, 0.0f), size, texID, spriteScale, yaw)
-{
-}
-
-Entity::Entity(vec3 position, vec2 size, const uint32_t texID, const float spriteScale, const double yaw)
+Entity::Entity(vec3 position, vec2 size, const uint32_t texID, vec2 spriteScale, const double yaw)
 	: Entity(position, vec3(size, 0.0f), texID, spriteScale, yaw)
 {
 }
 
-Entity::Entity(vec3 position, vec3 size, const uint32_t texID, const float spriteScale, const double yaw)
-	: m_Position(position), m_Yaw(yaw), m_Hitbox(new Hitbox(position, size, yaw)), m_Sprite(position, spriteScale, yaw, texID)
+Entity::Entity(vec3 position, vec3 size, const uint32_t texID, vec2 textureSize, const double yaw)
+	: m_Position(position), m_Yaw(yaw), m_Hitbox(new Hitbox(position, size, yaw)), m_Sprite(position, textureSize, yaw, texID)
 {
 }
 
@@ -101,7 +91,7 @@ void Entity::lookAt(glm::vec3 p)
 	// ACOS() returns always positive, so if yaw is over PI, it needs to be inverted
 	if (d.t < 0)
 		m_Yaw = 2 * PI - m_Yaw;
-
+	
 	if (m_Hitbox != nullptr)
 		m_Hitbox->setYaw(m_Yaw);
 	m_Sprite.setRotation(m_Yaw);

@@ -1,9 +1,9 @@
 #pragma once
+#include "pch.h"
 
 #include "Test.h"
-#include "glm.hpp"
-#include "gtc/matrix_transform.hpp"
 
+#include "Renderer.h"
 
 static float iniPosition[]{ // Esquina Inf Izq
 	0.0f, 0.0f, 0.0f

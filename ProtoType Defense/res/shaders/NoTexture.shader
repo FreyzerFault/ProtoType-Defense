@@ -1,10 +1,9 @@
 #shader vertex
 #version 460 core
 
-layout(location = 0) in vec3 position;	// Indice del atributo que queremos (posicion); in vec4 = 4 coords que necesita gl_Position()
+layout(location = 0) in vec3 position;
 layout(location = 1) in vec4 color;
 
-// Paso de variables de un shader a otro
 out vec4 v_Color;
 
 uniform mat4 u_MVP;

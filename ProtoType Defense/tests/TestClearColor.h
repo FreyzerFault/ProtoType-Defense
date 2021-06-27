@@ -1,5 +1,7 @@
 #pragma once
+#include "pch.h"
 
+#include "Renderer.h"
 #include "Test.h"
 
 namespace test {

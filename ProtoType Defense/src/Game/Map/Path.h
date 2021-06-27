@@ -1,10 +1,10 @@
 #pragma once
-#include <unordered_map>
-
+#include "pch.h"
 
 #include "GlobalParameters.h"
 #include "Tile.h"
 #include "Objects/Enemy.h"
+#include "Objects/Tower.h"
 
 struct KeyFuncs
 {
@@ -22,38 +22,65 @@ struct KeyFuncs
 class Path
 {
 public:
-	Path();
-	Path(std::list<Tile*>& tileList);
+	Path(Renderer* renderer = nullptr);
+	Path(std::list<Tile*>& tileList, Renderer* renderer = nullptr);
 
-	void spawnEnemy(TypeEnemy type);
 
-	std::list<Enemy>& getEnemyList() { return enemies; }
-
+	// Tiles
 	void addTile(Tile* tile);
 
 	Tile* getFirstTile() const { return firstTile; }
+	Tile* getEnemyTile(const Enemy& enemy) const;
+	float getTileSize() const;
+	
 	void setFirstTile(Tile* tile) { firstTile = tile; }
 	glm::vec2 getStartingPosition() const;
-	
-	float getTileSize() const;
-	Tile* getEnemyTile(const Enemy& enemy) const;
-	
-	void moveEnemies(float deltaTime);
-	void removeEnemies() { enemies.clear(); }
 
-	Enemy& getFirstEnemy();
-	Enemy& getLastEnemy();
-	Enemy& getStrongEnemy();
-	Enemy& getWeakEnemy();
+	bool isPath(glm::vec2 position) { return pathMap.find(position) != pathMap.end(); }
+	
 
+
+	// Priority Searching
+	Enemy* getEnemy(Priority prior, glm::vec2 center = glm::vec2(0.f), float range = 0); // Range is 0 when global range
+
+	// Global Range
+	Enemy* getFirstEnemy();
+	Enemy* getLastEnemy();
+	Enemy* getStrongEnemy();
+	Enemy* getWeakEnemy();
+	
+	// Within range
+	Enemy* getFirstEnemy(glm::vec2 center, float range);
+	Enemy* getLastEnemy(glm::vec2 center, float range);
+	Enemy* getStrongEnemy(glm::vec2 center, float range);
+	Enemy* getWeakEnemy(glm::vec2 center, float range);
+
+
+	// Enemies
+	void spawnEnemy(TypeEnemy type);
+	
 	bool noEnemiesLeft() const { return enemies.empty(); }
+
+	void sortEnemies();
+	bool enemiesSorted();
+	bool enemyGoesFirst(Enemy& a, Enemy& b); // Sort 2 enemies
+	std::list<Enemy*>& getEnemyList() { return enemies; }
+
+	int deleteEnemy(Enemy* enemy); // Return the reward when killed
+	void clearEnemies() { enemies.clear(); }
 	
+	int moveEnemies(float deltaTime); // Return Nº enemies that reach the end of path to lower lives
 
 private:
 	std::list<Tile*> path;
 	std::unordered_map<glm::vec2, Tile*, KeyFuncs, KeyFuncs> pathMap;
-	std::list<Enemy> enemies;
+	
+	std::list<Enemy*> enemies;
+	std::list<Enemy*> orderedEnemies; // Used for searching first or last enemy to aim
 
 	Tile* firstTile;
+
+	
+	Renderer* renderer; // Used to take the enemy texture sizes to spawn with the correct size
 };
 

@@ -1,5 +1,5 @@
 #pragma once
-#include <unordered_map>
+#include "pch.h"
 
 #include "Texture.h"
 
@@ -32,6 +32,12 @@ public:
 	// by Slot
 	Texture& getTexture(int slot) const { return *textureSlots.find(slot)->second; }
 	const std::string& getTextureName(int slot) const { return textureSlots.find(slot)->second->getName(); }
+
+	// by Name
+	Texture& getTexture(const std::string& name) { return textureList.find(name)->second; }
+
+	// Texture Size (Width, Height)
+	glm::vec2 getSize(std::string& texName);
 
 private:
 	std::unordered_map<std::string, Texture> textureList;

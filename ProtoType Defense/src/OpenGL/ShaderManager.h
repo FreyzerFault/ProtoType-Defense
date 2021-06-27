@@ -1,4 +1,6 @@
 #pragma once
+#include "pch.h"
+
 #include "Shader.h"
 
 #define shaderFolderPath ShaderManager::getFolderPath()
@@ -28,6 +30,9 @@ public:
 	const std::string& getShaderName() const { return currentShaderName; }
 	
 	static std::string getFolderPath() { return "res/shaders/"; }
+
+	// Create the vertex layout for the shader
+	void setLayout() const;
 
 private:
 	std::unordered_map<std::string, Shader> shaderList;

@@ -1,8 +1,5 @@
 #pragma once
-
-#include <GL/glew.h>
-
-#include <iostream>
+#include "pch.h"
 
 // MACROS
 #define ASSERT(x) if (!(x)) __debugbreak() // Para el programa si coge false
@@ -24,8 +21,9 @@ static bool GLLogCall(const char* function, const char* file, int line)
 {
 	if (const GLenum error = glGetError())
 	{
-		std::cout << "[OpenGL Error] (" << error << ")" << function <<
+		std::cout << "[OpenGL Error] (" << error << " : " << glewGetErrorString(error) << ") in " << function <<
 			" in " << file << " [" << line << "]" << std::endl;
+		std::cin.get();
 		return false;
 	}
 	return true;

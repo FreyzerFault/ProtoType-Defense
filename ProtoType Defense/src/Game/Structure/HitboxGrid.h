@@ -1,4 +1,6 @@
 #pragma once
+#include "pch.h"
+
 #include "VertexArray.h"
 #include "IndexBuffer.h"
 
@@ -22,15 +24,15 @@ public:
 	
 	HitboxGrid()
 		: m_Vertices{
-			{{-1.0f, -1.0f, 1.0f}, {1.0f, 0.0f, 0.0f, 1.0f}},
-			{{+1.0f, -1.0f, 1.0f}, {1.0f, 0.0f, 0.0f, 1.0f}},
-			{{+1.0f, +1.0f, 1.0f}, {1.0f, 0.0f, 0.0f, 1.0f}},
-			{{-1.0f, +1.0f, 1.0f}, {1.0f, 0.0f, 0.0f, 1.0f}},
+			{{-0.5f, -0.5f, 5.0f}, {1.0f, 0.0f, 0.0f, 1.0f}},
+			{{+0.5f, -0.5f, 5.0f}, {1.0f, 0.0f, 0.0f, 1.0f}},
+			{{+0.5f, +0.5f, 5.0f}, {1.0f, 0.0f, 0.0f, 1.0f}},
+			{{-0.5f, +0.5f, 5.0f}, {1.0f, 0.0f, 0.0f, 1.0f}},
 		},
 		m_indices{ 0, 1, 2, 3 },
 		VBO(m_Vertices, sizeof(VertexSimple) * 4),
 		IBO(m_indices, 4)
-	{
+	{		
 		layout.Push<float>(3);
 		layout.Push<float>(4);
 		VAO.addBuffer(VBO, layout);
