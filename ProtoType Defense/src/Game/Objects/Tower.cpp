@@ -115,7 +115,7 @@ bool Tower::shoot()
 	{
 		// Create a Projectile
 		projectiles.emplace_back(this);
-		projectiles.back().setHomming(true);
+		projectiles.back().setHoming(true);
 		return true;
 	}
 	return false;

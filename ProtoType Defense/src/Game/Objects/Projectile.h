@@ -29,8 +29,8 @@ public:
 
 	
 	int getPierce() const { return m_Pierce; }
-	bool getHomming() const { return m_Homming; }
-	void setHomming(bool hom) { m_Homming = hom; }
+	bool getHoming() const { return m_Homing; }
+	void setHoming(bool hom) { m_Homing = hom; }
 
 	
 	bool impact(Hitbox& hitbox);
@@ -42,7 +42,7 @@ public:
 private:
 	
 	int m_Pierce; // Nº Enemies that can pierce until it disapears
-	bool m_Homming;
+	bool m_Homing;
 
 	const Tower* m_Tower;
 

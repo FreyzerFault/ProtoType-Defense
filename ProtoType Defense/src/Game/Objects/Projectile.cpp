@@ -18,19 +18,19 @@ Projectile::Projectile(const Tower* tower)
 
 // 2D
 Projectile::Projectile(const Tower* tower, vec2 position, vec2 size, float orientation, bool homming)
-	: Entity(vec3(position, 2.0f), size, texID, spriteSize, orientation), m_Pierce(tower->getPierce()), m_Homming(homming), m_Tower(tower)
+	: Entity(vec3(position, 2.0f), size, texID, spriteSize, orientation), m_Pierce(tower->getPierce()), m_Homing(homming), m_Tower(tower)
 {
 }
 
 // 3D Flat Hitbox
 Projectile::Projectile(const Tower* tower, vec3 position, vec2 size, float orientation, bool homming)
-	: Entity(position, size, texID, spriteSize, orientation), m_Pierce(tower->getPierce()), m_Homming(homming), m_Tower(tower)
+	: Entity(position, size, texID, spriteSize, orientation), m_Pierce(tower->getPierce()), m_Homing(homming), m_Tower(tower)
 {
 }
 
 // 3D
 Projectile::Projectile(const Tower* tower, vec3 position, vec3 size, float orientation, bool homming)
-	: Entity(position, size, texID, spriteSize, orientation), m_Pierce(tower->getPierce()), m_Homming(homming), m_Tower(tower)
+	: Entity(position, size, texID, spriteSize, orientation), m_Pierce(tower->getPierce()), m_Homing(homming), m_Tower(tower)
 {
 }
 
@@ -43,7 +43,7 @@ Projectile& Projectile::operator=(const Projectile& orig)
 	if (this != &orig)
 	{
 		m_Pierce = orig.m_Pierce;
-		m_Homming = orig.m_Homming;
+		m_Homing = orig.m_Homing;
 		m_Tower = orig.m_Tower;
 	}
 	return *this;
@@ -64,7 +64,7 @@ bool Projectile::impact(Hitbox& hitbox)
 		m_Pierce--;
 
 		// If pierced stop pursuing and goes straight
-		m_Homming = false;
+		m_Homing = false;
 
 		impacted.push_back(&hitbox);
 
@@ -78,7 +78,7 @@ bool Projectile::impact(Hitbox& hitbox)
 		if (*it == &hitbox)
 		{
 			it = impacted.erase(it);
-			m_Homming = true;
+			m_Homing = true;
 		}
 		else
 			++it;
@@ -100,7 +100,7 @@ Enemy* Projectile::impact(std::list<Enemy>& enemies)
 void Projectile::move(const float d)
 {
 	// If the Projectile is Homming, and his tower has an aimed enemy, it follows the enemy
-	if (m_Homming && m_Tower->getEnemy() != nullptr)
+	if (m_Homing && m_Tower->getEnemy() != nullptr)
 	{
 		Enemy& enemy = *m_Tower->getEnemy();
 		const float predictiveCoefficient = enemy.getSpeed() / 2; // Distance towards the enemy movement
