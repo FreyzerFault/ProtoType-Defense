@@ -37,8 +37,8 @@ public:
 public:
 	Tower();
 	Tower(int texID, Platform* platform);
-	Tower(Platform* platform, int damage = baseDamage, float attackSpeed = baseAttackSpeed,
-		float range = baseRange, float projectileSpeed = baseProjectileSpeed,
+	Tower(Platform* platform, int damage = baseDamage, GLfloat attackSpeed = baseAttackSpeed,
+		GLfloat range = baseRange, GLfloat projectileSpeed = baseProjectileSpeed,
 		int projectilePierce = baseProjectilePierce, int cost = baseCost, int texID = 1);
 	Tower(const Tower& orig);
 	virtual ~Tower();
@@ -47,12 +47,12 @@ public:
 
 	
 	// Shooting
-	void shoot(float deltaTime);
+	void shoot(GLfloat deltaTime);
 	bool shoot();
 	
-	void updateShootTimer(float deltaTime) { shootTimer += deltaTime; }
+	void updateShootTimer(GLfloat deltaTime) { shootTimer += deltaTime; }
 	void resetShootTimer() { shootTimer -= 1 / atkSpd; }
-	float getShootTimer() const { return shootTimer; }
+	GLfloat getShootTimer() const { return shootTimer; }
 	
 	void aim();
 	void aim(Path& path);
@@ -60,7 +60,7 @@ public:
 	void aimPredictive(Enemy& enemy);
 	bool enemyOnRange() const;
 
-	void moveProjectiles(float deltaTime);
+	void moveProjectiles(GLfloat deltaTime);
 	std::list<Projectile>& getProjectiles() { return projectiles; }
 	void clearProjectiles();
 
@@ -88,23 +88,23 @@ public:
 	
 	// Stats
 	int getDmg() const { return damage; }
-	float getSpd() const { return atkSpd; }
-	float getRange() const { return range; }
-	float getPrSpd() const { return prjSpd; }
+	GLfloat getSpd() const { return atkSpd; }
+	GLfloat getRange() const { return range; }
+	GLfloat getPrSpd() const { return prjSpd; }
 	int getPierce() const { return prjPierce; }
 	int getCost() const { return cost; }
 
 	void setDmg(const int dmg) { damage = dmg; }
-	void setSpd(const float spd) { atkSpd = spd; }
-	void setRange(const float rng) { range = rng; }
-	void setPrSpd(const float prSpd) { prjSpd = prSpd; }
+	void setSpd(const GLfloat spd) { atkSpd = spd; }
+	void setRange(const GLfloat rng) { range = rng; }
+	void setPrSpd(const GLfloat prSpd) { prjSpd = prSpd; }
 	void setPierce(const int pierce) { prjPierce = pierce; }
 	void setCost(const int c) { cost = c; }
 
 	void dmgUp(const int dmg) { damage += dmg; }
-	void speedUp(const float percentage) { atkSpd += atkSpd * percentage / 100; }
-	void rangeUP(const float percentage) { range += range * percentage / 100; }
-	void prSpeedUp(const float percentage) { prjSpd += prjSpd * percentage / 100; }
+	void speedUp(const GLfloat percentage) { atkSpd += atkSpd * percentage / 100; }
+	void rangeUP(const GLfloat percentage) { range += range * percentage / 100; }
+	void prSpeedUp(const GLfloat percentage) { prjSpd += prjSpd * percentage / 100; }
 	void pierceUp(const int pierce) { prjPierce += pierce; }
 
 	
@@ -125,12 +125,12 @@ private:
 	
 	bool selected = false;
 	
-	float shootTimer = 0;
+	GLfloat shootTimer = 0;
 	
 	int damage;
-	float atkSpd;
-	float range;
-	float prjSpd;
+	GLfloat atkSpd;
+	GLfloat range;
+	GLfloat prjSpd;
 	int prjPierce;
 	int cost;
 };

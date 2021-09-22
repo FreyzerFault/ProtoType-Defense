@@ -69,7 +69,7 @@ Index of this file:
 #pragma clang diagnostic ignored "-Wold-style-cast"
 #pragma clang diagnostic ignored "-Wzero-as-null-pointer-constant"
 #pragma clang diagnostic ignored "-Wdouble-promotion"
-#pragma clang diagnostic ignored "-Wimplicit-int-float-conversion"  // warning: implicit conversion from 'xxx' to 'float' may lose precision
+#pragma clang diagnostic ignored "-Wimplicit-int-GLfloat-conversion"  // warning: implicit conversion from 'xxx' to 'GLfloat' may lose precision
 #elif defined(__GNUC__)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wpragmas"              // warning: unknown option after '#pragma GCC diagnostic' kind
@@ -216,8 +216,8 @@ namespace ImStb
 #define IM_TABSIZE                      (4)
 #define IM_F32_TO_INT8_UNBOUND(_VAL)    ((int)((_VAL) * 255.0f + ((_VAL)>=0 ? 0.5f : -0.5f)))   // Unsaturated, for display purpose
 #define IM_F32_TO_INT8_SAT(_VAL)        ((int)(ImSaturate(_VAL) * 255.0f + 0.5f))               // Saturated, always output 0..255
-#define IM_FLOOR(_VAL)                  ((float)(int)(_VAL))                                    // ImFloor() is not inlined in MSVC debug builds
-#define IM_ROUND(_VAL)                  ((float)(int)((_VAL) + 0.5f))                           //
+#define IM_FLOOR(_VAL)                  ((GLfloat)(int)(_VAL))                                    // ImFloor() is not inlined in MSVC debug builds
+#define IM_ROUND(_VAL)                  ((GLfloat)(int)((_VAL) + 0.5f))                           //
 
 // Enforce cdecl calling convention for functions called by the standard library, in case compilation settings changed the default to e.g. __vectorcall
 #ifdef _MSC_VER
@@ -313,14 +313,14 @@ IMGUI_API int           ImTextCountUtf8BytesFromStr(const ImWchar* in_text, cons
 // We are keeping those disabled by default so they don't leak in user space, to allow user enabling implicit cast operators between ImVec2 and their own types (using IM_VEC2_CLASS_EXTRA etc.)
 // We unfortunately don't have a unary- operator for ImVec2 because this would needs to be defined inside the class itself.
 #ifdef IMGUI_DEFINE_MATH_OPERATORS
-static inline ImVec2 operator*(const ImVec2& lhs, const float rhs)              { return ImVec2(lhs.x * rhs, lhs.y * rhs); }
-static inline ImVec2 operator/(const ImVec2& lhs, const float rhs)              { return ImVec2(lhs.x / rhs, lhs.y / rhs); }
+static inline ImVec2 operator*(const ImVec2& lhs, const GLfloat rhs)              { return ImVec2(lhs.x * rhs, lhs.y * rhs); }
+static inline ImVec2 operator/(const ImVec2& lhs, const GLfloat rhs)              { return ImVec2(lhs.x / rhs, lhs.y / rhs); }
 static inline ImVec2 operator+(const ImVec2& lhs, const ImVec2& rhs)            { return ImVec2(lhs.x + rhs.x, lhs.y + rhs.y); }
 static inline ImVec2 operator-(const ImVec2& lhs, const ImVec2& rhs)            { return ImVec2(lhs.x - rhs.x, lhs.y - rhs.y); }
 static inline ImVec2 operator*(const ImVec2& lhs, const ImVec2& rhs)            { return ImVec2(lhs.x * rhs.x, lhs.y * rhs.y); }
 static inline ImVec2 operator/(const ImVec2& lhs, const ImVec2& rhs)            { return ImVec2(lhs.x / rhs.x, lhs.y / rhs.y); }
-static inline ImVec2& operator*=(ImVec2& lhs, const float rhs)                  { lhs.x *= rhs; lhs.y *= rhs; return lhs; }
-static inline ImVec2& operator/=(ImVec2& lhs, const float rhs)                  { lhs.x /= rhs; lhs.y /= rhs; return lhs; }
+static inline ImVec2& operator*=(ImVec2& lhs, const GLfloat rhs)                  { lhs.x *= rhs; lhs.y *= rhs; return lhs; }
+static inline ImVec2& operator/=(ImVec2& lhs, const GLfloat rhs)                  { lhs.x /= rhs; lhs.y /= rhs; return lhs; }
 static inline ImVec2& operator+=(ImVec2& lhs, const ImVec2& rhs)                { lhs.x += rhs.x; lhs.y += rhs.y; return lhs; }
 static inline ImVec2& operator-=(ImVec2& lhs, const ImVec2& rhs)                { lhs.x -= rhs.x; lhs.y -= rhs.y; return lhs; }
 static inline ImVec2& operator*=(ImVec2& lhs, const ImVec2& rhs)                { lhs.x *= rhs.x; lhs.y *= rhs.y; return lhs; }
@@ -363,23 +363,23 @@ IMGUI_API void*             ImFileLoadToMemory(const char* filename, const char*
 #define ImAcos(X)           acosf(X)
 #define ImAtan2(Y, X)       atan2f((Y), (X))
 #define ImAtof(STR)         atof(STR)
-#define ImFloorStd(X)       floorf(X)           // We already uses our own ImFloor() { return (float)(int)v } internally so the standard one wrapper is named differently (it's used by e.g. stb_truetype)
+#define ImFloorStd(X)       floorf(X)           // We already uses our own ImFloor() { return (GLfloat)(int)v } internally so the standard one wrapper is named differently (it's used by e.g. stb_truetype)
 #define ImCeil(X)           ceilf(X)
-static inline float  ImPow(float x, float y)    { return powf(x, y); }          // DragBehaviorT/SliderBehaviorT uses ImPow with either float/double and need the precision
+static inline GLfloat  ImPow(GLfloat x, GLfloat y)    { return powf(x, y); }          // DragBehaviorT/SliderBehaviorT uses ImPow with either GLfloat/double and need the precision
 static inline double ImPow(double x, double y)  { return pow(x, y); }
-static inline float  ImLog(float x)             { return logf(x); }             // DragBehaviorT/SliderBehaviorT uses ImLog with either float/double and need the precision
+static inline GLfloat  ImLog(GLfloat x)             { return logf(x); }             // DragBehaviorT/SliderBehaviorT uses ImLog with either GLfloat/double and need the precision
 static inline double ImLog(double x)            { return log(x); }
-static inline float  ImAbs(float x)             { return fabsf(x); }
+static inline GLfloat  ImAbs(GLfloat x)             { return fabsf(x); }
 static inline double ImAbs(double x)            { return fabs(x); }
-static inline float  ImSign(float x)            { return (x < 0.0f) ? -1.0f : ((x > 0.0f) ? 1.0f : 0.0f); } // Sign operator - returns -1, 0 or 1 based on sign of argument
+static inline GLfloat  ImSign(GLfloat x)            { return (x < 0.0f) ? -1.0f : ((x > 0.0f) ? 1.0f : 0.0f); } // Sign operator - returns -1, 0 or 1 based on sign of argument
 static inline double ImSign(double x)           { return (x < 0.0) ? -1.0 : ((x > 0.0) ? 1.0 : 0.0); }
 #endif
-// - ImMin/ImMax/ImClamp/ImLerp/ImSwap are used by widgets which support variety of types: signed/unsigned int/long long float/double
+// - ImMin/ImMax/ImClamp/ImLerp/ImSwap are used by widgets which support variety of types: signed/unsigned int/long long GLfloat/double
 // (Exceptionally using templates here but we could also redefine them for those types)
 template<typename T> static inline T ImMin(T lhs, T rhs)                        { return lhs < rhs ? lhs : rhs; }
 template<typename T> static inline T ImMax(T lhs, T rhs)                        { return lhs >= rhs ? lhs : rhs; }
 template<typename T> static inline T ImClamp(T v, T mn, T mx)                   { return (v < mn) ? mn : (v > mx) ? mx : v; }
-template<typename T> static inline T ImLerp(T a, T b, float t)                  { return (T)(a + (b - a) * t); }
+template<typename T> static inline T ImLerp(T a, T b, GLfloat t)                  { return (T)(a + (b - a) * t); }
 template<typename T> static inline void ImSwap(T& a, T& b)                      { T tmp = a; a = b; b = tmp; }
 template<typename T> static inline T ImAddClampOverflow(T a, T b, T mn, T mx)   { if (b < 0 && (a < mn - b)) return mn; if (b > 0 && (a > mx - b)) return mx; return a + b; }
 template<typename T> static inline T ImSubClampOverflow(T a, T b, T mn, T mx)   { if (b > 0 && (a < mn + b)) return mn; if (b < 0 && (a > mx + b)) return mx; return a - b; }
@@ -387,40 +387,40 @@ template<typename T> static inline T ImSubClampOverflow(T a, T b, T mn, T mx)   
 static inline ImVec2 ImMin(const ImVec2& lhs, const ImVec2& rhs)                { return ImVec2(lhs.x < rhs.x ? lhs.x : rhs.x, lhs.y < rhs.y ? lhs.y : rhs.y); }
 static inline ImVec2 ImMax(const ImVec2& lhs, const ImVec2& rhs)                { return ImVec2(lhs.x >= rhs.x ? lhs.x : rhs.x, lhs.y >= rhs.y ? lhs.y : rhs.y); }
 static inline ImVec2 ImClamp(const ImVec2& v, const ImVec2& mn, ImVec2 mx)      { return ImVec2((v.x < mn.x) ? mn.x : (v.x > mx.x) ? mx.x : v.x, (v.y < mn.y) ? mn.y : (v.y > mx.y) ? mx.y : v.y); }
-static inline ImVec2 ImLerp(const ImVec2& a, const ImVec2& b, float t)          { return ImVec2(a.x + (b.x - a.x) * t, a.y + (b.y - a.y) * t); }
+static inline ImVec2 ImLerp(const ImVec2& a, const ImVec2& b, GLfloat t)          { return ImVec2(a.x + (b.x - a.x) * t, a.y + (b.y - a.y) * t); }
 static inline ImVec2 ImLerp(const ImVec2& a, const ImVec2& b, const ImVec2& t)  { return ImVec2(a.x + (b.x - a.x) * t.x, a.y + (b.y - a.y) * t.y); }
-static inline ImVec4 ImLerp(const ImVec4& a, const ImVec4& b, float t)          { return ImVec4(a.x + (b.x - a.x) * t, a.y + (b.y - a.y) * t, a.z + (b.z - a.z) * t, a.w + (b.w - a.w) * t); }
-static inline float  ImSaturate(float f)                                        { return (f < 0.0f) ? 0.0f : (f > 1.0f) ? 1.0f : f; }
-static inline float  ImLengthSqr(const ImVec2& lhs)                             { return (lhs.x * lhs.x) + (lhs.y * lhs.y); }
-static inline float  ImLengthSqr(const ImVec4& lhs)                             { return (lhs.x * lhs.x) + (lhs.y * lhs.y) + (lhs.z * lhs.z) + (lhs.w * lhs.w); }
-static inline float  ImInvLength(const ImVec2& lhs, float fail_value)           { float d = (lhs.x * lhs.x) + (lhs.y * lhs.y); if (d > 0.0f) return 1.0f / ImSqrt(d); return fail_value; }
-static inline float  ImFloor(float f)                                           { return (float)(int)(f); }
-static inline ImVec2 ImFloor(const ImVec2& v)                                   { return ImVec2((float)(int)(v.x), (float)(int)(v.y)); }
+static inline ImVec4 ImLerp(const ImVec4& a, const ImVec4& b, GLfloat t)          { return ImVec4(a.x + (b.x - a.x) * t, a.y + (b.y - a.y) * t, a.z + (b.z - a.z) * t, a.w + (b.w - a.w) * t); }
+static inline GLfloat  ImSaturate(GLfloat f)                                        { return (f < 0.0f) ? 0.0f : (f > 1.0f) ? 1.0f : f; }
+static inline GLfloat  ImLengthSqr(const ImVec2& lhs)                             { return (lhs.x * lhs.x) + (lhs.y * lhs.y); }
+static inline GLfloat  ImLengthSqr(const ImVec4& lhs)                             { return (lhs.x * lhs.x) + (lhs.y * lhs.y) + (lhs.z * lhs.z) + (lhs.w * lhs.w); }
+static inline GLfloat  ImInvLength(const ImVec2& lhs, GLfloat fail_value)           { GLfloat d = (lhs.x * lhs.x) + (lhs.y * lhs.y); if (d > 0.0f) return 1.0f / ImSqrt(d); return fail_value; }
+static inline GLfloat  ImFloor(GLfloat f)                                           { return (GLfloat)(int)(f); }
+static inline ImVec2 ImFloor(const ImVec2& v)                                   { return ImVec2((GLfloat)(int)(v.x), (GLfloat)(int)(v.y)); }
 static inline int    ImModPositive(int a, int b)                                { return (a + b) % b; }
-static inline float  ImDot(const ImVec2& a, const ImVec2& b)                    { return a.x * b.x + a.y * b.y; }
-static inline ImVec2 ImRotate(const ImVec2& v, float cos_a, float sin_a)        { return ImVec2(v.x * cos_a - v.y * sin_a, v.x * sin_a + v.y * cos_a); }
-static inline float  ImLinearSweep(float current, float target, float speed)    { if (current < target) return ImMin(current + speed, target); if (current > target) return ImMax(current - speed, target); return current; }
+static inline GLfloat  ImDot(const ImVec2& a, const ImVec2& b)                    { return a.x * b.x + a.y * b.y; }
+static inline ImVec2 ImRotate(const ImVec2& v, GLfloat cos_a, GLfloat sin_a)        { return ImVec2(v.x * cos_a - v.y * sin_a, v.x * sin_a + v.y * cos_a); }
+static inline GLfloat  ImLinearSweep(GLfloat current, GLfloat target, GLfloat speed)    { if (current < target) return ImMin(current + speed, target); if (current > target) return ImMax(current - speed, target); return current; }
 static inline ImVec2 ImMul(const ImVec2& lhs, const ImVec2& rhs)                { return ImVec2(lhs.x * rhs.x, lhs.y * rhs.y); }
 
 // Helpers: Geometry
-IMGUI_API ImVec2     ImBezierCubicCalc(const ImVec2& p1, const ImVec2& p2, const ImVec2& p3, const ImVec2& p4, float t);
+IMGUI_API ImVec2     ImBezierCubicCalc(const ImVec2& p1, const ImVec2& p2, const ImVec2& p3, const ImVec2& p4, GLfloat t);
 IMGUI_API ImVec2     ImBezierCubicClosestPoint(const ImVec2& p1, const ImVec2& p2, const ImVec2& p3, const ImVec2& p4, const ImVec2& p, int num_segments);       // For curves with explicit number of segments
-IMGUI_API ImVec2     ImBezierCubicClosestPointCasteljau(const ImVec2& p1, const ImVec2& p2, const ImVec2& p3, const ImVec2& p4, const ImVec2& p, float tess_tol);// For auto-tessellated curves you can use tess_tol = style.CurveTessellationTol
-IMGUI_API ImVec2     ImBezierQuadraticCalc(const ImVec2& p1, const ImVec2& p2, const ImVec2& p3, float t);
+IMGUI_API ImVec2     ImBezierCubicClosestPointCasteljau(const ImVec2& p1, const ImVec2& p2, const ImVec2& p3, const ImVec2& p4, const ImVec2& p, GLfloat tess_tol);// For auto-tessellated curves you can use tess_tol = style.CurveTessellationTol
+IMGUI_API ImVec2     ImBezierQuadraticCalc(const ImVec2& p1, const ImVec2& p2, const ImVec2& p3, GLfloat t);
 IMGUI_API ImVec2     ImLineClosestPoint(const ImVec2& a, const ImVec2& b, const ImVec2& p);
 IMGUI_API bool       ImTriangleContainsPoint(const ImVec2& a, const ImVec2& b, const ImVec2& c, const ImVec2& p);
 IMGUI_API ImVec2     ImTriangleClosestPoint(const ImVec2& a, const ImVec2& b, const ImVec2& c, const ImVec2& p);
-IMGUI_API void       ImTriangleBarycentricCoords(const ImVec2& a, const ImVec2& b, const ImVec2& c, const ImVec2& p, float& out_u, float& out_v, float& out_w);
-inline float         ImTriangleArea(const ImVec2& a, const ImVec2& b, const ImVec2& c) { return ImFabs((a.x * (b.y - c.y)) + (b.x * (c.y - a.y)) + (c.x * (a.y - b.y))) * 0.5f; }
-IMGUI_API ImGuiDir   ImGetDirQuadrantFromDelta(float dx, float dy);
+IMGUI_API void       ImTriangleBarycentricCoords(const ImVec2& a, const ImVec2& b, const ImVec2& c, const ImVec2& p, GLfloat& out_u, GLfloat& out_v, GLfloat& out_w);
+inline GLfloat         ImTriangleArea(const ImVec2& a, const ImVec2& b, const ImVec2& c) { return ImFabs((a.x * (b.y - c.y)) + (b.x * (c.y - a.y)) + (c.x * (a.y - b.y))) * 0.5f; }
+IMGUI_API ImGuiDir   ImGetDirQuadrantFromDelta(GLfloat dx, GLfloat dy);
 
 // Helper: ImVec1 (1D vector)
 // (this odd construct is used to facilitate the transition between 1D and 2D, and the maintenance of some branches/patches)
 struct ImVec1
 {
-    float   x;
+    GLfloat   x;
     ImVec1()         { x = 0.0f; }
-    ImVec1(float _x) { x = _x; }
+    ImVec1(GLfloat _x) { x = _x; }
 };
 
 // Helper: ImVec2ih (2D vector, half-size integer, for long-term packed storage)
@@ -442,12 +442,12 @@ struct IMGUI_API ImRect
     ImRect()                                        : Min(0.0f, 0.0f), Max(0.0f, 0.0f)  {}
     ImRect(const ImVec2& min, const ImVec2& max)    : Min(min), Max(max)                {}
     ImRect(const ImVec4& v)                         : Min(v.x, v.y), Max(v.z, v.w)      {}
-    ImRect(float x1, float y1, float x2, float y2)  : Min(x1, y1), Max(x2, y2)          {}
+    ImRect(GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2)  : Min(x1, y1), Max(x2, y2)          {}
 
     ImVec2      GetCenter() const                   { return ImVec2((Min.x + Max.x) * 0.5f, (Min.y + Max.y) * 0.5f); }
     ImVec2      GetSize() const                     { return ImVec2(Max.x - Min.x, Max.y - Min.y); }
-    float       GetWidth() const                    { return Max.x - Min.x; }
-    float       GetHeight() const                   { return Max.y - Min.y; }
+    GLfloat       GetWidth() const                    { return Max.x - Min.x; }
+    GLfloat       GetHeight() const                   { return Max.y - Min.y; }
     ImVec2      GetTL() const                       { return Min; }                   // Top-left
     ImVec2      GetTR() const                       { return ImVec2(Max.x, Min.y); }  // Top-right
     ImVec2      GetBL() const                       { return ImVec2(Min.x, Max.y); }  // Bottom-left
@@ -457,11 +457,11 @@ struct IMGUI_API ImRect
     bool        Overlaps(const ImRect& r) const     { return r.Min.y <  Max.y && r.Max.y >  Min.y && r.Min.x <  Max.x && r.Max.x >  Min.x; }
     void        Add(const ImVec2& p)                { if (Min.x > p.x)     Min.x = p.x;     if (Min.y > p.y)     Min.y = p.y;     if (Max.x < p.x)     Max.x = p.x;     if (Max.y < p.y)     Max.y = p.y; }
     void        Add(const ImRect& r)                { if (Min.x > r.Min.x) Min.x = r.Min.x; if (Min.y > r.Min.y) Min.y = r.Min.y; if (Max.x < r.Max.x) Max.x = r.Max.x; if (Max.y < r.Max.y) Max.y = r.Max.y; }
-    void        Expand(const float amount)          { Min.x -= amount;   Min.y -= amount;   Max.x += amount;   Max.y += amount; }
+    void        Expand(const GLfloat amount)          { Min.x -= amount;   Min.y -= amount;   Max.x += amount;   Max.y += amount; }
     void        Expand(const ImVec2& amount)        { Min.x -= amount.x; Min.y -= amount.y; Max.x += amount.x; Max.y += amount.y; }
     void        Translate(const ImVec2& d)          { Min.x += d.x; Min.y += d.y; Max.x += d.x; Max.y += d.y; }
-    void        TranslateX(float dx)                { Min.x += dx; Max.x += dx; }
-    void        TranslateY(float dy)                { Min.y += dy; Max.y += dy; }
+    void        TranslateX(GLfloat dx)                { Min.x += dx; Max.x += dx; }
+    void        TranslateY(GLfloat dy)                { Min.y += dy; Max.y += dy; }
     void        ClipWith(const ImRect& r)           { Min = ImMax(Min, r.Min); Max = ImMin(Max, r.Max); }                   // Simple version, may lead to an inverted rectangle, which is fine for Contains/Overlaps test but not for display.
     void        ClipWithFull(const ImRect& r)       { Min = ImClamp(Min, r.Min, r.Max); Max = ImClamp(Max, r.Min, r.Max); } // Full version, ensure both points are fully clipped.
     void        Floor()                             { Min.x = IM_FLOOR(Min.x); Min.y = IM_FLOOR(Min.y); Max.x = IM_FLOOR(Max.x); Max.y = IM_FLOOR(Max.y); }
@@ -633,9 +633,9 @@ struct IMGUI_API ImDrawListSharedData
 {
     ImVec2          TexUvWhitePixel;            // UV of white pixel in the atlas
     ImFont*         Font;                       // Current/default font (optional, for simplified AddText overload)
-    float           FontSize;                   // Current/default font size (optional, for simplified AddText overload)
-    float           CurveTessellationTol;       // Tessellation tolerance when using PathBezierCurveTo()
-    float           CircleSegmentMaxError;      // Number of circle segments to use per pixel of radius for AddCircle() etc
+    GLfloat           FontSize;                   // Current/default font size (optional, for simplified AddText overload)
+    GLfloat           CurveTessellationTol;       // Tessellation tolerance when using PathBezierCurveTo()
+    GLfloat           CircleSegmentMaxError;      // Number of circle segments to use per pixel of radius for AddCircle() etc
     ImVec4          ClipRectFullscreen;         // Value for PushClipRectFullscreen()
     ImDrawListFlags InitialFlags;               // Initial flags at the beginning of the frame (it is possible to alter flags on a per-drawlist basis afterwards)
 
@@ -645,7 +645,7 @@ struct IMGUI_API ImDrawListSharedData
     const ImVec4*   TexUvLines;                 // UV of anti-aliased lines in the atlas
 
     ImDrawListSharedData();
-    void SetCircleSegmentMaxError(float max_error);
+    void SetCircleSegmentMaxError(GLfloat max_error);
 };
 
 struct ImDrawDataBuilder
@@ -903,9 +903,9 @@ struct ImGuiColorMod
 struct ImGuiStyleMod
 {
     ImGuiStyleVar   VarIdx;
-    union           { int BackupInt[2]; float BackupFloat[2]; };
+    union           { int BackupInt[2]; GLfloat BackupFloat[2]; };
     ImGuiStyleMod(ImGuiStyleVar idx, int v)     { VarIdx = idx; BackupInt[0] = v; }
-    ImGuiStyleMod(ImGuiStyleVar idx, float v)   { VarIdx = idx; BackupFloat[0] = v; }
+    ImGuiStyleMod(ImGuiStyleVar idx, GLfloat v)   { VarIdx = idx; BackupFloat[0] = v; }
     ImGuiStyleMod(ImGuiStyleVar idx, ImVec2 v)  { VarIdx = idx; BackupFloat[0] = v.x; BackupFloat[1] = v.y; }
 };
 
@@ -918,7 +918,7 @@ struct ImGuiGroupData
     ImVec1      BackupIndent;
     ImVec1      BackupGroupOffset;
     ImVec2      BackupCurrLineSize;
-    float       BackupCurrLineTextBaseOffset;
+    GLfloat       BackupCurrLineTextBaseOffset;
     ImGuiID     BackupActiveIdIsAlive;
     bool        BackupActiveIdPreviousFrameIsAlive;
     bool        EmitItem;
@@ -927,14 +927,14 @@ struct ImGuiGroupData
 // Simple column measurement, currently used for MenuItem() only.. This is very short-sighted/throw-away code and NOT a generic helper.
 struct IMGUI_API ImGuiMenuColumns
 {
-    float       Spacing;
-    float       Width, NextWidth;
-    float       Pos[3], NextWidths[3];
+    GLfloat       Spacing;
+    GLfloat       Width, NextWidth;
+    GLfloat       Pos[3], NextWidths[3];
 
     ImGuiMenuColumns() { memset(this, 0, sizeof(*this)); }
-    void        Update(int count, float spacing, bool clear);
-    float       DeclColumns(float w0, float w1, float w2);
-    float       CalcExtraSpace(float avail_w) const;
+    void        Update(int count, GLfloat spacing, bool clear);
+    GLfloat       DeclColumns(GLfloat w0, GLfloat w1, GLfloat w2);
+    GLfloat       CalcExtraSpace(GLfloat avail_w) const;
 };
 
 // Internal state of the currently focused/edited text input box
@@ -948,9 +948,9 @@ struct IMGUI_API ImGuiInputTextState
     ImVector<char>          InitialTextA;           // backup of end-user buffer at the time of focus (in UTF-8, unaltered)
     bool                    TextAIsValid;           // temporary UTF8 buffer is not initially valid before we make the widget active (until then we pull the data from user argument)
     int                     BufCapacityA;           // end-user buffer capacity
-    float                   ScrollX;                // horizontal scrolling/offset
+    GLfloat                   ScrollX;                // horizontal scrolling/offset
     ImStb::STB_TexteditState Stb;                   // state for stb_textedit.h
-    float                   CursorAnim;             // timer for cursor blink, reset on every user action so the cursor reappears immediately
+    GLfloat                   CursorAnim;             // timer for cursor blink, reset on every user action so the cursor reappears immediately
     bool                    CursorFollow;           // set when we want scrolling to follow the current cursor position (not always!)
     bool                    SelectedAllMouseLock;   // after a double-click to select all, we ignore further mouse drags to update selection
     bool                    Edited;                 // edited this frame
@@ -992,9 +992,9 @@ struct ImGuiNavMoveResult
     ImGuiWindow*    Window;             // Best candidate window
     ImGuiID         ID;                 // Best candidate ID
     ImGuiID         FocusScopeId;       // Best candidate focus scope ID
-    float           DistBox;            // Best candidate box distance to current NavId
-    float           DistCenter;         // Best candidate center distance to current NavId
-    float           DistAxial;
+    GLfloat           DistBox;            // Best candidate box distance to current NavId
+    GLfloat           DistCenter;         // Best candidate center distance to current NavId
+    GLfloat           DistAxial;
     ImRect          RectRel;            // Best candidate bounding box in window relative space
 
     ImGuiNavMoveResult() { Clear(); }
@@ -1030,7 +1030,7 @@ struct ImGuiNextWindowData
     ImRect                      SizeConstraintRect;
     ImGuiSizeCallback           SizeCallback;
     void*                       SizeCallbackUserData;
-    float                       BgAlphaVal;             // Override background alpha
+    GLfloat                       BgAlphaVal;             // Override background alpha
     ImVec2                      MenuBarOffsetMinVal;    // *Always on* This is not exposed publicly, so we don't clear it.
 
     ImGuiNextWindowData()       { memset(this, 0, sizeof(*this)); }
@@ -1047,7 +1047,7 @@ enum ImGuiNextItemDataFlags_
 struct ImGuiNextItemData
 {
     ImGuiNextItemDataFlags      Flags;
-    float                       Width;          // Set by SetNextItemWidth()
+    GLfloat                       Width;          // Set by SetNextItemWidth()
     ImGuiID                     FocusScopeId;   // Set by SetNextItemMultiSelectData() (!= 0 signify value has been set, so it's an alternate version of HasSelectionData, we don't use Flags for this because they are cleared too early. This is mostly used for debugging)
     ImGuiCond                   OpenCond;
     bool                        OpenVal;        // Set by SetNextItemOpen()
@@ -1059,7 +1059,7 @@ struct ImGuiNextItemData
 struct ImGuiShrinkWidthItem
 {
     int         Index;
-    float       Width;
+    GLfloat       Width;
 };
 
 struct ImGuiPtrOrIndex
@@ -1098,8 +1098,8 @@ enum ImGuiOldColumnFlags_
 
 struct ImGuiOldColumnData
 {
-    float               OffsetNorm;         // Column start offset, normalized 0.0 (far left) -> 1.0 (far right)
-    float               OffsetNormBeforeResize;
+    GLfloat               OffsetNorm;         // Column start offset, normalized 0.0 (far left) -> 1.0 (far right)
+    GLfloat               OffsetNormBeforeResize;
     ImGuiOldColumnFlags Flags;              // Not exposed
     ImRect              ClipRect;
 
@@ -1114,10 +1114,10 @@ struct ImGuiOldColumns
     bool                IsBeingResized;
     int                 Current;
     int                 Count;
-    float               OffMinX, OffMaxX;       // Offsets from HostWorkRect.Min.x
-    float               LineMinY, LineMaxY;
-    float               HostCursorPosY;         // Backup of CursorPos at the time of BeginColumns()
-    float               HostCursorMaxPosX;      // Backup of CursorMaxPos at the time of BeginColumns()
+    GLfloat               OffMinX, OffMaxX;       // Offsets from HostWorkRect.Min.x
+    GLfloat               LineMinY, LineMaxY;
+    GLfloat               HostCursorPosY;         // Backup of CursorPos at the time of BeginColumns()
+    GLfloat               HostCursorMaxPosX;      // Backup of CursorMaxPos at the time of BeginColumns()
     ImRect              HostInitialClipRect;    // Backup of ClipRect at the time of BeginColumns()
     ImRect              HostBackupClipRect;     // Backup of ClipRect during PushColumnsBackground()/PopColumnsBackground()
     ImRect              HostBackupParentWorkRect;//Backup of WorkRect at the time of BeginColumns()
@@ -1272,8 +1272,8 @@ struct ImGuiContext
     ImGuiIO                 IO;
     ImGuiStyle              Style;
     ImFont*                 Font;                               // (Shortcut) == FontStack.empty() ? IO.Font : FontStack.back()
-    float                   FontSize;                           // (Shortcut) == FontBaseSize * g.CurrentWindow->FontWindowScale == window->FontSize(). Text height for current window.
-    float                   FontBaseSize;                       // (Shortcut) == IO.FontGlobalScale * Font->Scale * Font->FontSize. Base text height.
+    GLfloat                   FontSize;                           // (Shortcut) == FontBaseSize * g.CurrentWindow->FontWindowScale == window->FontSize(). Text height for current window.
+    GLfloat                   FontBaseSize;                       // (Shortcut) == IO.FontGlobalScale * Font->Scale * Font->FontSize. Base text height.
     ImDrawListSharedData    DrawListSharedData;
     double                  Time;
     int                     FrameCount;
@@ -1301,7 +1301,7 @@ struct ImGuiContext
     ImGuiWindow*            MovingWindow;                       // Track the window we clicked on (in order to preserve focus). The actual window that is moved is generally MovingWindow->RootWindow.
     ImGuiWindow*            WheelingWindow;                     // Track the window we started mouse-wheeling on. Until a timer elapse or mouse has moved, generally keep scrolling the same window even if during the course of scrolling the mouse ends up hovering a child window.
     ImVec2                  WheelingWindowRefMousePos;
-    float                   WheelingWindowTimer;
+    GLfloat                   WheelingWindowTimer;
 
     // Item/widgets state and tracking information
     ImGuiID                 HoveredId;                          // Hovered widget, filled during the frame
@@ -1310,11 +1310,11 @@ struct ImGuiContext
     bool                    HoveredIdUsingMouseWheel;           // Hovered widget will use mouse wheel. Blocks scrolling the underlying window.
     bool                    HoveredIdPreviousFrameUsingMouseWheel;
     bool                    HoveredIdDisabled;                  // At least one widget passed the rect test, but has been discarded by disabled flag or popup inhibit. May be true even if HoveredId == 0.
-    float                   HoveredIdTimer;                     // Measure contiguous hovering time
-    float                   HoveredIdNotActiveTimer;            // Measure contiguous hovering time where the item has not been active
+    GLfloat                   HoveredIdTimer;                     // Measure contiguous hovering time
+    GLfloat                   HoveredIdNotActiveTimer;            // Measure contiguous hovering time where the item has not been active
     ImGuiID                 ActiveId;                           // Active widget
     ImGuiID                 ActiveIdIsAlive;                    // Active widget has been seen this frame (we can't use a bool as the ActiveId may change within the frame)
-    float                   ActiveIdTimer;
+    GLfloat                   ActiveIdTimer;
     bool                    ActiveIdIsJustActivated;            // Set at the time of activation for one frame
     bool                    ActiveIdAllowOverlap;               // Active widget allows another widget to steal active id (generally for overlapping widgets, but not always)
     bool                    ActiveIdNoClearOnFocusLoss;         // Disable losing active id if the active id window gets unfocused.
@@ -1334,7 +1334,7 @@ struct ImGuiContext
     bool                    ActiveIdPreviousFrameHasBeenEditedBefore;
     ImGuiWindow*            ActiveIdPreviousFrameWindow;
     ImGuiID                 LastActiveId;                       // Store the last non-zero ActiveId, useful for animation.
-    float                   LastActiveIdTimer;                  // Store the last non-zero ActiveId timer since the beginning of activation, useful for animation.
+    GLfloat                   LastActiveIdTimer;                  // Store the last non-zero ActiveId timer since the beginning of activation, useful for animation.
 
     // Next window/item data
     ImGuiNextWindowData     NextWindowData;                     // Storage for SetNextWindow** functions
@@ -1396,8 +1396,8 @@ struct ImGuiContext
     ImGuiWindow*            NavWindowingTarget;                 // Target window when doing CTRL+Tab (or Pad Menu + FocusPrev/Next), this window is temporarily displayed top-most!
     ImGuiWindow*            NavWindowingTargetAnim;             // Record of last valid NavWindowingTarget until DimBgRatio and NavWindowingHighlightAlpha becomes 0.0f, so the fade-out can stay on it.
     ImGuiWindow*            NavWindowingListWindow;             // Internal window actually listing the CTRL+Tab contents
-    float                   NavWindowingTimer;
-    float                   NavWindowingHighlightAlpha;
+    GLfloat                   NavWindowingTimer;
+    GLfloat                   NavWindowingHighlightAlpha;
     bool                    NavWindowingToggleLayer;
 
     // Legacy Focus/Tabbing system (older than Nav, active even if Nav is disabled, misnamed. FIXME-NAV: This needs a redesign!)
@@ -1410,7 +1410,7 @@ struct ImGuiContext
     bool                    FocusTabPressed;                    //
 
     // Render
-    float                   DimBgRatio;                         // 0.0..1.0 animation when fading in a dimming background (for modal window and CTRL+TAB list)
+    GLfloat                   DimBgRatio;                         // 0.0..1.0 animation when fading in a dimming background (for modal window and CTRL+TAB list)
     ImGuiMouseCursor        MouseCursor;
 
     // Drag and Drop
@@ -1424,7 +1424,7 @@ struct ImGuiContext
     ImRect                  DragDropTargetRect;                 // Store rectangle of current target candidate (we favor small targets when overlapping)
     ImGuiID                 DragDropTargetId;
     ImGuiDragDropFlags      DragDropAcceptFlags;
-    float                   DragDropAcceptIdCurrRectSurface;    // Target item surface (we resolve overlapping targets by prioritizing the smaller surface)
+    GLfloat                   DragDropAcceptIdCurrRectSurface;    // Target item surface (we resolve overlapping targets by prioritizing the smaller surface)
     ImGuiID                 DragDropAcceptIdCurr;               // Target item id (set at the time of accepting the payload)
     ImGuiID                 DragDropAcceptIdPrev;               // Target item id from previous frame (we need to store this to allow for overlapping drag and drop targets)
     int                     DragDropAcceptFrameCount;           // Last time a target expressed a desire to accept the source
@@ -1436,7 +1436,7 @@ struct ImGuiContext
     ImGuiTable*                     CurrentTable;
     ImPool<ImGuiTable>              Tables;
     ImVector<ImGuiPtrOrIndex>       CurrentTableStack;
-    ImVector<float>                 TablesLastTimeActive;       // Last used timestamp of each tables (SOA, for efficient GC)
+    ImVector<GLfloat>                 TablesLastTimeActive;       // Last used timestamp of each tables (SOA, for efficient GC)
     ImVector<ImDrawChannel>         DrawChannelsTempMergeBuffer;
 
     // Tab bars
@@ -1451,18 +1451,18 @@ struct ImGuiContext
     ImFont                  InputTextPasswordFont;
     ImGuiID                 TempInputId;                        // Temporary text input when CTRL+clicking on a slider, etc.
     ImGuiColorEditFlags     ColorEditOptions;                   // Store user options for color edit widgets
-    float                   ColorEditLastHue;                   // Backup of last Hue associated to LastColor[3], so we can restore Hue in lossy RGB<>HSV round trips
-    float                   ColorEditLastSat;                   // Backup of last Saturation associated to LastColor[3], so we can restore Saturation in lossy RGB<>HSV round trips
-    float                   ColorEditLastColor[3];
+    GLfloat                   ColorEditLastHue;                   // Backup of last Hue associated to LastColor[3], so we can restore Hue in lossy RGB<>HSV round trips
+    GLfloat                   ColorEditLastSat;                   // Backup of last Saturation associated to LastColor[3], so we can restore Saturation in lossy RGB<>HSV round trips
+    GLfloat                   ColorEditLastColor[3];
     ImVec4                  ColorPickerRef;                     // Initial/reference color at the time of opening the color picker.
-    float                   SliderCurrentAccum;                 // Accumulated slider delta when using navigation controls.
+    GLfloat                   SliderCurrentAccum;                 // Accumulated slider delta when using navigation controls.
     bool                    SliderCurrentAccumDirty;            // Has the accumulated slider delta changed since last time we tried to apply it?
     bool                    DragCurrentAccumDirty;
-    float                   DragCurrentAccum;                   // Accumulator for dragging modification. Always high-precision, not rounded by end-user precision settings
-    float                   DragSpeedDefaultRatio;              // If speed == 0.0f, uses (max-min) * DragSpeedDefaultRatio
-    float                   ScrollbarClickDeltaToGrabCenter;    // Distance between mouse and center of grab box, normalized in parent space. Use storage?
+    GLfloat                   DragCurrentAccum;                   // Accumulator for dragging modification. Always high-precision, not rounded by end-user precision settings
+    GLfloat                   DragSpeedDefaultRatio;              // If speed == 0.0f, uses (max-min) * DragSpeedDefaultRatio
+    GLfloat                   ScrollbarClickDeltaToGrabCenter;    // Distance between mouse and center of grab box, normalized in parent space. Use storage?
     int                     TooltipOverrideCount;
-    float                   TooltipSlowDelay;                   // Time before slow tooltips appears (FIXME: This is temporary until we merge in tooltip timer+priority work)
+    GLfloat                   TooltipSlowDelay;                   // Time before slow tooltips appears (FIXME: This is temporary until we merge in tooltip timer+priority work)
     ImVector<char>          ClipboardHandlerData;               // If no custom clipboard handler is defined
     ImVector<ImGuiID>       MenusIdSubmittedThisFrame;          // A list of menu IDs that were rendered at least once
 
@@ -1473,7 +1473,7 @@ struct ImGuiContext
 
     // Settings
     bool                    SettingsLoaded;
-    float                   SettingsDirtyTimer;                 // Save .ini Settings to memory when time reaches zero
+    GLfloat                   SettingsDirtyTimer;                 // Save .ini Settings to memory when time reaches zero
     ImGuiTextBuffer         SettingsIniData;                    // In memory .ini settings
     ImVector<ImGuiSettingsHandler>      SettingsHandlers;       // List of .ini settings handlers
     ImChunkStream<ImGuiWindowSettings>  SettingsWindows;        // ImGuiWindow .ini settings entries
@@ -1488,7 +1488,7 @@ struct ImGuiContext
     ImGuiTextBuffer         LogBuffer;                          // Accumulation buffer when log to clipboard. This is pointer so our GImGui static constructor doesn't call heap allocators.
     const char*             LogNextPrefix;
     const char*             LogNextSuffix;
-    float                   LogLinePosY;
+    GLfloat                   LogLinePosY;
     bool                    LogLineFirstItem;
     int                     LogDepthRef;
     int                     LogDepthToExpand;
@@ -1500,9 +1500,9 @@ struct ImGuiContext
     ImGuiMetricsConfig      DebugMetricsConfig;
 
     // Misc
-    float                   FramerateSecPerFrame[120];          // Calculate estimate of framerate for user over the last 2 seconds.
+    GLfloat                   FramerateSecPerFrame[120];          // Calculate estimate of framerate for user over the last 2 seconds.
     int                     FramerateSecPerFrameIdx;
-    float                   FramerateSecPerFrameAccum;
+    GLfloat                   FramerateSecPerFrameAccum;
     int                     WantCaptureMouseNextFrame;          // Explicit capture via CaptureKeyboardFromApp()/CaptureMouseFromApp() sets those flags
     int                     WantCaptureKeyboardNextFrame;
     int                     WantTextInputNextFrame;
@@ -1672,8 +1672,8 @@ struct IMGUI_API ImGuiWindowTempData
     ImVec2                  IdealMaxPos;            // Used to implicitly calculate ContentSizeIdeal at the beginning of next frame, for auto-resize only. Always growing during the frame.
     ImVec2                  CurrLineSize;
     ImVec2                  PrevLineSize;
-    float                   CurrLineTextBaseOffset; // Baseline offset (0.0f by default on a new line, generally == style.FramePadding.y when a framed item has been added).
-    float                   PrevLineTextBaseOffset;
+    GLfloat                   CurrLineTextBaseOffset; // Baseline offset (0.0f by default on a new line, generally == style.FramePadding.y when a framed item has been added).
+    GLfloat                   PrevLineTextBaseOffset;
     ImVec1                  Indent;                 // Indentation / start position from left of window (increased by TreePush/TreePop, etc.)
     ImVec1                  ColumnsOffset;          // Offset to the current column (if ColumnsCurrent > 0). FIXME: This and the above should be a stack to allow use cases like Tree->Column->Tree. Need revamp columns API.
     ImVec1                  GroupOffset;
@@ -1710,10 +1710,10 @@ struct IMGUI_API ImGuiWindowTempData
     // Local parameters stacks
     // We store the current settings outside of the vectors to increase memory locality (reduce cache misses). The vectors are rarely modified. Also it allows us to not heap allocate for short-lived windows which are not using those settings.
     ImGuiItemFlags          ItemFlags;              // == g.ItemFlagsStack.back()
-    float                   ItemWidth;              // Current item width (>0.0: width in pixels, <0.0: align xx pixels to the right of window).
-    float                   TextWrapPos;            // Current text wrap pos.
-    ImVector<float>         ItemWidthStack;         // Store item widths to restore (attention: .back() is not == ItemWidth)
-    ImVector<float>         TextWrapPosStack;       // Store text wrap pos to restore (attention: .back() is not == TextWrapPos)
+    GLfloat                   ItemWidth;              // Current item width (>0.0: width in pixels, <0.0: align xx pixels to the right of window).
+    GLfloat                   TextWrapPos;            // Current text wrap pos.
+    ImVector<GLfloat>         ItemWidthStack;         // Store item widths to restore (attention: .back() is not == ItemWidth)
+    ImVector<GLfloat>         TextWrapPosStack;       // Store text wrap pos to restore (attention: .back() is not == TextWrapPos)
     ImGuiStackSizes         StackSizesOnBegin;      // Store size of various stacks for asserting
 };
 
@@ -1730,8 +1730,8 @@ struct IMGUI_API ImGuiWindow
     ImVec2                  ContentSizeIdeal;
     ImVec2                  ContentSizeExplicit;                // Size of contents/scrollable client area explicitly request by the user via SetNextWindowContentSize().
     ImVec2                  WindowPadding;                      // Window padding at the time of Begin().
-    float                   WindowRounding;                     // Window rounding at the time of Begin(). May be clamped lower to avoid rendering artifacts with title bar, menu bar etc.
-    float                   WindowBorderSize;                   // Window border size at the time of Begin().
+    GLfloat                   WindowRounding;                     // Window rounding at the time of Begin(). May be clamped lower to avoid rendering artifacts with title bar, menu bar etc.
+    GLfloat                   WindowBorderSize;                   // Window border size at the time of Begin().
     int                     NameBufLen;                         // Size of buffer storing Name. May be larger than strlen(Name)!
     ImGuiID                 MoveId;                             // == window->GetID("#MOVE")
     ImGuiID                 ChildId;                            // ID of corresponding item in parent window (for navigation to return from child window to parent window)
@@ -1786,11 +1786,11 @@ struct IMGUI_API ImGuiWindow
     ImVec2ih                HitTestHoleOffset;
 
     int                     LastFrameActive;                    // Last frame number the window was Active.
-    float                   LastTimeActive;                     // Last timestamp the window was Active (using float as we don't need high precision there)
-    float                   ItemWidthDefault;
+    GLfloat                   LastTimeActive;                     // Last timestamp the window was Active (using GLfloat as we don't need high precision there)
+    GLfloat                   ItemWidthDefault;
     ImGuiStorage            StateStorage;
     ImVector<ImGuiOldColumns> ColumnsStorage;
-    float                   FontWindowScale;                    // User scale multiplier per-window, via SetWindowFontScale()
+    GLfloat                   FontWindowScale;                    // User scale multiplier per-window, via SetWindowFontScale()
     int                     SettingsOffset;                     // Offset into SettingsWindows[] (offsets are always valid as we only grow the array from the back)
 
     ImDrawList*             DrawList;                           // == &DrawListInst (for backward compatibility reason with code using imgui_internal.h we keep this a pointer)
@@ -1822,11 +1822,11 @@ public:
 
     // We don't use g.FontSize because the window may be != g.CurrentWidow.
     ImRect      Rect() const            { return ImRect(Pos.x, Pos.y, Pos.x + Size.x, Pos.y + Size.y); }
-    float       CalcFontSize() const    { ImGuiContext& g = *GImGui; float scale = g.FontBaseSize * FontWindowScale; if (ParentWindow) scale *= ParentWindow->FontWindowScale; return scale; }
-    float       TitleBarHeight() const  { ImGuiContext& g = *GImGui; return (Flags & ImGuiWindowFlags_NoTitleBar) ? 0.0f : CalcFontSize() + g.Style.FramePadding.y * 2.0f; }
+    GLfloat       CalcFontSize() const    { ImGuiContext& g = *GImGui; GLfloat scale = g.FontBaseSize * FontWindowScale; if (ParentWindow) scale *= ParentWindow->FontWindowScale; return scale; }
+    GLfloat       TitleBarHeight() const  { ImGuiContext& g = *GImGui; return (Flags & ImGuiWindowFlags_NoTitleBar) ? 0.0f : CalcFontSize() + g.Style.FramePadding.y * 2.0f; }
     ImRect      TitleBarRect() const    { return ImRect(Pos, ImVec2(Pos.x + SizeFull.x, Pos.y + TitleBarHeight())); }
-    float       MenuBarHeight() const   { ImGuiContext& g = *GImGui; return (Flags & ImGuiWindowFlags_MenuBar) ? DC.MenuBarOffset.y + CalcFontSize() + g.Style.FramePadding.y * 2.0f : 0.0f; }
-    ImRect      MenuBarRect() const     { float y1 = Pos.y + TitleBarHeight(); return ImRect(Pos.x, y1, Pos.x + SizeFull.x, y1 + MenuBarHeight()); }
+    GLfloat       MenuBarHeight() const   { ImGuiContext& g = *GImGui; return (Flags & ImGuiWindowFlags_MenuBar) ? DC.MenuBarOffset.y + CalcFontSize() + g.Style.FramePadding.y * 2.0f : 0.0f; }
+    ImRect      MenuBarRect() const     { GLfloat y1 = Pos.y + TitleBarHeight(); return ImRect(Pos.x, y1, Pos.x + SizeFull.x, y1 + MenuBarHeight()); }
 };
 
 // Backup and restore just enough data to be able to use IsItemHovered() on item A after another B in the same window has overwritten the data.
@@ -1868,9 +1868,9 @@ struct ImGuiTabItem
     ImGuiTabItemFlags   Flags;
     int                 LastFrameVisible;
     int                 LastFrameSelected;      // This allows us to infer an ordered list of the last activated tabs with little maintenance
-    float               Offset;                 // Position relative to beginning of tab
-    float               Width;                  // Width currently displayed
-    float               ContentWidth;           // Width of label, stored during BeginTabItem() call
+    GLfloat               Offset;                 // Position relative to beginning of tab
+    GLfloat               Width;                  // Width currently displayed
+    GLfloat               ContentWidth;           // Width of label, stored during BeginTabItem() call
     ImS16               NameOffset;             // When Window==NULL, offset to name within parent ImGuiTabBar::TabsNames
     ImS16               BeginOrder;             // BeginTabItem() order, used to re-order tabs after toggling ImGuiTabBarFlags_Reorderable
     ImS16               IndexDuringLayout;      // Index only used during TabBarLayout()
@@ -1891,16 +1891,16 @@ struct ImGuiTabBar
     int                 CurrFrameVisible;
     int                 PrevFrameVisible;
     ImRect              BarRect;
-    float               CurrTabsContentsHeight;
-    float               PrevTabsContentsHeight; // Record the height of contents submitted below the tab bar
-    float               WidthAllTabs;           // Actual width of all tabs (locked during layout)
-    float               WidthAllTabsIdeal;      // Ideal width if all tabs were visible and not clipped
-    float               ScrollingAnim;
-    float               ScrollingTarget;
-    float               ScrollingTargetDistToVisibility;
-    float               ScrollingSpeed;
-    float               ScrollingRectMinX;
-    float               ScrollingRectMaxX;
+    GLfloat               CurrTabsContentsHeight;
+    GLfloat               PrevTabsContentsHeight; // Record the height of contents submitted below the tab bar
+    GLfloat               WidthAllTabs;           // Actual width of all tabs (locked during layout)
+    GLfloat               WidthAllTabsIdeal;      // Ideal width if all tabs were visible and not clipped
+    GLfloat               ScrollingAnim;
+    GLfloat               ScrollingTarget;
+    GLfloat               ScrollingTargetDistToVisibility;
+    GLfloat               ScrollingSpeed;
+    GLfloat               ScrollingRectMinX;
+    GLfloat               ScrollingRectMaxX;
     ImGuiID             ReorderRequestTabId;
     ImS8                ReorderRequestDir;
     ImS8                BeginCount;
@@ -1909,7 +1909,7 @@ struct ImGuiTabBar
     bool                TabsAddedNew;           // Set to true when a new tab item or button has been added to the tab bar during last frame
     ImS16               TabsActiveCount;        // Number of tabs submitted this frame.
     ImS16               LastTabItemIdx;         // Index of last BeginTabItem() tab for use by EndTabItem()
-    float               ItemSpacingY;
+    GLfloat               ItemSpacingY;
     ImVec2              FramePadding;           // style.FramePadding locked at the time of BeginTabBar()
     ImVec2              BackupCursorPos;
     ImGuiTextBuffer     TabsNames;              // For non-docking tab bar we re-append names in a contiguous buffer.
@@ -1944,22 +1944,22 @@ typedef ImU8 ImGuiTableDrawChannelIdx;
 struct ImGuiTableColumn
 {
     ImGuiTableColumnFlags   Flags;                          // Flags after some patching (not directly same as provided by user). See ImGuiTableColumnFlags_
-    float                   WidthGiven;                     // Final/actual width visible == (MaxX - MinX), locked in TableUpdateLayout(). May be > WidthRequest to honor minimum width, may be < WidthRequest to honor shrinking columns down in tight space.
-    float                   MinX;                           // Absolute positions
-    float                   MaxX;
-    float                   WidthRequest;                   // Master width absolute value when !(Flags & _WidthStretch). When Stretch this is derived every frame from StretchWeight in TableUpdateLayout()
-    float                   WidthAuto;                      // Automatic width
-    float                   StretchWeight;                  // Master width weight when (Flags & _WidthStretch). Often around ~1.0f initially.
-    float                   InitStretchWeightOrWidth;       // Value passed to TableSetupColumn(). For Width it is a content width (_without padding_).
+    GLfloat                   WidthGiven;                     // Final/actual width visible == (MaxX - MinX), locked in TableUpdateLayout(). May be > WidthRequest to honor minimum width, may be < WidthRequest to honor shrinking columns down in tight space.
+    GLfloat                   MinX;                           // Absolute positions
+    GLfloat                   MaxX;
+    GLfloat                   WidthRequest;                   // Master width absolute value when !(Flags & _WidthStretch). When Stretch this is derived every frame from StretchWeight in TableUpdateLayout()
+    GLfloat                   WidthAuto;                      // Automatic width
+    GLfloat                   StretchWeight;                  // Master width weight when (Flags & _WidthStretch). Often around ~1.0f initially.
+    GLfloat                   InitStretchWeightOrWidth;       // Value passed to TableSetupColumn(). For Width it is a content width (_without padding_).
     ImRect                  ClipRect;                       // Clipping rectangle for the column
     ImGuiID                 UserID;                         // Optional, value passed to TableSetupColumn()
-    float                   WorkMinX;                       // Contents region min ~(MinX + CellPaddingX + CellSpacingX1) == cursor start position when entering column
-    float                   WorkMaxX;                       // Contents region max ~(MaxX - CellPaddingX - CellSpacingX2)
-    float                   ItemWidth;                      // Current item width for the column, preserved across rows
-    float                   ContentMaxXFrozen;              // Contents maximum position for frozen rows (apart from headers), from which we can infer content width.
-    float                   ContentMaxXUnfrozen;
-    float                   ContentMaxXHeadersUsed;         // Contents maximum position for headers rows (regardless of freezing). TableHeader() automatically softclip itself + report ideal desired size, to avoid creating extraneous draw calls
-    float                   ContentMaxXHeadersIdeal;
+    GLfloat                   WorkMinX;                       // Contents region min ~(MinX + CellPaddingX + CellSpacingX1) == cursor start position when entering column
+    GLfloat                   WorkMaxX;                       // Contents region max ~(MaxX - CellPaddingX - CellSpacingX2)
+    GLfloat                   ItemWidth;                      // Current item width for the column, preserved across rows
+    GLfloat                   ContentMaxXFrozen;              // Contents maximum position for frozen rows (apart from headers), from which we can infer content width.
+    GLfloat                   ContentMaxXUnfrozen;
+    GLfloat                   ContentMaxXHeadersUsed;         // Contents maximum position for headers rows (regardless of freezing). TableHeader() automatically softclip itself + report ideal desired size, to avoid creating extraneous draw calls
+    GLfloat                   ContentMaxXHeadersIdeal;
     ImS16                   NameOffset;                     // Offset into parent ColumnsNames[]
     ImGuiTableColumnIdx     DisplayOrder;                   // Index within Table's IndexToDisplayOrder[] (column may be reordered by users)
     ImGuiTableColumnIdx     IndexWithinEnabledSet;          // Index within enabled/visible set (<= IndexToDisplayOrder)
@@ -2026,34 +2026,34 @@ struct ImGuiTable
     int                         CurrentColumn;
     ImS16                       InstanceCurrent;            // Count of BeginTable() calls with same ID in the same frame (generally 0). This is a little bit similar to BeginCount for a window, but multiple table with same ID look are multiple tables, they are just synched.
     ImS16                       InstanceInteracted;         // Mark which instance (generally 0) of the same ID is being interacted with
-    float                       RowPosY1;
-    float                       RowPosY2;
-    float                       RowMinHeight;               // Height submitted to TableNextRow()
-    float                       RowTextBaseline;
-    float                       RowIndentOffsetX;
+    GLfloat                       RowPosY1;
+    GLfloat                       RowPosY2;
+    GLfloat                       RowMinHeight;               // Height submitted to TableNextRow()
+    GLfloat                       RowTextBaseline;
+    GLfloat                       RowIndentOffsetX;
     ImGuiTableRowFlags          RowFlags : 16;              // Current row flags, see ImGuiTableRowFlags_
     ImGuiTableRowFlags          LastRowFlags : 16;
     int                         RowBgColorCounter;          // Counter for alternating background colors (can be fast-forwarded by e.g clipper), not same as CurrentRow because header rows typically don't increase this.
     ImU32                       RowBgColor[2];              // Background color override for current row.
     ImU32                       BorderColorStrong;
     ImU32                       BorderColorLight;
-    float                       BorderX1;
-    float                       BorderX2;
-    float                       HostIndentX;
-    float                       MinColumnWidth;
-    float                       OuterPaddingX;
-    float                       CellPaddingX;               // Padding from each borders
-    float                       CellPaddingY;
-    float                       CellSpacingX1;              // Spacing between non-bordered cells
-    float                       CellSpacingX2;
-    float                       LastOuterHeight;            // Outer height from last frame
-    float                       LastFirstRowHeight;         // Height of first row from last frame
-    float                       InnerWidth;                 // User value passed to BeginTable(), see comments at the top of BeginTable() for details.
-    float                       ColumnsGivenWidth;          // Sum of current column width
-    float                       ColumnsAutoFitWidth;        // Sum of ideal column width in order nothing to be clipped, used for auto-fitting and content width submission in outer window
-    float                       ResizedColumnNextWidth;
-    float                       ResizeLockMinContentsX2;    // Lock minimum contents width while resizing down in order to not create feedback loops. But we allow growing the table.
-    float                       RefScale;                   // Reference scale to be able to rescale columns on font/dpi changes.
+    GLfloat                       BorderX1;
+    GLfloat                       BorderX2;
+    GLfloat                       HostIndentX;
+    GLfloat                       MinColumnWidth;
+    GLfloat                       OuterPaddingX;
+    GLfloat                       CellPaddingX;               // Padding from each borders
+    GLfloat                       CellPaddingY;
+    GLfloat                       CellSpacingX1;              // Spacing between non-bordered cells
+    GLfloat                       CellSpacingX2;
+    GLfloat                       LastOuterHeight;            // Outer height from last frame
+    GLfloat                       LastFirstRowHeight;         // Height of first row from last frame
+    GLfloat                       InnerWidth;                 // User value passed to BeginTable(), see comments at the top of BeginTable() for details.
+    GLfloat                       ColumnsGivenWidth;          // Sum of current column width
+    GLfloat                       ColumnsAutoFitWidth;        // Sum of ideal column width in order nothing to be clipped, used for auto-fitting and content width submission in outer window
+    GLfloat                       ResizedColumnNextWidth;
+    GLfloat                       ResizeLockMinContentsX2;    // Lock minimum contents width while resizing down in order to not create feedback loops. But we allow growing the table.
+    GLfloat                       RefScale;                   // Reference scale to be able to rescale columns on font/dpi changes.
     ImRect                      OuterRect;                  // Note: for non-scrolling table, OuterRect.Max.y is often FLT_MAX until EndTable(), unless a height has been specified in BeginTable().
     ImRect                      InnerRect;                  // InnerRect but without decoration. As with OuterRect, for non-scrolling tables, InnerRect.Max.y is
     ImRect                      WorkRect;
@@ -2070,7 +2070,7 @@ struct ImGuiTable
     ImVec2                      HostBackupCursorMaxPos;     // Backup of InnerWindow->DC.CursorMaxPos at the end of BeginTable()
     ImVec2                      UserOuterSize;              // outer_size.x passed to BeginTable()
     ImVec1                      HostBackupColumnsOffset;    // Backup of OuterWindow->DC.ColumnsOffset at the end of BeginTable()
-    float                       HostBackupItemWidth;        // Backup of OuterWindow->DC.ItemWidth at the end of BeginTable()
+    GLfloat                       HostBackupItemWidth;        // Backup of OuterWindow->DC.ItemWidth at the end of BeginTable()
     int                         HostBackupItemWidthStackSize;// Backup of OuterWindow->DC.ItemWidthStack.Size at the end of BeginTable()
     ImGuiWindow*                OuterWindow;                // Parent window for the table
     ImGuiWindow*                InnerWindow;                // Window holding the table data (== OuterWindow or a child window)
@@ -2126,7 +2126,7 @@ struct ImGuiTable
 // sizeof() ~ 12
 struct ImGuiTableColumnSettings
 {
-    float                   WidthOrWeight;
+    GLfloat                   WidthOrWeight;
     ImGuiID                 UserID;
     ImGuiTableColumnIdx     Index;
     ImGuiTableColumnIdx     DisplayOrder;
@@ -2152,7 +2152,7 @@ struct ImGuiTableSettings
 {
     ImGuiID                     ID;                     // Set to 0 to invalidate/delete the setting
     ImGuiTableFlags             SaveFlags;              // Indicate data we want to save using the Resizable/Reorderable/Sortable/Hideable flags (could be using its own flags..)
-    float                       RefScale;               // Reference scale to be able to rescale columns on font/dpi changes.
+    GLfloat                       RefScale;               // Reference scale to be able to rescale columns on font/dpi changes.
     ImGuiTableColumnIdx         ColumnsCount;
     ImGuiTableColumnIdx         ColumnsCountMax;        // Maximum number of columns this settings instance can store, we can recycle a settings instance with lower number of columns but not higher
     bool                        WantApply;              // Set when loaded from .ini data (to enable merging/loading .ini data into an already running context)
@@ -2230,10 +2230,10 @@ namespace ImGui
 
     // Scrolling
     IMGUI_API void          SetNextWindowScroll(const ImVec2& scroll); // Use -1.0f on one axis to leave as-is
-    IMGUI_API void          SetScrollX(ImGuiWindow* window, float scroll_x);
-    IMGUI_API void          SetScrollY(ImGuiWindow* window, float scroll_y);
-    IMGUI_API void          SetScrollFromPosX(ImGuiWindow* window, float local_x, float center_x_ratio);
-    IMGUI_API void          SetScrollFromPosY(ImGuiWindow* window, float local_y, float center_y_ratio);
+    IMGUI_API void          SetScrollX(ImGuiWindow* window, GLfloat scroll_x);
+    IMGUI_API void          SetScrollY(ImGuiWindow* window, GLfloat scroll_y);
+    IMGUI_API void          SetScrollFromPosX(ImGuiWindow* window, GLfloat local_x, GLfloat center_x_ratio);
+    IMGUI_API void          SetScrollFromPosY(ImGuiWindow* window, GLfloat local_y, GLfloat center_y_ratio);
     IMGUI_API ImVec2        ScrollToBringRectIntoView(ImGuiWindow* window, const ImRect& item_rect);
 
     // Basic Accessors
@@ -2253,22 +2253,22 @@ namespace ImGui
     IMGUI_API ImGuiID       GetIDWithSeed(const char* str_id_begin, const char* str_id_end, ImGuiID seed);
 
     // Basic Helpers for widget code
-    IMGUI_API void          ItemSize(const ImVec2& size, float text_baseline_y = -1.0f);
-    IMGUI_API void          ItemSize(const ImRect& bb, float text_baseline_y = -1.0f);
+    IMGUI_API void          ItemSize(const ImVec2& size, GLfloat text_baseline_y = -1.0f);
+    IMGUI_API void          ItemSize(const ImRect& bb, GLfloat text_baseline_y = -1.0f);
     IMGUI_API bool          ItemAdd(const ImRect& bb, ImGuiID id, const ImRect* nav_bb = NULL);
     IMGUI_API bool          ItemHoverable(const ImRect& bb, ImGuiID id);
     IMGUI_API bool          IsClippedEx(const ImRect& bb, ImGuiID id, bool clip_even_when_logged);
     IMGUI_API void          SetLastItemData(ImGuiWindow* window, ImGuiID item_id, ImGuiItemStatusFlags status_flags, const ImRect& item_rect);
     IMGUI_API bool          FocusableItemRegister(ImGuiWindow* window, ImGuiID id);   // Return true if focus is requested
     IMGUI_API void          FocusableItemUnregister(ImGuiWindow* window);
-    IMGUI_API ImVec2        CalcItemSize(ImVec2 size, float default_w, float default_h);
-    IMGUI_API float         CalcWrapWidthForPos(const ImVec2& pos, float wrap_pos_x);
-    IMGUI_API void          PushMultiItemsWidths(int components, float width_full);
+    IMGUI_API ImVec2        CalcItemSize(ImVec2 size, GLfloat default_w, GLfloat default_h);
+    IMGUI_API GLfloat         CalcWrapWidthForPos(const ImVec2& pos, GLfloat wrap_pos_x);
+    IMGUI_API void          PushMultiItemsWidths(int components, GLfloat width_full);
     IMGUI_API void          PushItemFlag(ImGuiItemFlags option, bool enabled);
     IMGUI_API void          PopItemFlag();
     IMGUI_API bool          IsItemToggledSelection();                                   // Was the last item selection toggled? (after Selectable(), TreeNode() etc. We only returns toggle _event_ in order to handle clipping correctly)
     IMGUI_API ImVec2        GetContentRegionMaxAbs();
-    IMGUI_API void          ShrinkWidths(ImGuiShrinkWidthItem* items, int count, float width_excess);
+    IMGUI_API void          ShrinkWidths(ImGuiShrinkWidthItem* items, int count, GLfloat width_excess);
 
     // Logging/Capture
     IMGUI_API void          LogBegin(ImGuiLogType type, int auto_open_depth);           // -> BeginCapture() when we design v2 api, for now stay under the radar by using the old name.
@@ -2294,9 +2294,9 @@ namespace ImGui
     IMGUI_API void          NavMoveRequestCancel();
     IMGUI_API void          NavMoveRequestForward(ImGuiDir move_dir, ImGuiDir clip_dir, const ImRect& bb_rel, ImGuiNavMoveFlags move_flags);
     IMGUI_API void          NavMoveRequestTryWrapping(ImGuiWindow* window, ImGuiNavMoveFlags move_flags);
-    IMGUI_API float         GetNavInputAmount(ImGuiNavInput n, ImGuiInputReadMode mode);
-    IMGUI_API ImVec2        GetNavInputAmount2d(ImGuiNavDirSourceFlags dir_sources, ImGuiInputReadMode mode, float slow_factor = 0.0f, float fast_factor = 0.0f);
-    IMGUI_API int           CalcTypematicRepeatAmount(float t0, float t1, float repeat_delay, float repeat_rate);
+    IMGUI_API GLfloat         GetNavInputAmount(ImGuiNavInput n, ImGuiInputReadMode mode);
+    IMGUI_API ImVec2        GetNavInputAmount2d(ImGuiNavDirSourceFlags dir_sources, ImGuiInputReadMode mode, GLfloat slow_factor = 0.0f, GLfloat fast_factor = 0.0f);
+    IMGUI_API int           CalcTypematicRepeatAmount(GLfloat t0, GLfloat t1, GLfloat repeat_delay, GLfloat repeat_rate);
     IMGUI_API void          ActivateItem(ImGuiID id);   // Remotely activate a button, checkbox, tree node etc. given its unique ID. activation is queued and processed on the next frame when the item is encountered again.
     IMGUI_API void          SetNavID(ImGuiID id, int nav_layer, ImGuiID focus_scope_id);
     IMGUI_API void          SetNavIDWithRectRel(ImGuiID id, int nav_layer, ImGuiID focus_scope_id, const ImRect& rect_rel);
@@ -2315,7 +2315,7 @@ namespace ImGui
     inline bool             IsActiveIdUsingNavDir(ImGuiDir dir)                         { ImGuiContext& g = *GImGui; return (g.ActiveIdUsingNavDirMask & (1 << dir)) != 0; }
     inline bool             IsActiveIdUsingNavInput(ImGuiNavInput input)                { ImGuiContext& g = *GImGui; return (g.ActiveIdUsingNavInputMask & (1 << input)) != 0; }
     inline bool             IsActiveIdUsingKey(ImGuiKey key)                            { ImGuiContext& g = *GImGui; IM_ASSERT(key < 64); return (g.ActiveIdUsingKeyInputMask & ((ImU64)1 << key)) != 0; }
-    IMGUI_API bool          IsMouseDragPastThreshold(ImGuiMouseButton button, float lock_threshold = -1.0f);
+    IMGUI_API bool          IsMouseDragPastThreshold(ImGuiMouseButton button, GLfloat lock_threshold = -1.0f);
     inline bool             IsKeyPressedMap(ImGuiKey key, bool repeat = true)           { ImGuiContext& g = *GImGui; const int key_index = g.IO.KeyMap[key]; return (key_index >= 0) ? IsKeyPressed(key_index, repeat) : false; }
     inline bool             IsNavInputDown(ImGuiNavInput n)                             { ImGuiContext& g = *GImGui; return g.IO.NavInputs[n] > 0.0f; }
     inline bool             IsNavInputTest(ImGuiNavInput n, ImGuiInputReadMode rm)      { return (GetNavInputAmount(n, rm) > 0.0f); }
@@ -2335,22 +2335,22 @@ namespace ImGui
     IMGUI_API void          PopColumnsBackground();
     IMGUI_API ImGuiID       GetColumnsID(const char* str_id, int count);
     IMGUI_API ImGuiOldColumns* FindOrCreateColumns(ImGuiWindow* window, ImGuiID id);
-    IMGUI_API float         GetColumnOffsetFromNorm(const ImGuiOldColumns* columns, float offset_norm);
-    IMGUI_API float         GetColumnNormFromOffset(const ImGuiOldColumns* columns, float offset);
+    IMGUI_API GLfloat         GetColumnOffsetFromNorm(const ImGuiOldColumns* columns, GLfloat offset_norm);
+    IMGUI_API GLfloat         GetColumnNormFromOffset(const ImGuiOldColumns* columns, GLfloat offset);
 
     // Tables: Candidates for public API
     IMGUI_API void          TableOpenContextMenu(int column_n = -1);
     IMGUI_API void          TableSetColumnEnabled(int column_n, bool enabled);
-    IMGUI_API void          TableSetColumnWidth(int column_n, float width);
+    IMGUI_API void          TableSetColumnWidth(int column_n, GLfloat width);
     IMGUI_API void          TableSetColumnSortDirection(int column_n, ImGuiSortDirection sort_direction, bool append_to_sort_specs);
     IMGUI_API int           TableGetHoveredColumn(); // May use (TableGetColumnFlags() & ImGuiTableColumnFlags_IsHovered) instead. Return hovered column. return -1 when table is not hovered. return columns_count if the unused space at the right of visible columns is hovered.
-    IMGUI_API float         TableGetHeaderRowHeight();
+    IMGUI_API GLfloat         TableGetHeaderRowHeight();
     IMGUI_API void          TablePushBackgroundChannel();
     IMGUI_API void          TablePopBackgroundChannel();
 
     // Tables: Internals
     IMGUI_API ImGuiTable*   TableFindByID(ImGuiID id);
-    IMGUI_API bool          BeginTableEx(const char* name, ImGuiID id, int columns_count, ImGuiTableFlags flags = 0, const ImVec2& outer_size = ImVec2(0, 0), float inner_width = 0.0f);
+    IMGUI_API bool          BeginTableEx(const char* name, ImGuiID id, int columns_count, ImGuiTableFlags flags = 0, const ImVec2& outer_size = ImVec2(0, 0), GLfloat inner_width = 0.0f);
     IMGUI_API void          TableBeginInitMemory(ImGuiTable* table, int columns_count);
     IMGUI_API void          TableBeginApplyRequests(ImGuiTable* table);
     IMGUI_API void          TableSetupDrawChannels(ImGuiTable* table);
@@ -2364,7 +2364,7 @@ namespace ImGui
     IMGUI_API void          TableSortSpecsBuild(ImGuiTable* table);
     IMGUI_API ImGuiSortDirection TableGetColumnNextSortDirection(ImGuiTableColumn* column);
     IMGUI_API void          TableFixColumnSortDirection(ImGuiTable* table, ImGuiTableColumn* column);
-    IMGUI_API float         TableGetColumnWidthAuto(ImGuiTable* table, ImGuiTableColumn* column);
+    IMGUI_API GLfloat         TableGetColumnWidthAuto(ImGuiTable* table, ImGuiTableColumn* column);
     IMGUI_API void          TableBeginRow(ImGuiTable* table);
     IMGUI_API void          TableEndRow(ImGuiTable* table);
     IMGUI_API void          TableBeginCell(ImGuiTable* table, int column_n);
@@ -2372,7 +2372,7 @@ namespace ImGui
     IMGUI_API ImRect        TableGetCellBgRect(const ImGuiTable* table, int column_n);
     IMGUI_API const char*   TableGetColumnName(const ImGuiTable* table, int column_n);
     IMGUI_API ImGuiID       TableGetColumnResizeID(const ImGuiTable* table, int column_n, int instance_no = 0);
-    IMGUI_API float         TableGetMaxColumnWidth(const ImGuiTable* table, int column_n);
+    IMGUI_API GLfloat         TableGetMaxColumnWidth(const ImGuiTable* table, int column_n);
     IMGUI_API void          TableSetColumnWidthAutoSingle(ImGuiTable* table, int column_n);
     IMGUI_API void          TableSetColumnWidthAutoAll(ImGuiTable* table);
     IMGUI_API void          TableRemove(ImGuiTable* table);
@@ -2404,28 +2404,28 @@ namespace ImGui
     // AVOID USING OUTSIDE OF IMGUI.CPP! NOT FOR PUBLIC CONSUMPTION. THOSE FUNCTIONS ARE A MESS. THEIR SIGNATURE AND BEHAVIOR WILL CHANGE, THEY NEED TO BE REFACTORED INTO SOMETHING DECENT.
     // NB: All position are in absolute pixels coordinates (we are never using window coordinates internally)
     IMGUI_API void          RenderText(ImVec2 pos, const char* text, const char* text_end = NULL, bool hide_text_after_hash = true);
-    IMGUI_API void          RenderTextWrapped(ImVec2 pos, const char* text, const char* text_end, float wrap_width);
+    IMGUI_API void          RenderTextWrapped(ImVec2 pos, const char* text, const char* text_end, GLfloat wrap_width);
     IMGUI_API void          RenderTextClipped(const ImVec2& pos_min, const ImVec2& pos_max, const char* text, const char* text_end, const ImVec2* text_size_if_known, const ImVec2& align = ImVec2(0, 0), const ImRect* clip_rect = NULL);
     IMGUI_API void          RenderTextClippedEx(ImDrawList* draw_list, const ImVec2& pos_min, const ImVec2& pos_max, const char* text, const char* text_end, const ImVec2* text_size_if_known, const ImVec2& align = ImVec2(0, 0), const ImRect* clip_rect = NULL);
-    IMGUI_API void          RenderTextEllipsis(ImDrawList* draw_list, const ImVec2& pos_min, const ImVec2& pos_max, float clip_max_x, float ellipsis_max_x, const char* text, const char* text_end, const ImVec2* text_size_if_known);
-    IMGUI_API void          RenderFrame(ImVec2 p_min, ImVec2 p_max, ImU32 fill_col, bool border = true, float rounding = 0.0f);
-    IMGUI_API void          RenderFrameBorder(ImVec2 p_min, ImVec2 p_max, float rounding = 0.0f);
-    IMGUI_API void          RenderColorRectWithAlphaCheckerboard(ImDrawList* draw_list, ImVec2 p_min, ImVec2 p_max, ImU32 fill_col, float grid_step, ImVec2 grid_off, float rounding = 0.0f, int rounding_corners_flags = ~0);
+    IMGUI_API void          RenderTextEllipsis(ImDrawList* draw_list, const ImVec2& pos_min, const ImVec2& pos_max, GLfloat clip_max_x, GLfloat ellipsis_max_x, const char* text, const char* text_end, const ImVec2* text_size_if_known);
+    IMGUI_API void          RenderFrame(ImVec2 p_min, ImVec2 p_max, ImU32 fill_col, bool border = true, GLfloat rounding = 0.0f);
+    IMGUI_API void          RenderFrameBorder(ImVec2 p_min, ImVec2 p_max, GLfloat rounding = 0.0f);
+    IMGUI_API void          RenderColorRectWithAlphaCheckerboard(ImDrawList* draw_list, ImVec2 p_min, ImVec2 p_max, ImU32 fill_col, GLfloat grid_step, ImVec2 grid_off, GLfloat rounding = 0.0f, int rounding_corners_flags = ~0);
     IMGUI_API void          RenderNavHighlight(const ImRect& bb, ImGuiID id, ImGuiNavHighlightFlags flags = ImGuiNavHighlightFlags_TypeDefault); // Navigation highlight
     IMGUI_API const char*   FindRenderedTextEnd(const char* text, const char* text_end = NULL); // Find the optional ## from which we stop displaying text.
 
     // Render helpers (those functions don't access any ImGui state!)
-    IMGUI_API void          RenderArrow(ImDrawList* draw_list, ImVec2 pos, ImU32 col, ImGuiDir dir, float scale = 1.0f);
+    IMGUI_API void          RenderArrow(ImDrawList* draw_list, ImVec2 pos, ImU32 col, ImGuiDir dir, GLfloat scale = 1.0f);
     IMGUI_API void          RenderBullet(ImDrawList* draw_list, ImVec2 pos, ImU32 col);
-    IMGUI_API void          RenderCheckMark(ImDrawList* draw_list, ImVec2 pos, ImU32 col, float sz);
-    IMGUI_API void          RenderMouseCursor(ImDrawList* draw_list, ImVec2 pos, float scale, ImGuiMouseCursor mouse_cursor, ImU32 col_fill, ImU32 col_border, ImU32 col_shadow);
+    IMGUI_API void          RenderCheckMark(ImDrawList* draw_list, ImVec2 pos, ImU32 col, GLfloat sz);
+    IMGUI_API void          RenderMouseCursor(ImDrawList* draw_list, ImVec2 pos, GLfloat scale, ImGuiMouseCursor mouse_cursor, ImU32 col_fill, ImU32 col_border, ImU32 col_shadow);
     IMGUI_API void          RenderArrowPointingAt(ImDrawList* draw_list, ImVec2 pos, ImVec2 half_sz, ImGuiDir direction, ImU32 col);
-    IMGUI_API void          RenderRectFilledRangeH(ImDrawList* draw_list, const ImRect& rect, ImU32 col, float x_start_norm, float x_end_norm, float rounding);
-    IMGUI_API void          RenderRectFilledWithHole(ImDrawList* draw_list, ImRect outer, ImRect inner, ImU32 col, float rounding);
+    IMGUI_API void          RenderRectFilledRangeH(ImDrawList* draw_list, const ImRect& rect, ImU32 col, GLfloat x_start_norm, GLfloat x_end_norm, GLfloat rounding);
+    IMGUI_API void          RenderRectFilledWithHole(ImDrawList* draw_list, ImRect outer, ImRect inner, ImU32 col, GLfloat rounding);
 
 #ifndef IMGUI_DISABLE_OBSOLETE_FUNCTIONS
     // [1.71: 2019/06/07: Updating prototypes of some of the internal functions. Leaving those for reference for a short while]
-    inline void RenderArrow(ImVec2 pos, ImGuiDir dir, float scale=1.0f) { ImGuiWindow* window = GetCurrentWindow(); RenderArrow(window->DrawList, pos, GetColorU32(ImGuiCol_Text), dir, scale); }
+    inline void RenderArrow(ImVec2 pos, ImGuiDir dir, GLfloat scale=1.0f) { ImGuiWindow* window = GetCurrentWindow(); RenderArrow(window->DrawList, pos, GetColorU32(ImGuiCol_Text), dir, scale); }
     inline void RenderBullet(ImVec2 pos)                                { ImGuiWindow* window = GetCurrentWindow(); RenderBullet(window->DrawList, pos, GetColorU32(ImGuiCol_Text)); }
 #endif
 
@@ -2436,7 +2436,7 @@ namespace ImGui
     IMGUI_API bool          CollapseButton(ImGuiID id, const ImVec2& pos);
     IMGUI_API bool          ArrowButtonEx(const char* str_id, ImGuiDir dir, ImVec2 size_arg, ImGuiButtonFlags flags = 0);
     IMGUI_API void          Scrollbar(ImGuiAxis axis);
-    IMGUI_API bool          ScrollbarEx(const ImRect& bb, ImGuiID id, ImGuiAxis axis, float* p_scroll_v, float avail_v, float contents_v, ImDrawCornerFlags rounding_corners);
+    IMGUI_API bool          ScrollbarEx(const ImRect& bb, ImGuiID id, ImGuiAxis axis, GLfloat* p_scroll_v, GLfloat avail_v, GLfloat contents_v, ImDrawCornerFlags rounding_corners);
     IMGUI_API bool          ImageButtonEx(ImGuiID id, ImTextureID texture_id, const ImVec2& size, const ImVec2& uv0, const ImVec2& uv1, const ImVec2& padding, const ImVec4& bg_col, const ImVec4& tint_col);
     IMGUI_API ImRect        GetWindowScrollbarRect(ImGuiWindow* window, ImGuiAxis axis);
     IMGUI_API ImGuiID       GetWindowScrollbarID(ImGuiWindow* window, ImGuiAxis axis);
@@ -2447,19 +2447,19 @@ namespace ImGui
 
     // Widgets low-level behaviors
     IMGUI_API bool          ButtonBehavior(const ImRect& bb, ImGuiID id, bool* out_hovered, bool* out_held, ImGuiButtonFlags flags = 0);
-    IMGUI_API bool          DragBehavior(ImGuiID id, ImGuiDataType data_type, void* p_v, float v_speed, const void* p_min, const void* p_max, const char* format, ImGuiSliderFlags flags);
+    IMGUI_API bool          DragBehavior(ImGuiID id, ImGuiDataType data_type, void* p_v, GLfloat v_speed, const void* p_min, const void* p_max, const char* format, ImGuiSliderFlags flags);
     IMGUI_API bool          SliderBehavior(const ImRect& bb, ImGuiID id, ImGuiDataType data_type, void* p_v, const void* p_min, const void* p_max, const char* format, ImGuiSliderFlags flags, ImRect* out_grab_bb);
-    IMGUI_API bool          SplitterBehavior(const ImRect& bb, ImGuiID id, ImGuiAxis axis, float* size1, float* size2, float min_size1, float min_size2, float hover_extend = 0.0f, float hover_visibility_delay = 0.0f);
+    IMGUI_API bool          SplitterBehavior(const ImRect& bb, ImGuiID id, ImGuiAxis axis, GLfloat* size1, GLfloat* size2, GLfloat min_size1, GLfloat min_size2, GLfloat hover_extend = 0.0f, GLfloat hover_visibility_delay = 0.0f);
     IMGUI_API bool          TreeNodeBehavior(ImGuiID id, ImGuiTreeNodeFlags flags, const char* label, const char* label_end = NULL);
     IMGUI_API bool          TreeNodeBehaviorIsOpen(ImGuiID id, ImGuiTreeNodeFlags flags = 0);                     // Consume previous SetNextItemOpen() data, if any. May return true when logging
     IMGUI_API void          TreePushOverrideID(ImGuiID id);
 
     // Template functions are instantiated in imgui_widgets.cpp for a finite number of types.
     // To use them externally (for custom widget) you may need an "extern template" statement in your code in order to link to existing instances and silence Clang warnings (see #2036).
-    // e.g. " extern template IMGUI_API float RoundScalarWithFormatT<float, float>(const char* format, ImGuiDataType data_type, float v); "
-    template<typename T, typename SIGNED_T, typename FLOAT_T>   IMGUI_API float ScaleRatioFromValueT(ImGuiDataType data_type, T v, T v_min, T v_max, bool is_logarithmic, float logarithmic_zero_epsilon, float zero_deadzone_size);
-    template<typename T, typename SIGNED_T, typename FLOAT_T>   IMGUI_API T     ScaleValueFromRatioT(ImGuiDataType data_type, float t, T v_min, T v_max, bool is_logarithmic, float logarithmic_zero_epsilon, float zero_deadzone_size);
-    template<typename T, typename SIGNED_T, typename FLOAT_T>   IMGUI_API bool  DragBehaviorT(ImGuiDataType data_type, T* v, float v_speed, T v_min, T v_max, const char* format, ImGuiSliderFlags flags);
+    // e.g. " extern template IMGUI_API GLfloat RoundScalarWithFormatT<GLfloat, GLfloat>(const char* format, ImGuiDataType data_type, GLfloat v); "
+    template<typename T, typename SIGNED_T, typename FLOAT_T>   IMGUI_API GLfloat ScaleRatioFromValueT(ImGuiDataType data_type, T v, T v_min, T v_max, bool is_logarithmic, GLfloat logarithmic_zero_epsilon, GLfloat zero_deadzone_size);
+    template<typename T, typename SIGNED_T, typename FLOAT_T>   IMGUI_API T     ScaleValueFromRatioT(ImGuiDataType data_type, GLfloat t, T v_min, T v_max, bool is_logarithmic, GLfloat logarithmic_zero_epsilon, GLfloat zero_deadzone_size);
+    template<typename T, typename SIGNED_T, typename FLOAT_T>   IMGUI_API bool  DragBehaviorT(ImGuiDataType data_type, T* v, GLfloat v_speed, T v_min, T v_max, const char* format, ImGuiSliderFlags flags);
     template<typename T, typename SIGNED_T, typename FLOAT_T>   IMGUI_API bool  SliderBehaviorT(const ImRect& bb, ImGuiID id, ImGuiDataType data_type, T* v, T v_min, T v_max, const char* format, ImGuiSliderFlags flags, ImRect* out_grab_bb);
     template<typename T, typename SIGNED_T>                     IMGUI_API T     RoundScalarWithFormatT(const char* format, ImGuiDataType data_type, T v);
     template<typename T>                                        IMGUI_API bool  CheckboxFlagsT(const char* label, T* flags, T flags_value);
@@ -2480,12 +2480,12 @@ namespace ImGui
     inline ImGuiInputTextState* GetInputTextState(ImGuiID id)   { ImGuiContext& g = *GImGui; return (g.InputTextState.ID == id) ? &g.InputTextState : NULL; } // Get input text state if active
 
     // Color
-    IMGUI_API void          ColorTooltip(const char* text, const float* col, ImGuiColorEditFlags flags);
-    IMGUI_API void          ColorEditOptionsPopup(const float* col, ImGuiColorEditFlags flags);
-    IMGUI_API void          ColorPickerOptionsPopup(const float* ref_col, ImGuiColorEditFlags flags);
+    IMGUI_API void          ColorTooltip(const char* text, const GLfloat* col, ImGuiColorEditFlags flags);
+    IMGUI_API void          ColorEditOptionsPopup(const GLfloat* col, ImGuiColorEditFlags flags);
+    IMGUI_API void          ColorPickerOptionsPopup(const GLfloat* ref_col, ImGuiColorEditFlags flags);
 
     // Plot
-    IMGUI_API int           PlotEx(ImGuiPlotType plot_type, const char* label, float (*values_getter)(void* data, int idx), void* data, int values_count, int values_offset, const char* overlay_text, float scale_min, float scale_max, ImVec2 frame_size);
+    IMGUI_API int           PlotEx(ImGuiPlotType plot_type, const char* label, GLfloat (*values_getter)(void* data, int idx), void* data, int values_count, int values_offset, const char* overlay_text, GLfloat scale_min, GLfloat scale_max, ImVec2 frame_size);
 
     // Shade functions (write over already created vertices)
     IMGUI_API void          ShadeVertsLinearColorGradientKeepAlpha(ImDrawList* draw_list, int vert_start_idx, int vert_end_idx, ImVec2 gradient_p0, ImVec2 gradient_p1, ImU32 col0, ImU32 col1);
@@ -2530,12 +2530,12 @@ struct ImFontBuilderIO
 // Helper for font builder
 IMGUI_API const ImFontBuilderIO* ImFontAtlasGetBuilderForStbTruetype();
 IMGUI_API void      ImFontAtlasBuildInit(ImFontAtlas* atlas);
-IMGUI_API void      ImFontAtlasBuildSetupFont(ImFontAtlas* atlas, ImFont* font, ImFontConfig* font_config, float ascent, float descent);
+IMGUI_API void      ImFontAtlasBuildSetupFont(ImFontAtlas* atlas, ImFont* font, ImFontConfig* font_config, GLfloat ascent, GLfloat descent);
 IMGUI_API void      ImFontAtlasBuildPackCustomRects(ImFontAtlas* atlas, void* stbrp_context_opaque);
 IMGUI_API void      ImFontAtlasBuildFinish(ImFontAtlas* atlas);
 IMGUI_API void      ImFontAtlasBuildRender8bppRectFromString(ImFontAtlas* atlas, int x, int y, int w, int h, const char* in_str, char in_marker_char, unsigned char in_marker_pixel_value);
 IMGUI_API void      ImFontAtlasBuildRender32bppRectFromString(ImFontAtlas* atlas, int x, int y, int w, int h, const char* in_str, char in_marker_char, unsigned int in_marker_pixel_value);
-IMGUI_API void      ImFontAtlasBuildMultiplyCalcLookupTable(unsigned char out_table[256], float in_multiply_factor);
+IMGUI_API void      ImFontAtlasBuildMultiplyCalcLookupTable(unsigned char out_table[256], GLfloat in_multiply_factor);
 IMGUI_API void      ImFontAtlasBuildMultiplyRectAlpha8(const unsigned char table[256], unsigned char* pixels, int x, int y, int w, int h, int stride);
 
 //-----------------------------------------------------------------------------

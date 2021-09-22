@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Wave.h"
 
-Wave::Wave(Path& path, int numWave, TypeEnemy type, int numEnemies, float delay, float frecuency)
+Wave::Wave(Path& path, int numWave, TypeEnemy type, int numEnemies, GLfloat delay, GLfloat frecuency)
 	: path(&path), numEnemies(numEnemies), enemiesLeft(numEnemies), type(type), delay(delay), frecuency(frecuency), numWave(numWave)
 {
 }
@@ -22,7 +22,7 @@ void Wave::sendEnemy() const
 	path->spawnEnemy(type);
 }
 
-void Wave::sendEnemy(float deltaTime)
+void Wave::sendEnemy(GLfloat deltaTime)
 {
 	if (enemiesLeft > 0)
 	{

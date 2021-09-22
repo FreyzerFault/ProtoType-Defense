@@ -35,8 +35,8 @@ void Round::startRound(Path& path)
 	{
 		TypeEnemy type = TypeEnemy::sneaky;
 		int numEnemies = 5;
-		float delay = 5;
-		float frecuency = 1;
+		GLfloat delay = 5;
+		GLfloat frecuency = 1;
 		waves.emplace_back(path, i + 1, type, numEnemies, delay, frecuency);
 	}
 	
@@ -65,7 +65,7 @@ void Round::nextWave()
 }
 
 
-void Round::sendEnemy(float deltaTime)
+void Round::sendEnemy(GLfloat deltaTime)
 {
 	if (currentWave->isEnded())
 		nextWave();

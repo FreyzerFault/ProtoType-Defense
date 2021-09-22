@@ -14,7 +14,7 @@ test::TestDynamicBuffer::TestDynamicBuffer()
 	m_IBO(6 * m_QuadsX * m_QuadsY), // Vacio
 	m_Shader(shaderPath),
 	m_CurrentTexture(0),
-	m_Proj(ortho(0.0f, (float)windowWidth, 0.0f, (float)windowHeight, -200.0f, 2000.0f)),
+	m_Proj(ortho(0.0f, (GLfloat)windowWidth, 0.0f, (GLfloat)windowHeight, -200.0f, 2000.0f)),
 	m_View(lookAt(vec3(0.0f, 0.0f, 1000.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f))),
 	m_Model(translate(mat4(1.0f), vec3(0, 0, 0)))
 {
@@ -28,10 +28,10 @@ test::TestDynamicBuffer::TestDynamicBuffer()
 	// LAYOUTs:
 
 	VertexBufferLayout layout;
-	layout.Push<float>(2); // Position
-	layout.Push<float>(4); // Color
-	layout.Push<float>(2); // TexCoord
-	layout.Push<float>(1); // TexID
+	layout.Push<GLfloat>(2); // Position
+	layout.Push<GLfloat>(4); // Color
+	layout.Push<GLfloat>(2); // TexCoord
+	layout.Push<GLfloat>(1); // TexID
 
 	m_VAO.addBuffer(m_VBO, layout);
 
@@ -119,7 +119,7 @@ void test::TestDynamicBuffer::onImGuiRender()
 
 
 TestDynamicBuffer::Vertex* TestDynamicBuffer::createQuad(
-	Vertex* target, const float x, const float y, const float size, const float texIndex)
+	Vertex* target, const GLfloat x, const GLfloat y, const GLfloat size, const GLfloat texIndex)
 {
 	*target = {{x,			y},			{tileColor[0], tileColor[1], tileColor[2], 1.0f}, {0.0f, 1.0f}, texIndex };
 	target++;							
@@ -135,14 +135,14 @@ TestDynamicBuffer::Vertex* TestDynamicBuffer::createQuad(
 
 void test::TestDynamicBuffer::createBoard()
 {
-	uint32_t offsetIndex = 0;
-	uint32_t offsetQuad = 0;
+	GLuint offsetIndex = 0;
+	GLuint offsetQuad = 0;
 	for (int i = 0; i < m_QuadsX; i++)
 		for (int j = 0; j < m_QuadsY; j++)
 		{
 			createQuad(&m_BoardVertices[offsetQuad], // target buffer quad
-				(float)i * tileSize + 1, (float)j * tileSize + 1,
-				tileSize - 2, (float)((i + j) % 2)); // ID de Textura intercalada (i+j)%2, -1 = solo color
+				(GLfloat)i * tileSize + 1, (GLfloat)j * tileSize + 1,
+				tileSize - 2, (GLfloat)((i + j) % 2)); // ID de Textura intercalada (i+j)%2, -1 = solo color
 
 			m_BoardIndices[offsetIndex + 0] = offsetQuad + 0;
 			m_BoardIndices[offsetIndex + 1] = offsetQuad + 1;

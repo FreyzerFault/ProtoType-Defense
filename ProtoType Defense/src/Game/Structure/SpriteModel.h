@@ -10,14 +10,14 @@ class SpriteModel
 public:
 
 	struct SpriteVertex {
-		float position[3];
-		float color[4];
-		float texCoords[2];
-		float texIndex;
+		GLfloat position[3];
+		GLfloat color[4];
+		GLfloat texCoords[2];
+		GLint texIndex; // Tex Index can be -1 (No Texture)
 	};
 
 	SpriteVertex vertices[4];
-	unsigned int indices[6];
+	GLuint indices[6];
 	VertexArray VAO;
 	VertexBuffer VBO;
 	IndexBuffer IBO;
@@ -25,12 +25,12 @@ public:
 
 	SpriteModel() : SpriteModel(0){}
 
-	SpriteModel(uint32_t texID)
+	SpriteModel(GLint texID)
 		: vertices{
-			{{-0.5f, -0.5f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, {0.0f, 1.0f}, (float)texID},
-			{{+0.5f, -0.5f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, {1.0f, 1.0f}, (float)texID},
-			{{+0.5f, +0.5f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, {1.0f, 0.0f}, (float)texID},
-			{{-0.5f, +0.5f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, {0.0f, 0.0f}, (float)texID},
+			{{-0.5f, -0.5f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, {0.0f, 1.0f}, texID},
+			{{+0.5f, -0.5f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, {1.0f, 1.0f}, texID},
+			{{+0.5f, +0.5f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, {1.0f, 0.0f}, texID},
+			{{-0.5f, +0.5f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, {0.0f, 0.0f}, texID},
 		},
 		indices{
 			0, 1, 2,
@@ -40,10 +40,10 @@ public:
 		IBO(indices, 6)
 	{
 
-		layout.Push<float>(3);	// POSITION
-		layout.Push<float>(4);	// COLOR
-		layout.Push<float>(2);	// TEXCOORDS
-		layout.Push<float>(1);	// TEXID
+		layout.Push<GLfloat>(3);	// POSITION
+		layout.Push<GLfloat>(4);	// COLOR
+		layout.Push<GLfloat>(2);	// TEXCOORDS
+		layout.Push<GLint>(1);	// TEXID
 		VAO.addBuffer(VBO, layout);
 	}
 

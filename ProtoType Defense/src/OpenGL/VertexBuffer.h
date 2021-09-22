@@ -7,8 +7,8 @@ class VertexBuffer
 {
 public:
 	VertexBuffer();
-	VertexBuffer(const void* data, uint32_t size, uint32_t drawType = GL_STATIC_DRAW);
-	VertexBuffer(uint32_t size); // Empty Buffer
+	VertexBuffer(const void* data, GLuint size, GLuint drawType = GL_STATIC_DRAW);
+	VertexBuffer(GLuint size); // Empty Buffer
 
 	// No se permiten copias porque cada VAO tiene un ID unico
 	VertexBuffer(const VertexBuffer& orig) = delete;
@@ -18,11 +18,11 @@ public:
 	void Bind() const;
 	void Unbind() const;
 
-	void setData(const void* data, uint32_t size, uint32_t drawType = GL_DYNAMIC_DRAW);
-	void updateData(const void* data, uint32_t size);
+	void setData(const void* data, GLuint size, GLuint drawType = GL_DYNAMIC_DRAW);
+	void updateData(const void* data, GLuint size);
 
 private:
-	uint32_t m_RendererID;
+	GLuint m_RendererID;
 
 };
 

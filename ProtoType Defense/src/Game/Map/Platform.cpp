@@ -3,7 +3,7 @@
 #include "Objects/Tower.h"
 
 
-Platform::Platform(glm::vec3 position, float tileSize)
+Platform::Platform(glm::vec3 position, GLfloat tileSize)
 	: m_Position(position), m_Empty(true), m_Tower(nullptr), tileSize(tileSize)
 {
 }

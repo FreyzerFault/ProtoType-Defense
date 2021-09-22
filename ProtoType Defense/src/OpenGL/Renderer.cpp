@@ -90,11 +90,11 @@ void Renderer::draw(const Hitbox& hitbox)
 
 
 // CIRCLE
-void Renderer::drawCircle(glm::vec3 center, float radius, int segments, vec4 color)
+void Renderer::drawCircle(glm::vec3 center, GLfloat radius, int segments, vec4 color)
 {
 	std::vector<HitboxGrid::VertexSimple> vertices(segments + 1); // Center + Circle
 
-	std::vector<uint32_t> indices(segments * 3); // {center, vertex, vertex+1}
+	std::vector<GLuint> indices(segments * 3); // {center, vertex, vertex+1}
 
 	const HitboxGrid::VertexSimple centerVertex = { {center.x, center.y, center.z}, {color.x, color.y, color.z, color.w} };
 
@@ -102,9 +102,9 @@ void Renderer::drawCircle(glm::vec3 center, float radius, int segments, vec4 col
 	
 	for (int i = 1; i <= segments; i++) {
 
-		const float angle = 2.0f * 3.1415926f * (float)i / (float)segments;
-		const float x = radius * cosf(angle);
-		const float y = radius * sinf(angle);
+		const GLfloat angle = 2.0f * 3.1415926f * (GLfloat)i / (GLfloat)segments;
+		const GLfloat x = radius * cosf(angle);
+		const GLfloat y = radius * sinf(angle);
 
 		// VERTICES
 		vertices[i] = { {x + center.x, y + center.y, center.z}, {color.x, color.y, color.z, color.w} };
@@ -121,17 +121,17 @@ void Renderer::drawCircle(glm::vec3 center, float radius, int segments, vec4 col
 	draw<HitboxGrid::VertexSimple>(&vertices[0], segments + 1, &indices[0], segments * 3, "NoTexture");
 }
 
-void Renderer::drawCircumference(glm::vec3 center, float radius, int segments, vec4 color, int lineWidth)
+void Renderer::drawCircumference(glm::vec3 center, GLfloat radius, int segments, vec4 color, int lineWidth)
 {
 	std::vector<HitboxGrid::VertexSimple> vertices(segments);
 
-	std::vector<uint32_t> indices(segments);
+	std::vector<GLuint> indices(segments);
 
 	for (int i = 0; i < segments; i++) {
 
-		const float angle = 2.0f * 3.1415926f * (float)i / (float)segments;
-		const float x = radius * cosf(angle);
-		const float y = radius * sinf(angle);
+		const GLfloat angle = 2.0f * 3.1415926f * (GLfloat)i / (GLfloat)segments;
+		const GLfloat x = radius * cosf(angle);
+		const GLfloat y = radius * sinf(angle);
 
 		// VERTICES
 		vertices[i] = { {x + center.x, y + center.y, center.z}, {color.x, color.y, color.z, color.w} };
@@ -155,7 +155,7 @@ VertexArray& Renderer::fillVAO(VertexArray& vao, VertexBuffer& vbo, VertexBuffer
 	return vao;
 }
 
-IndexBuffer& Renderer::fillIBO(uint32_t* indices, uint32_t count, GLenum drawType)
+IndexBuffer& Renderer::fillIBO(GLuint* indices, GLuint count, GLenum drawType)
 {
 	tmpIBO = std::make_shared<IndexBuffer>(indices, count, drawType);
 

@@ -36,43 +36,43 @@ class Enemy: public Entity
 public:
 	
 
-	Enemy(glm::vec3 pos, int texID = 2, double yaw = 0, glm::vec2 spriteScale = glm::vec2(64.0f), int life = baseLife, float speed = baseSpeed);
-	Enemy(Tile& tile, int texID = 2, glm::vec2 spriteScale = glm::vec2(64.0f), int life = baseLife, float speed = baseSpeed);
+	Enemy(glm::vec3 pos, int texID = 2, double yaw = 0, glm::vec2 spriteScale = glm::vec2(64.0f), int life = baseLife, GLfloat speed = baseSpeed);
+	Enemy(Tile& tile, int texID = 2, glm::vec2 spriteScale = glm::vec2(64.0f), int life = baseLife, GLfloat speed = baseSpeed);
 	~Enemy() override;
 
 	
 	// Hit
-	int getHit(float hitDmg);
+	int getHit(GLfloat hitDmg);
 	void endHit() { hit = false; }
 
 	
 	// Move
-	void move(float d) override;
+	void move(GLfloat d) override;
 	void setPosition(glm::vec3 pos) override;
 
-	void slow(float slowPercentage);
+	void slow(GLfloat slowPercentage);
 	
 	void setTile(Tile* tileOcuppied) { tile = tileOcuppied; }
 	Tile* getTile() const { return tile; }
 
 
 	// True if distance(center, enemy) < range
-	bool inRange(glm::vec2 center, float range) const;
+	bool inRange(glm::vec2 center, GLfloat range) const;
 	
 	
 	// STATS
 	int getLife() const { return life; }
-	float getSpeed() const { return speed; }
+	GLfloat getSpeed() const { return speed; }
 	int getReward() const { return reward; }
 	int getDamage() const { return damage; }
-	void setLife(const uint32_t l) { life = l; }
-	void setSpeed(const float spd) { speed = spd; }
+	void setLife(const GLuint l) { life = l; }
+	void setSpeed(const GLfloat spd) { speed = spd; }
 
 	// BASE STATS
 	static const int baseLife = 500;
 	static const int baseSpeed = 50;
-	static const uint32_t baseReward = 20;
-	static const uint32_t baseDamage = 1; // User Life loss if scape
+	static const GLuint baseReward = 20;
+	static const GLuint baseDamage = 1; // User Life loss if scape
 
 
 	// DRAW
@@ -87,7 +87,7 @@ private:
 
 	int life;
 	int iniLife;
-	float speed;
+	GLfloat speed;
 	int reward;
 	int damage;
 

@@ -8,7 +8,7 @@ using namespace glm;
 namespace test {
 
 	Test::Test()
-		: proj(ortho(0.f, (float)windowWidth, 0.f, (float)windowHeight, 1.f, 2000.f)), // Frustrum ORTONORMAL (0,windowXY), Near 1, Far 2K
+		: proj(ortho(0.f, (GLfloat)windowWidth, 0.f, (GLfloat)windowHeight, 1.f, 2000.f)), // Frustrum ORTONORMAL (0,windowXY), Near 1, Far 2K
 		view(lookAt(vec3(0.f, 0.f, 250.f), vec3(0.f, 0.f, 0.f), vec3(0.f, 1.f, 0.f))), // EYE (0,0,250) --> REFERENCE (0,0,0), ^ UP (0,1,0)
 		model(1.f) // Model IDENTITY MATRIX
 	{

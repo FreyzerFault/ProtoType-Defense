@@ -26,9 +26,9 @@ void Path::spawnEnemy(TypeEnemy type)
 {
 	std::string name = std::to_string((int)type);
 	const vec2 texSize = renderer->getTextureManager().getSize(name);
-	const float resolution = texSize.x / texSize.y;
+	const GLfloat resolution = texSize.x / texSize.y;
 	
-	float max = 64.f;
+	GLfloat max = 64.f;
 	vec2 scale;
 	if (texSize.x > texSize.y)
 		scale = vec2(max, max * resolution);
@@ -50,7 +50,7 @@ void Path::addTile(Tile* tile)
 	}
 }
 
-float Path::getTileSize() const
+GLfloat Path::getTileSize() const
 {
 	return (*path.begin())->getSize();
 }
@@ -105,7 +105,7 @@ bool enemyOutOfTile(Enemy& enemy)
 		enemyPos.y > tilePos.y + tileSize.y;
 }
 
-int Path::moveEnemies(float deltaTime)
+int Path::moveEnemies(GLfloat deltaTime)
 {
 	int enemiesEnded = 0;
 	
@@ -139,7 +139,7 @@ int Path::moveEnemies(float deltaTime)
 }
 
 
-Enemy* Path::getEnemy(Priority prior, glm::vec2 center, float range)
+Enemy* Path::getEnemy(Priority prior, glm::vec2 center, GLfloat range)
 {
 	switch (prior)
 	{
@@ -193,7 +193,7 @@ Enemy* Path::getWeakEnemy()
 	return weakEnemy;
 }
 
-Enemy* Path::getFirstEnemy(glm::vec2 center, float range)
+Enemy* Path::getFirstEnemy(glm::vec2 center, GLfloat range)
 {
 	// Select the simple method if Range = 0
 	if (range <= 0)
@@ -209,7 +209,7 @@ Enemy* Path::getFirstEnemy(glm::vec2 center, float range)
 	{
 		Enemy& enemy = **it;
 		vec2 enemySize = enemy.getSize2D();
-		const float margin = enemySize.x < enemySize.y ? enemySize.x : enemySize.y; // Smallest size as enemy MARGIN
+		const GLfloat margin = enemySize.x < enemySize.y ? enemySize.x : enemySize.y; // Smallest size as enemy MARGIN
 
 		if (distance(enemy.getPosition2D(), center) - margin < range) // If enters inside the range
 			return &enemy;
@@ -219,7 +219,7 @@ Enemy* Path::getFirstEnemy(glm::vec2 center, float range)
 	return nullptr;
 }
 
-Enemy* Path::getLastEnemy(glm::vec2 center, float range)
+Enemy* Path::getLastEnemy(glm::vec2 center, GLfloat range)
 {
 	// Select the simple method if Range = 0
 	if (range <= 0)
@@ -236,7 +236,7 @@ Enemy* Path::getLastEnemy(glm::vec2 center, float range)
 	{
 		Enemy& enemy = **it;
 		vec2 enemySize = enemy.getSize2D();
-		const float margin = enemySize.x < enemySize.y ? enemySize.x : enemySize.y; // Smallest size as enemy MARGIN
+		const GLfloat margin = enemySize.x < enemySize.y ? enemySize.x : enemySize.y; // Smallest size as enemy MARGIN
 
 		if (distance(enemy.getPosition2D(), center) - margin < range) // If enters inside the range
 			last = &enemy;
@@ -246,7 +246,7 @@ Enemy* Path::getLastEnemy(glm::vec2 center, float range)
 	return last;
 }
 
-Enemy* Path::getStrongEnemy(glm::vec2 center, float range)
+Enemy* Path::getStrongEnemy(glm::vec2 center, GLfloat range)
 {
 	// Select the simple method if Range = 0
 	if (range <= 0)
@@ -273,7 +273,7 @@ Enemy* Path::getStrongEnemy(glm::vec2 center, float range)
 	return strong;
 }
 
-Enemy* Path::getWeakEnemy(glm::vec2 center, float range)
+Enemy* Path::getWeakEnemy(glm::vec2 center, GLfloat range)
 {
 	// Select the simple method if Range = 0
 	if (range <= 0)

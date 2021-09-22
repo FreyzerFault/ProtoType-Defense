@@ -272,14 +272,14 @@ static void ImGui_ImplOpenGL3_SetupRenderState(ImDrawData* draw_data, int fb_wid
     // Setup viewport, orthographic projection matrix
     // Our visible imgui space lies from draw_data->DisplayPos (top left) to draw_data->DisplayPos+data_data->DisplaySize (bottom right). DisplayPos is (0,0) for single viewport apps.
     glViewport(0, 0, (GLsizei)fb_width, (GLsizei)fb_height);
-    float L = draw_data->DisplayPos.x;
-    float R = draw_data->DisplayPos.x + draw_data->DisplaySize.x;
-    float T = draw_data->DisplayPos.y;
-    float B = draw_data->DisplayPos.y + draw_data->DisplaySize.y;
+    GLfloat L = draw_data->DisplayPos.x;
+    GLfloat R = draw_data->DisplayPos.x + draw_data->DisplaySize.x;
+    GLfloat T = draw_data->DisplayPos.y;
+    GLfloat B = draw_data->DisplayPos.y + draw_data->DisplaySize.y;
 #if defined(GL_CLIP_ORIGIN) && !defined(__APPLE__)
-    if (!clip_origin_lower_left) { float tmp = T; T = B; B = tmp; } // Swap top and bottom if origin is upper left
+    if (!clip_origin_lower_left) { GLfloat tmp = T; T = B; B = tmp; } // Swap top and bottom if origin is upper left
 #endif
-    const float ortho_projection[4][4] =
+    const GLfloat ortho_projection[4][4] =
     {
         { 2.0f/(R-L),   0.0f,         0.0f,   0.0f },
         { 0.0f,         2.0f/(T-B),   0.0f,   0.0f },
@@ -570,7 +570,7 @@ bool    ImGui_ImplOpenGL3_CreateDeviceObjects()
         "}\n";
 
     const GLchar* vertex_shader_glsl_300_es =
-        "precision mediump float;\n"
+        "precision mediump GLfloat;\n"
         "layout (location = 0) in vec2 Position;\n"
         "layout (location = 1) in vec2 UV;\n"
         "layout (location = 2) in vec4 Color;\n"
@@ -600,7 +600,7 @@ bool    ImGui_ImplOpenGL3_CreateDeviceObjects()
 
     const GLchar* fragment_shader_glsl_120 =
         "#ifdef GL_ES\n"
-        "    precision mediump float;\n"
+        "    precision mediump GLfloat;\n"
         "#endif\n"
         "uniform sampler2D Texture;\n"
         "varying vec2 Frag_UV;\n"
@@ -621,7 +621,7 @@ bool    ImGui_ImplOpenGL3_CreateDeviceObjects()
         "}\n";
 
     const GLchar* fragment_shader_glsl_300_es =
-        "precision mediump float;\n"
+        "precision mediump GLfloat;\n"
         "uniform sampler2D Texture;\n"
         "in vec2 Frag_UV;\n"
         "in vec4 Frag_Color;\n"

@@ -26,7 +26,7 @@ void ShaderManager::Bind(const std::string& name)
 	}
 }
 
-void ShaderManager::setTextureSlots(const uint32_t count) const
+void ShaderManager::setTextureSlots(const GLuint count) const
 {
 	std::vector<int> slots;
 	slots.reserve(count);
@@ -42,14 +42,14 @@ void ShaderManager::setLayout() const
 	VertexBufferLayout& layout = currentShader->getLayout();
 	if (currentShaderName == "NoTexture")
 	{
-		layout.Push<float>(3);
-		layout.Push<float>(4);
+		layout.Push<GLfloat>(3);
+		layout.Push<GLfloat>(4);
 	}
 	else if (currentShaderName == "Basic")
 	{
-		layout.Push<float>(3);	// POSITION
-		layout.Push<float>(4);	// COLOR
-		layout.Push<float>(2);	// TEXCOORDS
-		layout.Push<float>(1);	// TEXID
+		layout.Push<GLfloat>(3);	// POSITION
+		layout.Push<GLfloat>(4);	// COLOR
+		layout.Push<GLfloat>(2);	// TEXCOORDS
+		layout.Push<GLfloat>(1);	// TEXID
 	}
 }

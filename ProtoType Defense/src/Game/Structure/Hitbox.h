@@ -9,9 +9,9 @@ public:
 	// 16x16 in Center of window
 	Hitbox();
 	// Flat Hitbox
-	Hitbox(glm::vec3 position, glm::vec2 size, float yaw = 0.0f);
+	Hitbox(glm::vec3 position, glm::vec2 size, GLfloat yaw = 0.0f);
 	// 3D Hitbox
-	Hitbox(glm::vec3 position, glm::vec3 size, float yaw = 0.0f);
+	Hitbox(glm::vec3 position, glm::vec3 size, GLfloat yaw = 0.0f);
 
 
 	// COLLIDERS are calculated in 2D
@@ -27,20 +27,20 @@ public:
 	glm::vec3 getPosition3D() const { return glm::vec3(m_Position); }
 	glm::vec2 getSize2D() const { return glm::vec2(m_Size); }
 	glm::vec3 getSize3D() const { return glm::vec3(m_Size); }
-	float getX() const { return m_Position.x; }
-	float getY() const { return m_Position.y; }
-	float getZ() const { return m_Position.z; }
-	float getsX() const { return m_Size.x; }
-	float getsY() const { return m_Size.y; }
-	float getsZ() const { return m_Size.z; }
+	GLfloat getX() const { return m_Position.x; }
+	GLfloat getY() const { return m_Position.y; }
+	GLfloat getZ() const { return m_Position.z; }
+	GLfloat getsX() const { return m_Size.x; }
+	GLfloat getsY() const { return m_Size.y; }
+	GLfloat getsZ() const { return m_Size.z; }
 
 	void setPosition(const glm::vec3 pos) { m_Position = pos; }
 	void setYaw(const double yaw) { m_Yaw = yaw; }
 	
-	void move(const float X, const float Y, const float Z = 0.0f);
-	void move(const float d);
+	void move(const GLfloat X, const GLfloat Y, const GLfloat Z = 0.0f);
+	void move(const GLfloat d);
 	
-	void rotate(float X);
+	void rotate(GLfloat X);
 	
 	glm::mat4 getModelMatrix() const;
 

@@ -8,15 +8,15 @@ class HealthBar
 {
 
 public:
-	HealthBar(glm::vec3 enemyPos, float height = 32.f, float length = 64.f);
+	HealthBar(glm::vec3 enemyPos, GLfloat height = 32.f, GLfloat length = 64.f);
 
-	void decrease(float percentage);
-	void move(float d, float yaw);
+	void decrease(GLfloat percentage);
+	void move(GLfloat d, GLfloat yaw);
 	void updateVertex();
 
 	void setPosition(glm::vec3 pos) { barPos = pos; }
 
-	float getLife() const { return life; }
+	GLfloat getLife() const { return life; }
 
 	void reset();
 	
@@ -27,8 +27,8 @@ private:
 	HitboxGrid::VertexSimple leftVertex[4];		// Empty life portion
 	
 	glm::vec3 barPos; // Bot-Left Corner
-	float barLength;
+	GLfloat barLength;
 
-	float life; // %
+	GLfloat life; // %
 };
 

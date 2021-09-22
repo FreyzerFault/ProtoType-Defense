@@ -14,17 +14,17 @@ Entity::Entity()
 {
 }
 
-Entity::Entity(vec3 position, const uint32_t texID, vec2 spriteScale, const double yaw)
+Entity::Entity(vec3 position, const GLuint texID, vec2 spriteScale, const double yaw)
 	: m_Position(position), m_Yaw(yaw), m_Hitbox(nullptr), m_Sprite(position, spriteScale, yaw, texID)
 {
 }
 
-Entity::Entity(vec3 position, vec2 size, const uint32_t texID, vec2 spriteScale, const double yaw)
+Entity::Entity(vec3 position, vec2 size, const GLuint texID, vec2 spriteScale, const double yaw)
 	: Entity(position, vec3(size, 0.0f), texID, spriteScale, yaw)
 {
 }
 
-Entity::Entity(vec3 position, vec3 size, const uint32_t texID, vec2 textureSize, const double yaw)
+Entity::Entity(vec3 position, vec3 size, const GLuint texID, vec2 textureSize, const double yaw)
 	: m_Position(position), m_Yaw(yaw), m_Hitbox(new Hitbox(position, size, yaw)), m_Sprite(position, textureSize, yaw, texID)
 {
 }
@@ -41,7 +41,7 @@ void Entity::setPosition(const glm::vec3 pos)
 	m_Sprite.setPosition(pos);
 }
 
-void Entity::move(const float X, const float Y, const float Z)
+void Entity::move(const GLfloat X, const GLfloat Y, const GLfloat Z)
 {
 	x += X;
 	y += Y;
@@ -51,7 +51,7 @@ void Entity::move(const float X, const float Y, const float Z)
 		m_Hitbox->setPosition(m_Position);
 }
 
-void Entity::move(const float d)
+void Entity::move(const GLfloat d)
 {
 	x += d * cos(m_Yaw);
 	y += d * sin(m_Yaw);
@@ -61,14 +61,14 @@ void Entity::move(const float d)
 		m_Hitbox->setPosition(m_Position);
 }
 
-void Entity::move(const float d, const double yaw)
+void Entity::move(const GLfloat d, const double yaw)
 {
 	m_Yaw = yaw;
 	Entity::move(d);
 }
 
 
-void Entity::rotate(float X)
+void Entity::rotate(GLfloat X)
 {
 	m_Yaw += X;
 	// Normalized to [0,2PI] radians

@@ -8,12 +8,12 @@ Tile::Tile()
 {
 }
 
-Tile::Tile(glm::vec2 pos, float size, vec3 color)
+Tile::Tile(glm::vec2 pos, GLfloat size, vec3 color)
 	: position(pos), size(size), color(color), direction(Direction::right)
 {
 }
 
-Tile::Tile(glm::vec2 pos, Direction dir, float size, glm::vec3 color)
+Tile::Tile(glm::vec2 pos, Direction dir, GLfloat size, glm::vec3 color)
 	: position(pos), size(size), color(color), direction(dir)
 {
 }

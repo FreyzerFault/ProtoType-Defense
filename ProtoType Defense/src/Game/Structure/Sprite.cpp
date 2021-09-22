@@ -10,12 +10,12 @@ Sprite::Sprite() // Por defecto, centrado en la ventana
 {
 }
 
-Sprite::Sprite(const uint32_t texID) // Por defecto, centrado en la ventana
+Sprite::Sprite(const GLuint texID) // Por defecto, centrado en la ventana
 	: Sprite(glm::vec3(windowCenterX, windowCenterY, 0.0f), vec2(1.0f), 0.0f, texID)
 {
 }
 
-Sprite::Sprite(const glm::vec3 position, vec2 scale, const float rotation, uint32_t textureID)
+Sprite::Sprite(const glm::vec3 position, vec2 scale, const GLfloat rotation, GLuint textureID)
 	: m_TextureID(textureID), m_Position(position), m_Scale(scale), m_Rotation(rotation)
 {
 }
@@ -36,14 +36,14 @@ Sprite& Sprite::operator=(const Sprite& orig)
 }
 
 
-void Sprite::setTransformation(const glm::vec3 position, const vec2 scale, const float rotation)
+void Sprite::setTransformation(const glm::vec3 position, const vec2 scale, const GLfloat rotation)
 {
 	m_Position = position;
 	m_Scale = scale;
 	m_Rotation = rotation;
 }
 
-void Sprite::setRelativeScale(float width, float height)
+void Sprite::setRelativeScale(GLfloat width, GLfloat height)
 {
 	if (width > height)
 		m_Scale = vec2(m_Scale.x, m_Scale.y * height / width);

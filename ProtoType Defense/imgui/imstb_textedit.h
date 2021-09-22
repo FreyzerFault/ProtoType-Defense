@@ -200,8 +200,8 @@
 //
 //    void stb_textedit_initialize_state(STB_TexteditState *state, int is_single_line)
 //
-//    void stb_textedit_click(STB_TEXTEDIT_STRING *str, STB_TexteditState *state, float x, float y)
-//    void stb_textedit_drag(STB_TEXTEDIT_STRING *str, STB_TexteditState *state, float x, float y)
+//    void stb_textedit_click(STB_TEXTEDIT_STRING *str, STB_TexteditState *state, GLfloat x, GLfloat y)
+//    void stb_textedit_drag(STB_TEXTEDIT_STRING *str, STB_TexteditState *state, GLfloat x, GLfloat y)
 //    int  stb_textedit_cut(STB_TEXTEDIT_STRING *str, STB_TexteditState *state)
 //    int  stb_textedit_paste(STB_TEXTEDIT_STRING *str, STB_TexteditState *state, STB_TEXTEDIT_CHARTYPE *text, int len)
 //    void stb_textedit_key(STB_TEXTEDIT_STRING *str, STB_TexteditState *state, STB_TEXEDIT_KEYTYPE key)
@@ -348,7 +348,7 @@ typedef struct
    unsigned char has_preferred_x;
    unsigned char single_line;
    unsigned char padding1, padding2, padding3;
-   float preferred_x; // this determines where the cursor up/down tries to seek to along x
+   GLfloat preferred_x; // this determines where the cursor up/down tries to seek to along x
    StbUndoState undostate;
 } STB_TexteditState;
 
@@ -363,9 +363,9 @@ typedef struct
 // result of layout query
 typedef struct
 {
-   float x0,x1;             // starting x location, end x location (allows for align=right, etc)
-   float baseline_y_delta;  // position of baseline relative to previous row's baseline
-   float ymin,ymax;         // height of row above and below baseline
+   GLfloat x0,x1;             // starting x location, end x location (allows for align=right, etc)
+   GLfloat baseline_y_delta;  // position of baseline relative to previous row's baseline
+   GLfloat ymin,ymax;         // height of row above and below baseline
    int num_chars;
 } StbTexteditRow;
 #endif //INCLUDE_STB_TEXTEDIT_H
@@ -395,11 +395,11 @@ typedef struct
 //
 
 // traverse the layout to locate the nearest character to a display position
-static int stb_text_locate_coord(STB_TEXTEDIT_STRING *str, float x, float y)
+static int stb_text_locate_coord(STB_TEXTEDIT_STRING *str, GLfloat x, GLfloat y)
 {
    StbTexteditRow r;
    int n = STB_TEXTEDIT_STRINGLEN(str);
-   float base_y = 0, prev_x;
+   GLfloat base_y = 0, prev_x;
    int i=0, k;
 
    r.x0 = r.x1 = 0;
@@ -435,7 +435,7 @@ static int stb_text_locate_coord(STB_TEXTEDIT_STRING *str, float x, float y)
       // search characters in row for one that straddles 'x'
       prev_x = r.x0;
       for (k=0; k < r.num_chars; ++k) {
-         float w = STB_TEXTEDIT_GETWIDTH(str, i, k);
+         GLfloat w = STB_TEXTEDIT_GETWIDTH(str, i, k);
          if (x < prev_x+w) {
             if (x < prev_x+w/2)
                return k+i;
@@ -455,7 +455,7 @@ static int stb_text_locate_coord(STB_TEXTEDIT_STRING *str, float x, float y)
 }
 
 // API click: on mouse down, move the cursor to the clicked location, and reset the selection
-static void stb_textedit_click(STB_TEXTEDIT_STRING *str, STB_TexteditState *state, float x, float y)
+static void stb_textedit_click(STB_TEXTEDIT_STRING *str, STB_TexteditState *state, GLfloat x, GLfloat y)
 {
    // In single-line mode, just always make y = 0. This lets the drag keep working if the mouse
    // goes off the top or bottom of the text
@@ -473,7 +473,7 @@ static void stb_textedit_click(STB_TEXTEDIT_STRING *str, STB_TexteditState *stat
 }
 
 // API drag: on mouse drag, move the cursor and selection endpoint to the clicked location
-static void stb_textedit_drag(STB_TEXTEDIT_STRING *str, STB_TexteditState *state, float x, float y)
+static void stb_textedit_drag(STB_TEXTEDIT_STRING *str, STB_TexteditState *state, GLfloat x, GLfloat y)
 {
    int p = 0;
 
@@ -507,8 +507,8 @@ static void stb_text_makeundo_replace(STB_TEXTEDIT_STRING *str, STB_TexteditStat
 
 typedef struct
 {
-   float x,y;    // position of n'th character
-   float height; // height of line
+   GLfloat x,y;    // position of n'th character
+   GLfloat height; // height of line
    int first_char, length; // first char of row, and length
    int prev_first;  // first char of previous row
 } StbFindState;
@@ -882,7 +882,7 @@ retry:
          stb_textedit_find_charpos(&find, str, state->cursor, state->single_line);
 
          for (j = 0; j < row_count; ++j) {
-            float x, goal_x = state->has_preferred_x ? state->preferred_x : find.x;
+            GLfloat x, goal_x = state->has_preferred_x ? state->preferred_x : find.x;
             int start = find.first_char + find.length;
 
             if (find.length == 0)
@@ -898,7 +898,7 @@ retry:
             STB_TEXTEDIT_LAYOUTROW(&row, str, state->cursor);
             x = row.x0;
             for (i=0; i < row.num_chars; ++i) {
-               float dx = STB_TEXTEDIT_GETWIDTH(str, start, i);
+               GLfloat dx = STB_TEXTEDIT_GETWIDTH(str, start, i);
                #ifdef STB_TEXTEDIT_GETWIDTH_NEWLINE
                if (dx == STB_TEXTEDIT_GETWIDTH_NEWLINE)
                   break;
@@ -949,7 +949,7 @@ retry:
          stb_textedit_find_charpos(&find, str, state->cursor, state->single_line);
 
          for (j = 0; j < row_count; ++j) {
-            float  x, goal_x = state->has_preferred_x ? state->preferred_x : find.x;
+            GLfloat  x, goal_x = state->has_preferred_x ? state->preferred_x : find.x;
 
             // can only go up if there's a previous row
             if (find.prev_first == find.first_char)
@@ -960,7 +960,7 @@ retry:
             STB_TEXTEDIT_LAYOUTROW(&row, str, state->cursor);
             x = row.x0;
             for (i=0; i < row.num_chars; ++i) {
-               float dx = STB_TEXTEDIT_GETWIDTH(str, find.prev_first, i);
+               GLfloat dx = STB_TEXTEDIT_GETWIDTH(str, find.prev_first, i);
                #ifdef STB_TEXTEDIT_GETWIDTH_NEWLINE
                if (dx == STB_TEXTEDIT_GETWIDTH_NEWLINE)
                   break;

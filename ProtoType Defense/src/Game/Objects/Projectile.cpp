@@ -8,7 +8,7 @@ static vec2 spriteSize(24.f);
 
 static int texID = 0;
 
-static float delayImpact = 0.5;
+static GLfloat delayImpact = 0.5;
 
 
 Projectile::Projectile(const Tower* tower)
@@ -17,19 +17,19 @@ Projectile::Projectile(const Tower* tower)
 }
 
 // 2D
-Projectile::Projectile(const Tower* tower, vec2 position, vec2 size, float orientation, bool homming)
+Projectile::Projectile(const Tower* tower, vec2 position, vec2 size, GLfloat orientation, bool homming)
 	: Entity(vec3(position, 2.0f), size, texID, spriteSize, orientation), m_Pierce(tower->getPierce()), m_Homing(homming), m_Tower(tower)
 {
 }
 
 // 3D Flat Hitbox
-Projectile::Projectile(const Tower* tower, vec3 position, vec2 size, float orientation, bool homming)
+Projectile::Projectile(const Tower* tower, vec3 position, vec2 size, GLfloat orientation, bool homming)
 	: Entity(position, size, texID, spriteSize, orientation), m_Pierce(tower->getPierce()), m_Homing(homming), m_Tower(tower)
 {
 }
 
 // 3D
-Projectile::Projectile(const Tower* tower, vec3 position, vec3 size, float orientation, bool homming)
+Projectile::Projectile(const Tower* tower, vec3 position, vec3 size, GLfloat orientation, bool homming)
 	: Entity(position, size, texID, spriteSize, orientation), m_Pierce(tower->getPierce()), m_Homing(homming), m_Tower(tower)
 {
 }
@@ -97,13 +97,13 @@ Enemy* Projectile::impact(std::list<Enemy>& enemies)
 	return nullptr;
 }
 
-void Projectile::move(const float d)
+void Projectile::move(const GLfloat d)
 {
 	// If the Projectile is Homming, and his tower has an aimed enemy, it follows the enemy
 	if (m_Homing && m_Tower->getEnemy() != nullptr)
 	{
 		Enemy& enemy = *m_Tower->getEnemy();
-		const float predictiveCoefficient = enemy.getSpeed() / 2; // Distance towards the enemy movement
+		const GLfloat predictiveCoefficient = enemy.getSpeed() / 2; // Distance towards the enemy movement
 		
 		glm::vec3 predictedPos(enemy.getPosition3D().x, enemy.getPosition3D().y, 0.0f);
 		predictedPos.x += predictiveCoefficient * cos(enemy.getYaw());
@@ -112,10 +112,10 @@ void Projectile::move(const float d)
 		// Check the angle between Projectile Direction and Direction towards Enemy
 		const vec2 projToEnemyDir = normalize(vec2(predictedPos - m_Position));
 		const vec2 projMovementDir = vec2(cos(m_Yaw), sin(m_Yaw));
-		const float angle = orientedAngle(projMovementDir, projToEnemyDir);
+		const GLfloat angle = orientedAngle(projMovementDir, projToEnemyDir);
 		
 		// If angle is to big, Projectile moves towards a minimun angle
-		const float minAngle = d / 100;
+		const GLfloat minAngle = d / 100;
 		if (angle > minAngle)
 			predictedPos = vec3(vec2(m_Position) + glm::rotate(projMovementDir, minAngle), predictedPos.z);
 		

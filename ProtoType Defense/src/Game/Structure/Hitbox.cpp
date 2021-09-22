@@ -17,12 +17,12 @@ Hitbox::Hitbox()
 {
 }
 
-Hitbox::Hitbox(vec3 position, vec2 size, float yaw)
+Hitbox::Hitbox(vec3 position, vec2 size, GLfloat yaw)
 	: Hitbox(position, vec3(size, 0.0f), yaw)
 {
 }
 
-Hitbox::Hitbox(vec3 position, vec3 size, float yaw)
+Hitbox::Hitbox(vec3 position, vec3 size, GLfloat yaw)
 	: m_Position(position), m_Size(size), m_Yaw(yaw),
 	vertices{
 		vec2(pX - sX/2, pY - sY/2),
@@ -41,8 +41,8 @@ bool Hitbox::collision(Hitbox& object)
 
 	// Trivial solution
 	
-	const float o_X = object.getX(), o_Y = object.getY(), o_Z = object.getZ();
-	const float o_sX = object.getsX(), o_sY = object.getsY(), o_sZ = object.getsZ();
+	const GLfloat o_X = object.getX(), o_Y = object.getY(), o_Z = object.getZ();
+	const GLfloat o_sX = object.getsX(), o_sY = object.getsY(), o_sZ = object.getsZ();
 	
 	bool const collide =
 		// X axis
@@ -85,13 +85,13 @@ bool Hitbox::SATcollision(Hitbox& object)
 		for (vec2 axis : axisProj)
 		{
 			// Min & Max Projected vertices
-			float min1 = INFINITY, max1 = -INFINITY;
-			float min2 = INFINITY, max2 = -INFINITY;
+			GLfloat min1 = INFINITY, max1 = -INFINITY;
+			GLfloat min2 = INFINITY, max2 = -INFINITY;
 			// First Hitbox
 			for (vec2 p : hb1->vertices)
 			{
 				// Projection point of the vertex over the axis vector (p0,p1) over (-y,x) vector
-				float q = (p.x * axis.x + p.y * axis.y);
+				GLfloat q = (p.x * axis.x + p.y * axis.y);
 				min1 = std::min(min1, q);
 				max1 = std::max(max1, q);
 			}
@@ -99,7 +99,7 @@ bool Hitbox::SATcollision(Hitbox& object)
 			for (vec2 p : hb2->vertices)
 			{
 				// Projection point of the vertex over the axis vector (p0,p1) over (-y,x) vector
-				float q = (p.x * axis.x + p.y * axis.y);
+				GLfloat q = (p.x * axis.x + p.y * axis.y);
 				min1 = std::min(min1, q);
 				max1 = std::max(max1, q);
 			}
@@ -122,20 +122,20 @@ void Hitbox::updateVertices()
 }
 
 
-void Hitbox::move(const float X, const float Y, const float Z)
+void Hitbox::move(const GLfloat X, const GLfloat Y, const GLfloat Z)
 {
 	pX += X;
 	pY += Y;
 	pZ += Z;
 }
 
-void Hitbox::move(const float d)
+void Hitbox::move(const GLfloat d)
 {
 	pX += d * cos(m_Yaw);
 	pY += d * sin(m_Yaw);
 }
 
-void Hitbox::rotate(float X)
+void Hitbox::rotate(GLfloat X)
 {
 	m_Yaw += rad(X);
 	// Normalized to [0,2PI] radians
@@ -145,7 +145,7 @@ void Hitbox::rotate(float X)
 mat4 Hitbox::getModelMatrix() const
 {
 	mat4 model = translate(mat4(1.0f), m_Position);
-	model = glm::rotate(model, (float)m_Yaw, glm::vec3(0, 0, 1));
+	model = glm::rotate(model, (GLfloat)m_Yaw, glm::vec3(0, 0, 1));
 	model = scale(model, vec3(m_Size));
 	return model;
 }

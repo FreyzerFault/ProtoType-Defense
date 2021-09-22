@@ -9,7 +9,7 @@ class WindowManager
 {
 public:
 	WindowManager();
-	WindowManager(const uint32_t width, const uint32_t height, const std::string& title, const uint32_t monitor = 1);
+	WindowManager(const GLuint width, const GLuint height, const std::string& title, const GLuint monitor = 1);
 	~WindowManager();
 
 	void renderingLoop();
@@ -32,9 +32,9 @@ private:
 	TestManager testManager;
 
 	// Program Time
-	float time;
+	GLfloat time;
 	// FPS
-	float fpsTimer = 0;
+	GLfloat fpsTimer = 0;
 	int fpsCounter = 0;
 	int fps;
 };

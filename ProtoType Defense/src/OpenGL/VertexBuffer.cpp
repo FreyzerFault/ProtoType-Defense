@@ -6,7 +6,7 @@ VertexBuffer::VertexBuffer()
 	GLCall(glGenBuffers(1, &m_RendererID));
 }
 
-VertexBuffer::VertexBuffer(const void* data, uint32_t size, uint32_t drawType)
+VertexBuffer::VertexBuffer(const void* data, GLuint size, GLuint drawType)
 {
 	GLCall(glGenBuffers(1, &m_RendererID)); // (Nº buffers, direccion donde queremos escribir el buffer)
 	// Se pueden generar varios buffers y bindear el que prefieras antes de dibujar
@@ -14,12 +14,12 @@ VertexBuffer::VertexBuffer(const void* data, uint32_t size, uint32_t drawType)
 
 	// Para insertar datos al buffer o sustituirlos:
 	GLCall(glBufferData(GL_ARRAY_BUFFER, // target = target de glBindBuffer
-		size, // tamaño del buffer = 6 * sizeof(float) = sizeof(positions) (puede no ser preciso el ultimo)
+		size, // tamaño del buffer = 6 * sizeof(GLfloat) = sizeof(positions) (puede no ser preciso el ultimo)
 		data,  // Direccion o puntero a los datos
 		drawType));	// STATIC = una/pocas modificaciones / DYNAMIC = muchas ___ DRAWN para dibujar xd
 }
 
-VertexBuffer::VertexBuffer(uint32_t size)
+VertexBuffer::VertexBuffer(GLuint size)
 {
 	GLCall(glGenBuffers(1, &m_RendererID));
 	GLCall(glBindBuffer(GL_ARRAY_BUFFER, m_RendererID));
@@ -42,13 +42,13 @@ void VertexBuffer::Unbind() const
 	GLCall(glBindBuffer(GL_ARRAY_BUFFER, 0));
 }
 
-void VertexBuffer::setData(const void* data, uint32_t size, uint32_t drawType)
+void VertexBuffer::setData(const void* data, GLuint size, GLuint drawType)
 {
 	Bind();
 	GLCall(glBufferData(GL_ARRAY_BUFFER, size, data, drawType)); // Offset de 0
 }
 
-void VertexBuffer::updateData(const void* data, uint32_t size)
+void VertexBuffer::updateData(const void* data, GLuint size)
 {
 	Bind();
 	GLCall(glBufferSubData(GL_ARRAY_BUFFER, 0, size, data)); // Offset de 0
