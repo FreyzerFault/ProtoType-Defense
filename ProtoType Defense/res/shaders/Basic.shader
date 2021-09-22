@@ -4,12 +4,11 @@
 layout(location = 0) in vec3 position;
 layout(location = 1) in vec4 color;
 layout(location = 2) in vec2 texCoord;
-layout(location = 3) in float texIndex;
+layout(location = 3) in int texIndex; // Not uint: -1 can be No Texture
 
 out vec4 v_Color;
 out vec2 v_TexCoord;
-out float v_TexIndex;
-
+flat out int v_TexIndex; // FLAT attribute: shares globally in PRIMITIVE (NO interpolation, same for every vertex in a Triangle)
 uniform mat4 u_MVP;
 
 void main()
@@ -28,16 +27,15 @@ layout(location = 0) out vec4 color;
 
 in vec4 v_Color;
 in vec2 v_TexCoord;	// Coge la variable de otro shader
-in float v_TexIndex; // Indice de la textura utilizada
+flat in int v_TexIndex; // Indice de la textura utilizada
 
 uniform sampler2D u_Texture[32]; // Texturas
 uniform vec4 u_BlendColor = vec4(0.0f, 0.0f, 0.0f, 0.0f);
 
 void main()
 {
-	int texIndex = int(v_TexIndex);
 	vec4 texColor = v_Color;
-	if ( texIndex != -1 )
-		texColor = texture(u_Texture[texIndex], v_TexCoord);
+	if ( v_TexIndex != -1 )
+		texColor = texture(u_Texture[v_TexIndex], v_TexCoord);
 	color = mix(texColor, u_BlendColor, u_BlendColor.w);
 };

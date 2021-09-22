@@ -31,7 +31,7 @@ public:
 
 	Tile* getFirstTile() const { return firstTile; }
 	Tile* getEnemyTile(const Enemy& enemy) const;
-	float getTileSize() const;
+	GLfloat getTileSize() const;
 	
 	void setFirstTile(Tile* tile) { firstTile = tile; }
 	glm::vec2 getStartingPosition() const;
@@ -41,7 +41,7 @@ public:
 
 
 	// Priority Searching
-	Enemy* getEnemy(Priority prior, glm::vec2 center = glm::vec2(0.f), float range = 0); // Range is 0 when global range
+	Enemy* getEnemy(Priority prior, glm::vec2 center = glm::vec2(0.f), GLfloat range = 0); // Range is 0 when global range
 
 	// Global Range
 	Enemy* getFirstEnemy();
@@ -50,10 +50,10 @@ public:
 	Enemy* getWeakEnemy();
 	
 	// Within range
-	Enemy* getFirstEnemy(glm::vec2 center, float range);
-	Enemy* getLastEnemy(glm::vec2 center, float range);
-	Enemy* getStrongEnemy(glm::vec2 center, float range);
-	Enemy* getWeakEnemy(glm::vec2 center, float range);
+	Enemy* getFirstEnemy(glm::vec2 center, GLfloat range);
+	Enemy* getLastEnemy(glm::vec2 center, GLfloat range);
+	Enemy* getStrongEnemy(glm::vec2 center, GLfloat range);
+	Enemy* getWeakEnemy(glm::vec2 center, GLfloat range);
 
 
 	// Enemies
@@ -69,7 +69,7 @@ public:
 	int deleteEnemy(Enemy* enemy); // Return the reward when killed
 	void clearEnemies() { enemies.clear(); }
 	
-	int moveEnemies(float deltaTime); // Return Nº enemies that reach the end of path to lower lives
+	int moveEnemies(GLfloat deltaTime); // Return Nº enemies that reach the end of path to lower lives
 
 private:
 	std::list<Tile*> path;

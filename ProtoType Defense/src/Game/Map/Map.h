@@ -15,11 +15,11 @@ struct cmpVec2 {
 class Map
 {
 	struct Vertex {
-		float position[3];
-		float color[4];
+		GLfloat position[3];
+		GLfloat color[4];
 	};
 	struct QuadIndices{
-		uint32_t index[6];
+		GLuint index[6];
 	};
 	
 public:
@@ -33,7 +33,7 @@ public:
 	
 	// Tile Corner Pos (down-left) (key of the maps)
 	glm::vec2 getTilePos(glm::vec2 pos) const;
-	float getTileSize() const { return tileSize; }
+	GLfloat getTileSize() const { return tileSize; }
 	
 	Path& getPath() { return path; }
 	std::map<glm::vec2, Platform, cmpVec2>& getPlatforms() { return platforms; }
@@ -50,7 +50,7 @@ public:
 private:
 
 	glm::vec2 dimension;
-	float tileSize;
+	GLfloat tileSize;
 
 	// EEDDs
 	std::map<glm::vec2, Tile, cmpVec2> tileMap;
@@ -62,7 +62,7 @@ private:
 
 	// Rendering
 	Vertex* vertices;
-	uint32_t* indices;
+	GLuint* indices;
 	
 	VertexArray VAO;
 	VertexBuffer VBO;

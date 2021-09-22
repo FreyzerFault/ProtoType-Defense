@@ -30,7 +30,7 @@ namespace test {
 
 		Enemy enemy;
 
-		float atkSpd = (float)Tower::baseAttackSpeed;
+		GLfloat atkSpd = (GLfloat)Tower::baseAttackSpeed;
 		int pierce = 3;
 
 		GameController gameController;

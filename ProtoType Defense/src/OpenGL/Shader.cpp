@@ -39,17 +39,17 @@ void Shader::setUniform1i(const std::string& name, int value) const
 	GLCall(glUniform1i(getUniformLocation(name), value));
 }
 
-void Shader::setUniform1iv(const std::string& name, uint32_t count, const int& value) const
+void Shader::setUniform1iv(const std::string& name, GLuint count, const int& value) const
 {
 	GLCall(glUniform1iv(getUniformLocation(name), count, &value));
 }
 
-void Shader::setUniform1f(const std::string& name, float value) const
+void Shader::setUniform1f(const std::string& name, GLfloat value) const
 {
 	GLCall(glUniform1f(getUniformLocation(name), value));
 }
 
-void Shader::setUniform4f(const std::string& name, float f0, float f1, float f2, float f3) const
+void Shader::setUniform4f(const std::string& name, GLfloat f0, GLfloat f1, GLfloat f2, GLfloat f3) const
 {
 	GLCall(glUniform4f(getUniformLocation(name), f0, f1, f2, f3));
 }
@@ -111,11 +111,11 @@ ShaderProgramSource Shader::ParseShader(const std::string& filepath) const
 	return { ss[0].str(), ss[1].str() };
 }
 
-uint32_t Shader::CreateShader(const std::string& vertexShader, const std::string& fragmentShader)
+GLuint Shader::CreateShader(const std::string& vertexShader, const std::string& fragmentShader)
 {
-	uint32_t program = glCreateProgram();
-	uint32_t vs = CompileShader(GL_VERTEX_SHADER, vertexShader);
-	uint32_t fs = CompileShader(GL_FRAGMENT_SHADER, fragmentShader);
+	GLuint program = glCreateProgram();
+	GLuint vs = CompileShader(GL_VERTEX_SHADER, vertexShader);
+	GLuint fs = CompileShader(GL_FRAGMENT_SHADER, fragmentShader);
 
 	GLCall(glAttachShader(program, vs));
 	GLCall(glAttachShader(program, fs));
@@ -128,9 +128,9 @@ uint32_t Shader::CreateShader(const std::string& vertexShader, const std::string
 	return program;
 }
 
-uint32_t Shader::CompileShader(uint32_t type, const std::string& source)
+GLuint Shader::CompileShader(GLuint type, const std::string& source)
 {
-	GLCall(uint32_t id = glCreateShader(type));
+	GLCall(GLuint id = glCreateShader(type));
 
 	const char* src = source.c_str(); // c_str() = puntero a principio del string (Tener cuidao de que el string no se elimine)
 

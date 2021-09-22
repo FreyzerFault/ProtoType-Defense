@@ -223,10 +223,10 @@ Index of this file:
 #pragma clang diagnostic ignored "-Wformat-nonliteral"              // warning: format string is not a string literal            // passing non-literal to vsnformat(). yes, user passing incorrect format strings can crash the code.
 #pragma clang diagnostic ignored "-Wsign-conversion"                // warning: implicit conversion changes signedness
 #pragma clang diagnostic ignored "-Wzero-as-null-pointer-constant"  // warning: zero as null pointer constant                    // some standard header variations use #define NULL 0
-#pragma clang diagnostic ignored "-Wdouble-promotion"               // warning: implicit conversion from 'float' to 'double' when passing argument to function  // using printf() is a misery with this as C++ va_arg ellipsis changes float to double.
+#pragma clang diagnostic ignored "-Wdouble-promotion"               // warning: implicit conversion from 'GLfloat' to 'double' when passing argument to function  // using printf() is a misery with this as C++ va_arg ellipsis changes GLfloat to double.
 #pragma clang diagnostic ignored "-Wenum-enum-conversion"           // warning: bitwise operation between different enumeration types ('XXXFlags_' and 'XXXFlagsPrivate_')
 #pragma clang diagnostic ignored "-Wdeprecated-enum-enum-conversion"// warning: bitwise operation between different enumeration types ('XXXFlags_' and 'XXXFlagsPrivate_') is deprecated
-#pragma clang diagnostic ignored "-Wimplicit-int-float-conversion"  // warning: implicit conversion from 'xxx' to 'float' may lose precision
+#pragma clang diagnostic ignored "-Wimplicit-int-GLfloat-conversion"  // warning: implicit conversion from 'xxx' to 'GLfloat' may lose precision
 #elif defined(__GNUC__)
 #pragma GCC diagnostic ignored "-Wpragmas"                          // warning: unknown option after '#pragma GCC diagnostic' kind
 #pragma GCC diagnostic ignored "-Wformat-nonliteral"                // warning: format not a string literal, format string not checked
@@ -241,9 +241,9 @@ Index of this file:
 static const int TABLE_DRAW_CHANNEL_BG0 = 0;
 static const int TABLE_DRAW_CHANNEL_BG2_FROZEN = 1;
 static const int TABLE_DRAW_CHANNEL_NOCLIP = 2;                     // When using ImGuiTableFlags_NoClip (this becomes the last visible channel)
-static const float TABLE_BORDER_SIZE                     = 1.0f;    // FIXME-TABLE: Currently hard-coded because of clipping assumptions with outer borders rendering.
-static const float TABLE_RESIZE_SEPARATOR_HALF_THICKNESS = 4.0f;    // Extend outside inner borders.
-static const float TABLE_RESIZE_SEPARATOR_FEEDBACK_TIMER = 0.06f;   // Delay/timer before making the hover feedback (color+cursor) visible because tables/columns tends to be more cramped.
+static const GLfloat TABLE_BORDER_SIZE                     = 1.0f;    // FIXME-TABLE: Currently hard-coded because of clipping assumptions with outer borders rendering.
+static const GLfloat TABLE_RESIZE_SEPARATOR_HALF_THICKNESS = 4.0f;    // Extend outside inner borders.
+static const GLfloat TABLE_RESIZE_SEPARATOR_FEEDBACK_TIMER = 0.06f;   // Delay/timer before making the hover feedback (color+cursor) visible because tables/columns tends to be more cramped.
 
 // Helper
 inline ImGuiTableFlags TableFixFlags(ImGuiTableFlags flags, ImGuiWindow* outer_window)
@@ -291,13 +291,13 @@ ImGuiTable* ImGui::TableFindByID(ImGuiID id)
 }
 
 // Read about "TABLE SIZING" at the top of this file.
-bool    ImGui::BeginTable(const char* str_id, int columns_count, ImGuiTableFlags flags, const ImVec2& outer_size, float inner_width)
+bool    ImGui::BeginTable(const char* str_id, int columns_count, ImGuiTableFlags flags, const ImVec2& outer_size, GLfloat inner_width)
 {
     ImGuiID id = GetID(str_id);
     return BeginTableEx(str_id, id, columns_count, flags, outer_size, inner_width);
 }
 
-bool    ImGui::BeginTableEx(const char* name, ImGuiID id, int columns_count, ImGuiTableFlags flags, const ImVec2& outer_size, float inner_width)
+bool    ImGui::BeginTableEx(const char* name, ImGuiID id, int columns_count, ImGuiTableFlags flags, const ImVec2& outer_size, GLfloat inner_width)
 {
     ImGuiContext& g = *GImGui;
     ImGuiWindow* outer_window = GetCurrentWindow();
@@ -407,16 +407,16 @@ bool    ImGui::BeginTableEx(const char* name, ImGuiID id, int columns_count, ImG
     // - PadOuter+PadInner  | Pad ..Content.. Pad | Pad ..Content.. Pad |
     const bool pad_outer_x = (flags & ImGuiTableFlags_NoPadOuterX) ? false : (flags & ImGuiTableFlags_PadOuterX) ? true : (flags & ImGuiTableFlags_BordersOuterV) != 0;
     const bool pad_inner_x = (flags & ImGuiTableFlags_NoPadInnerX) ? false : true;
-    const float inner_spacing_for_border = (flags & ImGuiTableFlags_BordersInnerV) ? TABLE_BORDER_SIZE : 0.0f;
-    const float inner_spacing_explicit = (pad_inner_x && (flags & ImGuiTableFlags_BordersInnerV) == 0) ? g.Style.CellPadding.x : 0.0f;
-    const float inner_padding_explicit = (pad_inner_x && (flags & ImGuiTableFlags_BordersInnerV) != 0) ? g.Style.CellPadding.x : 0.0f;
+    const GLfloat inner_spacing_for_border = (flags & ImGuiTableFlags_BordersInnerV) ? TABLE_BORDER_SIZE : 0.0f;
+    const GLfloat inner_spacing_explicit = (pad_inner_x && (flags & ImGuiTableFlags_BordersInnerV) == 0) ? g.Style.CellPadding.x : 0.0f;
+    const GLfloat inner_padding_explicit = (pad_inner_x && (flags & ImGuiTableFlags_BordersInnerV) != 0) ? g.Style.CellPadding.x : 0.0f;
     table->CellSpacingX1 = inner_spacing_explicit + inner_spacing_for_border;
     table->CellSpacingX2 = inner_spacing_explicit;
     table->CellPaddingX = inner_padding_explicit;
     table->CellPaddingY = g.Style.CellPadding.y;
 
-    const float outer_padding_for_border = (flags & ImGuiTableFlags_BordersOuterV) ? TABLE_BORDER_SIZE : 0.0f;
-    const float outer_padding_explicit = pad_outer_x ? g.Style.CellPadding.x : 0.0f;
+    const GLfloat outer_padding_for_border = (flags & ImGuiTableFlags_BordersOuterV) ? TABLE_BORDER_SIZE : 0.0f;
+    const GLfloat outer_padding_explicit = pad_outer_x ? g.Style.CellPadding.x : 0.0f;
     table->OuterPaddingX = (outer_padding_for_border + outer_padding_explicit) - table->CellPaddingX;
 
     table->CurrentColumn = -1;
@@ -453,7 +453,7 @@ bool    ImGui::BeginTableEx(const char* name, ImGuiID id, int columns_count, ImG
     // Mark as used
     if (table_idx >= g.TablesLastTimeActive.Size)
         g.TablesLastTimeActive.resize(table_idx + 1, -1.0f);
-    g.TablesLastTimeActive[table_idx] = (float)g.Time;
+    g.TablesLastTimeActive[table_idx] = (GLfloat)g.Time;
     table->MemoryCompacted = false;
 
     // Setup memory buffer (clear data if columns count changed)
@@ -483,7 +483,7 @@ bool    ImGui::BeginTableEx(const char* name, ImGuiID id, int columns_count, ImG
         for (int n = 0; n < columns_count; n++)
         {
             ImGuiTableColumn* column = &table->Columns[n];
-            float width_auto = column->WidthAuto;
+            GLfloat width_auto = column->WidthAuto;
             *column = ImGuiTableColumn();
             column->WidthAuto = width_auto;
             column->IsPreserveWidthAuto = true; // Preserve WidthAuto when reinitializing a live table: not technically necessary but remove a visible flicker
@@ -501,10 +501,10 @@ bool    ImGui::BeginTableEx(const char* name, ImGuiID id, int columns_count, ImG
     // It will also react to changing fonts with mixed results. It doesn't need to be perfect but merely provide a decent transition.
     // FIXME-DPI: Provide consistent standards for reference size. Perhaps using g.CurrentDpiScale would be more self explanatory.
     // This is will lead us to non-rounded WidthRequest in columns, which should work but is a poorly tested path.
-    const float new_ref_scale_unit = g.FontSize; // g.Font->GetCharAdvance('A') ?
+    const GLfloat new_ref_scale_unit = g.FontSize; // g.Font->GetCharAdvance('A') ?
     if (table->RefScale != 0.0f && table->RefScale != new_ref_scale_unit)
     {
-        const float scale_factor = new_ref_scale_unit / table->RefScale;
+        const GLfloat scale_factor = new_ref_scale_unit / table->RefScale;
         //IMGUI_DEBUG_LOG("[table] %08X RefScaleUnit %.3f -> %.3f, scaling width by %.3f\n", table->ID, table->RefScaleUnit, new_ref_scale_unit, scale_factor);
         for (int n = 0; n < columns_count; n++)
             table->Columns[n].WidthRequest = table->Columns[n].WidthRequest * scale_factor;
@@ -697,8 +697,8 @@ void ImGui::TableUpdateLayout(ImGuiTable* table)
     int last_visible_column_idx = -1;
     bool has_auto_fit_request = false;
     bool has_resizable = false;
-    float stretch_sum_width_auto = 0.0f;
-    float fixed_max_width_auto = 0.0f;
+    GLfloat stretch_sum_width_auto = 0.0f;
+    GLfloat fixed_max_width_auto = 0.0f;
     for (int order_n = 0; order_n < table->ColumnsCount; order_n++)
     {
         const int column_n = table->DisplayOrderToIndex[order_n];
@@ -791,8 +791,8 @@ void ImGui::TableUpdateLayout(ImGuiTable* table)
         table->IsSettingsDirty = true;
 
     // [Part 3] Fix column flags and record a few extra information.
-    float sum_width_requests = 0.0f;        // Sum of all width for fixed and auto-resize columns, excluding width contributed by Stretch columns but including spacing/padding.
-    float stretch_sum_weights = 0.0f;       // Sum of all weights for stretch columns.
+    GLfloat sum_width_requests = 0.0f;        // Sum of all width for fixed and auto-resize columns, excluding width contributed by Stretch columns but including spacing/padding.
+    GLfloat stretch_sum_weights = 0.0f;       // Sum of all weights for stretch columns.
     table->LeftMostStretchedColumn = table->RightMostStretchedColumn = -1;
     for (int column_n = 0; column_n < table->ColumnsCount; column_n++)
     {
@@ -804,7 +804,7 @@ void ImGui::TableUpdateLayout(ImGuiTable* table)
         if (column->Flags & ImGuiTableColumnFlags_WidthFixed)
         {
             // Apply same widths policy
-            float width_auto = column->WidthAuto;
+            GLfloat width_auto = column->WidthAuto;
             if (table_sizing_policy == ImGuiTableFlags_SizingFixedSame && (column->AutoFitQueue != 0x00 || !column_is_resizable))
                 width_auto = fixed_max_width_auto; 
 
@@ -851,10 +851,10 @@ void ImGui::TableUpdateLayout(ImGuiTable* table)
 
     // [Part 4] Apply final widths based on requested widths
     const ImRect work_rect = table->WorkRect;
-    const float width_spacings = (table->OuterPaddingX * 2.0f) + (table->CellSpacingX1 + table->CellSpacingX2) * (table->ColumnsEnabledCount - 1);
-    const float width_avail = ((table->Flags & ImGuiTableFlags_ScrollX) && table->InnerWidth == 0.0f) ? table->InnerClipRect.GetWidth() : work_rect.GetWidth();
-    const float width_avail_for_stretched_columns = width_avail - width_spacings - sum_width_requests;
-    float width_remaining_for_stretched_columns = width_avail_for_stretched_columns;
+    const GLfloat width_spacings = (table->OuterPaddingX * 2.0f) + (table->CellSpacingX1 + table->CellSpacingX2) * (table->ColumnsEnabledCount - 1);
+    const GLfloat width_avail = ((table->Flags & ImGuiTableFlags_ScrollX) && table->InnerWidth == 0.0f) ? table->InnerClipRect.GetWidth() : work_rect.GetWidth();
+    const GLfloat width_avail_for_stretched_columns = width_avail - width_spacings - sum_width_requests;
+    GLfloat width_remaining_for_stretched_columns = width_avail_for_stretched_columns;
     table->ColumnsGivenWidth = width_spacings + (table->CellPaddingX * 2.0f) * table->ColumnsEnabledCount;
     for (int column_n = 0; column_n < table->ColumnsCount; column_n++)
     {
@@ -865,7 +865,7 @@ void ImGui::TableUpdateLayout(ImGuiTable* table)
         // Allocate width for stretched/weighted columns (StretchWeight gets converted into WidthRequest)
         if (column->Flags & ImGuiTableColumnFlags_WidthStretch)
         {
-            float weight_ratio = column->StretchWeight / stretch_sum_weights;
+            GLfloat weight_ratio = column->StretchWeight / stretch_sum_weights;
             column->WidthRequest = IM_FLOOR(ImMax(width_avail_for_stretched_columns * weight_ratio, table->MinColumnWidth) + 0.01f);
             width_remaining_for_stretched_columns -= column->WidthRequest;
         }
@@ -904,7 +904,7 @@ void ImGui::TableUpdateLayout(ImGuiTable* table)
     // Process columns in their visible orders as we are comparing the visible order and adjusting host_clip_rect while looping.
     int visible_n = 0;
     bool offset_x_frozen = (table->FreezeColumnsCount > 0);
-    float offset_x = ((table->FreezeColumnsCount > 0) ? table->OuterRect.Min.x : work_rect.Min.x) + table->OuterPaddingX - table->CellSpacingX1;
+    GLfloat offset_x = ((table->FreezeColumnsCount > 0) ? table->OuterRect.Min.x : work_rect.Min.x) + table->OuterPaddingX - table->CellSpacingX1;
     ImRect host_clip_rect = table->InnerClipRect;
     //host_clip_rect.Max.x += table->CellPaddingX + table->CellSpacingX2;
     table->VisibleMaskByIndex = 0x00;
@@ -948,7 +948,7 @@ void ImGui::TableUpdateLayout(ImGuiTable* table)
         column->MinX = offset_x;
 
         // Lock width based on start position and minimum/maximum width for this position
-        float max_width = TableGetMaxColumnWidth(table, column_n);
+        GLfloat max_width = TableGetMaxColumnWidth(table, column_n);
         column->WidthGiven = ImMin(column->WidthGiven, max_width);
         column->WidthGiven = ImMax(column->WidthGiven, ImMin(column->WidthRequest, table->MinColumnWidth));
         column->MaxX = offset_x + column->WidthGiven + table->CellSpacingX1 + table->CellSpacingX2 + table->CellPaddingX * 2.0f;
@@ -1029,7 +1029,7 @@ void ImGui::TableUpdateLayout(ImGuiTable* table)
     // [Part 7] Detect/store when we are hovering the unused space after the right-most column (so e.g. context menus can react on it)
     // Clear Resizable flag if none of our column are actually resizable (either via an explicit _NoResize flag, either
     // because of using _WidthAuto/_WidthStretch). This will hide the resizing option from the context menu.
-    const float unused_x1 = ImMax(table->WorkRect.Min.x, table->Columns[table->RightMostEnabledColumn].ClipRect.Max.x);
+    const GLfloat unused_x1 = ImMax(table->WorkRect.Min.x, table->Columns[table->RightMostEnabledColumn].ClipRect.Max.x);
     if (is_hovering_table && table->HoveredColumnBody == -1)
     {
         if (g.IO.MousePos.x >= unused_x1)
@@ -1103,10 +1103,10 @@ void ImGui::TableUpdateBorders(ImGuiTable* table)
     // use the final height from last frame. Because this is only affecting _interaction_ with columns, it is not
     // really problematic (whereas the actual visual will be displayed in EndTable() and using the current frame height).
     // Actual columns highlight/render will be performed in EndTable() and not be affected.
-    const float hit_half_width = TABLE_RESIZE_SEPARATOR_HALF_THICKNESS;
-    const float hit_y1 = table->OuterRect.Min.y;
-    const float hit_y2_body = ImMax(table->OuterRect.Max.y, hit_y1 + table->LastOuterHeight);
-    const float hit_y2_head = hit_y1 + table->LastFirstRowHeight;
+    const GLfloat hit_half_width = TABLE_RESIZE_SEPARATOR_HALF_THICKNESS;
+    const GLfloat hit_y1 = table->OuterRect.Min.y;
+    const GLfloat hit_y2_body = ImMax(table->OuterRect.Max.y, hit_y1 + table->LastOuterHeight);
+    const GLfloat hit_y2_head = hit_y1 + table->LastFirstRowHeight;
 
     for (int order_n = 0; order_n < table->ColumnsCount; order_n++)
     {
@@ -1119,7 +1119,7 @@ void ImGui::TableUpdateBorders(ImGuiTable* table)
             continue;
 
         // ImGuiTableFlags_NoBordersInBodyUntilResize will be honored in TableDrawBorders()
-        const float border_y2_hit = (table->Flags & ImGuiTableFlags_NoBordersInBody) ? hit_y2_head : hit_y2_body;
+        const GLfloat border_y2_hit = (table->Flags & ImGuiTableFlags_NoBordersInBody) ? hit_y2_head : hit_y2_body;
         if ((table->Flags & ImGuiTableFlags_NoBordersInBody) && table->IsUsingHeaders == false)
             continue;
 
@@ -1188,7 +1188,7 @@ void    ImGui::EndTable()
     inner_window->DC.PrevLineSize = table->HostBackupPrevLineSize;
     inner_window->DC.CurrLineSize = table->HostBackupCurrLineSize;
     inner_window->DC.CursorMaxPos = table->HostBackupCursorMaxPos;
-    const float inner_content_max_y = table->RowPosY2;
+    const GLfloat inner_content_max_y = table->RowPosY2;
     IM_ASSERT(table->RowPosY2 == inner_window->DC.CursorPos.y);
     if (inner_window != outer_window)
         inner_window->DC.CursorMaxPos.y = inner_content_max_y;
@@ -1202,8 +1202,8 @@ void    ImGui::EndTable()
     // but since the later is likely to be impossible to do we'd rather update both axises together.
     if (table->Flags & ImGuiTableFlags_ScrollX)
     {
-        const float outer_padding_for_border = (table->Flags & ImGuiTableFlags_BordersOuterV) ? TABLE_BORDER_SIZE : 0.0f;
-        float max_pos_x = table->InnerWindow->DC.CursorMaxPos.x;
+        const GLfloat outer_padding_for_border = (table->Flags & ImGuiTableFlags_BordersOuterV) ? TABLE_BORDER_SIZE : 0.0f;
+        GLfloat max_pos_x = table->InnerWindow->DC.CursorMaxPos.x;
         if (table->RightMostEnabledColumn != -1)
             max_pos_x = ImMax(max_pos_x, table->Columns[table->RightMostEnabledColumn].WorkMaxX + table->CellPaddingX + table->OuterPaddingX - outer_padding_for_border);
         if (table->ResizedColumn != -1)
@@ -1240,7 +1240,7 @@ void    ImGui::EndTable()
     table->DrawSplitter.Merge(inner_window->DrawList);
 
     // Update ColumnsAutoFitWidth to get us ahead for host using our size to auto-resize without waiting for next BeginTable()
-    const float width_spacings = (table->OuterPaddingX * 2.0f) + (table->CellSpacingX1 + table->CellSpacingX2) * (table->ColumnsEnabledCount - 1);
+    const GLfloat width_spacings = (table->OuterPaddingX * 2.0f) + (table->CellSpacingX1 + table->CellSpacingX2) * (table->ColumnsEnabledCount - 1);
     table->ColumnsAutoFitWidth = width_spacings + (table->CellPaddingX * 2.0f) * table->ColumnsEnabledCount;
     for (int column_n = 0; column_n < table->ColumnsCount; column_n++)
         if (table->EnabledMaskByIndex & ((ImU64)1 << column_n))
@@ -1260,7 +1260,7 @@ void    ImGui::EndTable()
     else if (table->LastResizedColumn != -1 && table->ResizedColumn == -1 && inner_window->ScrollbarX && table->InstanceInteracted == table->InstanceCurrent)
     {
         // When releasing a column being resized, scroll to keep the resulting column in sight
-        const float neighbor_width_to_keep_visible = table->MinColumnWidth + table->CellPaddingX * 2.0f;
+        const GLfloat neighbor_width_to_keep_visible = table->MinColumnWidth + table->CellPaddingX * 2.0f;
         ImGuiTableColumn* column = &table->Columns[table->LastResizedColumn];
         if (column->MaxX < table->InnerClipRect.Min.x)
             SetScrollFromPosX(inner_window, column->MaxX - inner_window->Pos.x - neighbor_width_to_keep_visible, 1.0f);
@@ -1272,8 +1272,8 @@ void    ImGui::EndTable()
     if (table->ResizedColumn != -1 && table->InstanceCurrent == table->InstanceInteracted)
     {
         ImGuiTableColumn* column = &table->Columns[table->ResizedColumn];
-        const float new_x2 = (g.IO.MousePos.x - g.ActiveIdClickOffset.x + TABLE_RESIZE_SEPARATOR_HALF_THICKNESS);
-        const float new_width = ImFloor(new_x2 - column->MinX - table->CellSpacingX1 - table->CellPaddingX * 2.0f);
+        const GLfloat new_x2 = (g.IO.MousePos.x - g.ActiveIdClickOffset.x + TABLE_RESIZE_SEPARATOR_HALF_THICKNESS);
+        const GLfloat new_width = ImFloor(new_x2 - column->MinX - table->CellSpacingX1 - table->CellPaddingX * 2.0f);
         table->ResizedColumnNextWidth = new_width;
     }
 
@@ -1315,7 +1315,7 @@ void    ImGui::EndTable()
     }
     else if (table->UserOuterSize.x <= 0.0f)
     {
-        const float decoration_size = (table->Flags & ImGuiTableFlags_ScrollX) ? inner_window->ScrollbarSizes.x : 0.0f;
+        const GLfloat decoration_size = (table->Flags & ImGuiTableFlags_ScrollX) ? inner_window->ScrollbarSizes.x : 0.0f;
         outer_window->DC.IdealMaxPos.x = ImMax(outer_window->DC.IdealMaxPos.x, table->OuterRect.Min.x + table->ColumnsAutoFitWidth + decoration_size - table->UserOuterSize.x);
         outer_window->DC.CursorMaxPos.x = ImMax(backup_outer_max_pos.x, ImMin(table->OuterRect.Max.x, table->OuterRect.Min.x + table->ColumnsAutoFitWidth));
     }
@@ -1325,7 +1325,7 @@ void    ImGui::EndTable()
     }
     if (table->UserOuterSize.y <= 0.0f)
     {
-        const float decoration_size = (table->Flags & ImGuiTableFlags_ScrollY) ? inner_window->ScrollbarSizes.y : 0.0f;
+        const GLfloat decoration_size = (table->Flags & ImGuiTableFlags_ScrollY) ? inner_window->ScrollbarSizes.y : 0.0f;
         outer_window->DC.IdealMaxPos.y = ImMax(outer_window->DC.IdealMaxPos.y, inner_content_max_y + decoration_size - table->UserOuterSize.y);
         outer_window->DC.CursorMaxPos.y = ImMax(backup_outer_max_pos.y, ImMin(table->OuterRect.Max.y, inner_content_max_y));
     }
@@ -1349,7 +1349,7 @@ void    ImGui::EndTable()
 
 // See "COLUMN SIZING POLICIES" comments at the top of this file
 // If (init_width_or_weight <= 0.0f) it is ignored
-void ImGui::TableSetupColumn(const char* label, ImGuiTableColumnFlags flags, float init_width_or_weight, ImGuiID user_id)
+void ImGui::TableSetupColumn(const char* label, ImGuiTableColumnFlags flags, GLfloat init_width_or_weight, ImGuiID user_id)
 {
     ImGuiContext& g = *GImGui;
     ImGuiTable* table = g.CurrentTable;
@@ -1498,8 +1498,8 @@ ImGuiTableColumnFlags ImGui::TableGetColumnFlags(int column_n)
 ImRect ImGui::TableGetCellBgRect(const ImGuiTable* table, int column_n)
 {
     const ImGuiTableColumn* column = &table->Columns[column_n];
-    float x1 = column->MinX;
-    float x2 = column->MaxX;
+    GLfloat x1 = column->MinX;
+    GLfloat x2 = column->MaxX;
     if (column->PrevEnabledColumn == -1)
         x1 -= table->CellSpacingX1;
     if (column->NextEnabledColumn == -1)
@@ -1587,7 +1587,7 @@ int ImGui::TableGetRowIndex()
 }
 
 // [Public] Starts into the first cell of a new row
-void ImGui::TableNextRow(ImGuiTableRowFlags row_flags, float row_min_height)
+void ImGui::TableNextRow(ImGuiTableRowFlags row_flags, GLfloat row_min_height)
 {
     ImGuiContext& g = *GImGui;
     ImGuiTable* table = g.CurrentTable;
@@ -1625,7 +1625,7 @@ void ImGui::TableBeginRow(ImGuiTable* table)
     table->IsInsideRow = true;
 
     // Begin frozen rows
-    float next_y1 = table->RowPosY2;
+    GLfloat next_y1 = table->RowPosY2;
     if (table->CurrentRow == 0 && table->FreezeRowsCount > 0)
         next_y1 = window->DC.CursorPos.y = table->OuterRect.Min.y;
 
@@ -1664,8 +1664,8 @@ void ImGui::TableEndRow(ImGuiTable* table)
     window->DC.CursorPos.y = table->RowPosY2;
 
     // Row background fill
-    const float bg_y1 = table->RowPosY1;
-    const float bg_y2 = table->RowPosY2;
+    const GLfloat bg_y1 = table->RowPosY1;
+    const GLfloat bg_y2 = table->RowPosY2;
     const bool unfreeze_rows_actual = (table->CurrentRow + 1 == table->FreezeRowsCount);
     const bool unfreeze_rows_request = (table->CurrentRow + 1 == table->FreezeRowsRequest);
     if (table->CurrentRow == 0)
@@ -1686,7 +1686,7 @@ void ImGui::TableEndRow(ImGuiTable* table)
 
         // Decide of top border color
         ImU32 border_col = 0;
-        const float border_size = TABLE_BORDER_SIZE;
+        const GLfloat border_size = TABLE_BORDER_SIZE;
         if (table->CurrentRow > 0 || table->InnerWindow == table->OuterWindow)
             if (table->Flags & ImGuiTableFlags_BordersInnerH)
                 border_col = (table->LastRowFlags & ImGuiTableRowFlags_Headers) ? table->BorderColorStrong : table->BorderColorLight;
@@ -1753,13 +1753,13 @@ void ImGui::TableEndRow(ImGuiTable* table)
         table->IsUnfrozenRows = true;
 
         // BgClipRect starts as table->InnerClipRect, reduce it now and make BgClipRectForDrawCmd == BgClipRect
-        float y0 = ImMax(table->RowPosY2 + 1, window->InnerClipRect.Min.y);
+        GLfloat y0 = ImMax(table->RowPosY2 + 1, window->InnerClipRect.Min.y);
         table->BgClipRect.Min.y = table->Bg2ClipRectForDrawCmd.Min.y = ImMin(y0, window->InnerClipRect.Max.y);
         table->BgClipRect.Max.y = table->Bg2ClipRectForDrawCmd.Max.y = window->InnerClipRect.Max.y;
         table->Bg2DrawChannelCurrent = table->Bg2DrawChannelUnfrozen;
         IM_ASSERT(table->Bg2ClipRectForDrawCmd.Min.y <= table->Bg2ClipRectForDrawCmd.Max.y);
 
-        float row_height = table->RowPosY2 - table->RowPosY1;
+        GLfloat row_height = table->RowPosY2 - table->RowPosY1;
         table->RowPosY2 = window->DC.CursorPos.y = table->WorkRect.Min.y + table->RowPosY2 - table->OuterRect.Min.y;
         table->RowPosY1 = table->RowPosY2 - row_height;
         for (int column_n = 0; column_n < table->ColumnsCount; column_n++)
@@ -1856,7 +1856,7 @@ void ImGui::TableBeginCell(ImGuiTable* table, int column_n)
     table->CurrentColumn = column_n;
 
     // Start position is roughly ~~ CellRect.Min + CellPadding + Indent
-    float start_x = column->WorkMinX;
+    GLfloat start_x = column->WorkMinX;
     if (column->Flags & ImGuiTableColumnFlags_IndentEnable)
         start_x += table->RowIndentOffsetX; // ~~ += window.DC.Indent.x - table->HostIndentX, except we locked it for the row.
 
@@ -1912,7 +1912,7 @@ void ImGui::TableEndCell(ImGuiTable* table)
     ImGuiWindow* window = table->InnerWindow;
 
     // Report maximum position so we can infer content size per column.
-    float* p_max_pos_x;
+    GLfloat* p_max_pos_x;
     if (table->RowFlags & ImGuiTableRowFlags_Headers)
         p_max_pos_x = &column->ContentMaxXHeadersUsed;  // Useful in case user submit contents in header row that is not a TableHeader() call
     else
@@ -1938,11 +1938,11 @@ void ImGui::TableEndCell(ImGuiTable* table)
 //-------------------------------------------------------------------------
 
 // Maximum column content width given current layout. Use column->MinX so this value on a per-column basis.
-float ImGui::TableGetMaxColumnWidth(const ImGuiTable* table, int column_n)
+GLfloat ImGui::TableGetMaxColumnWidth(const ImGuiTable* table, int column_n)
 {
     const ImGuiTableColumn* column = &table->Columns[column_n];
-    float max_width = FLT_MAX;
-    const float min_column_distance = table->MinColumnWidth + table->CellPaddingX * 2.0f + table->CellSpacingX1 + table->CellSpacingX2;
+    GLfloat max_width = FLT_MAX;
+    const GLfloat min_column_distance = table->MinColumnWidth + table->CellPaddingX * 2.0f + table->CellSpacingX1 + table->CellSpacingX2;
     if (table->Flags & ImGuiTableFlags_ScrollX)
     {
         // Frozen columns can't reach beyond visible width else scrolling will naturally break.
@@ -1969,11 +1969,11 @@ float ImGui::TableGetMaxColumnWidth(const ImGuiTable* table, int column_n)
 }
 
 // Note this is meant to be stored in column->WidthAuto, please generally use the WidthAuto field
-float ImGui::TableGetColumnWidthAuto(ImGuiTable* table, ImGuiTableColumn* column)
+GLfloat ImGui::TableGetColumnWidthAuto(ImGuiTable* table, ImGuiTableColumn* column)
 {
-    const float content_width_body = ImMax(column->ContentMaxXFrozen, column->ContentMaxXUnfrozen) - column->WorkMinX;
-    const float content_width_headers = column->ContentMaxXHeadersIdeal - column->WorkMinX;
-    float width_auto = content_width_body;
+    const GLfloat content_width_body = ImMax(column->ContentMaxXFrozen, column->ContentMaxXUnfrozen) - column->WorkMinX;
+    const GLfloat content_width_headers = column->ContentMaxXHeadersIdeal - column->WorkMinX;
+    GLfloat width_auto = content_width_body;
     if (!(column->Flags & ImGuiTableColumnFlags_NoHeaderWidth))
         width_auto = ImMax(width_auto, content_width_headers);
 
@@ -1986,20 +1986,20 @@ float ImGui::TableGetColumnWidthAuto(ImGuiTable* table, ImGuiTableColumn* column
 }
 
 // 'width' = inner column width, without padding
-void ImGui::TableSetColumnWidth(int column_n, float width)
+void ImGui::TableSetColumnWidth(int column_n, GLfloat width)
 {
     ImGuiContext& g = *GImGui;
     ImGuiTable* table = g.CurrentTable;
     IM_ASSERT(table != NULL && table->IsLayoutLocked == false);
     IM_ASSERT(column_n >= 0 && column_n < table->ColumnsCount);
     ImGuiTableColumn* column_0 = &table->Columns[column_n];
-    float column_0_width = width;
+    GLfloat column_0_width = width;
 
     // Apply constraints early
     // Compare both requested and actual given width to avoid overwriting requested width when column is stuck (minimum size, bounded)
     IM_ASSERT(table->MinColumnWidth > 0.0f);
-    const float min_width = table->MinColumnWidth;
-    const float max_width = ImMax(min_width, TableGetMaxColumnWidth(table, column_n));
+    const GLfloat min_width = table->MinColumnWidth;
+    const GLfloat max_width = ImMax(min_width, TableGetMaxColumnWidth(table, column_n));
     column_0_width = ImClamp(column_0_width, min_width, max_width);
     if (column_0->WidthGiven == column_0_width || column_0->WidthRequest == column_0_width)
         return;
@@ -2057,7 +2057,7 @@ void ImGui::TableSetColumnWidth(int column_n, float width)
 
     // Resizing from right-side of a Stretch column before a Fixed column forward sizing to left-side of fixed column.
     // (old_a + old_b == new_a + new_b) --> (new_a == old_a + old_b - new_b)
-    float column_1_width = ImMax(column_1->WidthRequest - (column_0_width - column_0->WidthRequest), min_width);
+    GLfloat column_1_width = ImMax(column_1->WidthRequest - (column_0_width - column_0->WidthRequest), min_width);
     column_0_width = column_0->WidthRequest + column_1->WidthRequest - column_1_width;
     IM_ASSERT(column_0_width > 0.0f && column_1_width > 0.0f);
     column_0->WidthRequest = column_0_width;
@@ -2096,8 +2096,8 @@ void ImGui::TableUpdateColumnsWeightFromWidth(ImGuiTable* table)
     IM_ASSERT(table->LeftMostStretchedColumn != -1 && table->RightMostStretchedColumn != -1);
 
     // Measure existing quantity
-    float visible_weight = 0.0f;
-    float visible_width = 0.0f;
+    GLfloat visible_weight = 0.0f;
+    GLfloat visible_width = 0.0f;
     for (int column_n = 0; column_n < table->ColumnsCount; column_n++)
     {
         ImGuiTableColumn* column = &table->Columns[column_n];
@@ -2282,7 +2282,7 @@ void ImGui::TableMergeDrawChannels(ImGuiTable* table)
             // (note that we assume that rendering didn't stray on the left direction. we should need a CursorMinPos to detect it)
             if (!(column->Flags & ImGuiTableColumnFlags_NoClip))
             {
-                float content_max_x;
+                GLfloat content_max_x;
                 if (!has_freeze_v)
                     content_max_x = ImMax(column->ContentMaxXUnfrozen, column->ContentMaxXHeadersUsed); // No row freeze
                 else if (merge_group_sub_n == 0)
@@ -2418,10 +2418,10 @@ void ImGui::TableDrawBorders(ImGuiTable* table)
     inner_drawlist->PushClipRect(table->Bg0ClipRectForDrawCmd.Min, table->Bg0ClipRectForDrawCmd.Max, false);
 
     // Draw inner border and resizing feedback
-    const float border_size = TABLE_BORDER_SIZE;
-    const float draw_y1 = table->InnerRect.Min.y;
-    const float draw_y2_body = table->InnerRect.Max.y;
-    const float draw_y2_head = table->IsUsingHeaders ? ImMin(table->InnerRect.Max.y, (table->FreezeRowsCount >= 1 ? table->InnerRect.Min.y : table->WorkRect.Min.y) + table->LastFirstRowHeight) : draw_y1;
+    const GLfloat border_size = TABLE_BORDER_SIZE;
+    const GLfloat draw_y1 = table->InnerRect.Min.y;
+    const GLfloat draw_y2_body = table->InnerRect.Max.y;
+    const GLfloat draw_y2_head = table->IsUsingHeaders ? ImMin(table->InnerRect.Max.y, (table->FreezeRowsCount >= 1 ? table->InnerRect.Min.y : table->WorkRect.Min.y) + table->LastFirstRowHeight) : draw_y1;
     if (table->Flags & ImGuiTableFlags_BordersInnerV)
     {
         for (int order_n = 0; order_n < table->ColumnsCount; order_n++)
@@ -2448,7 +2448,7 @@ void ImGui::TableDrawBorders(ImGuiTable* table)
             // Draw in outer window so right-most column won't be clipped
             // Always draw full height border when being resized/hovered, or on the delimitation of frozen column scrolling.
             ImU32 col;
-            float draw_y2;
+            GLfloat draw_y2;
             if (is_hovered || is_resized || is_frozen_separator)
             {
                 draw_y2 = draw_y2_body;
@@ -2494,7 +2494,7 @@ void ImGui::TableDrawBorders(ImGuiTable* table)
     if ((table->Flags & ImGuiTableFlags_BordersInnerH) && table->RowPosY2 < table->OuterRect.Max.y)
     {
         // Draw bottom-most row border
-        const float border_y = table->RowPosY2;
+        const GLfloat border_y = table->RowPosY2;
         if (border_y >= table->BgClipRect.Min.y && border_y < table->BgClipRect.Max.y)
             inner_drawlist->AddLine(ImVec2(table->BorderX1, border_y), ImVec2(table->BorderX2, border_y), table->BorderColorLight, border_size);
     }
@@ -2702,13 +2702,13 @@ void ImGui::TableSortSpecsBuild(ImGuiTable* table)
 // - TableHeader()
 //-------------------------------------------------------------------------
 
-float ImGui::TableGetHeaderRowHeight()
+GLfloat ImGui::TableGetHeaderRowHeight()
 {
     // Caring for a minor edge case:
     // Calculate row height, for the unlikely case that some labels may be taller than others.
     // If we didn't do that, uneven header height would highlight but smaller one before the tallest wouldn't catch input for all height.
     // In your custom header row you may omit this all together and just call TableNextRow() without a height...
-    float row_height = GetTextLineHeight();
+    GLfloat row_height = GetTextLineHeight();
     int columns_count = TableGetColumnCount();
     for (int column_n = 0; column_n < columns_count; column_n++)
         if (TableGetColumnFlags(column_n) & ImGuiTableColumnFlags_IsEnabled)
@@ -2734,8 +2734,8 @@ void ImGui::TableHeadersRow()
         TableUpdateLayout(table);
 
     // Open row
-    const float row_y1 = GetCursorScreenPos().y;
-    const float row_height = TableGetHeaderRowHeight();
+    const GLfloat row_y1 = GetCursorScreenPos().y;
+    const GLfloat row_height = TableGetHeaderRowHeight();
     TableNextRow(ImGuiTableRowFlags_Headers, row_height);
     if (table->HostSkipItems) // Merely an optimization, you may skip in your own code.
         return;
@@ -2788,13 +2788,13 @@ void ImGui::TableHeader(const char* label)
     // If we already got a row height, there's use that.
     // FIXME-TABLE: Padding problem if the correct outer-padding CellBgRect strays off our ClipRect?
     ImRect cell_r = TableGetCellBgRect(table, column_n);
-    float label_height = ImMax(label_size.y, table->RowMinHeight - table->CellPaddingY * 2.0f);
+    GLfloat label_height = ImMax(label_size.y, table->RowMinHeight - table->CellPaddingY * 2.0f);
 
     // Calculate ideal size for sort order arrow
-    float w_arrow = 0.0f;
-    float w_sort_text = 0.0f;
+    GLfloat w_arrow = 0.0f;
+    GLfloat w_sort_text = 0.0f;
     char sort_order_suf[4] = "";
-    const float ARROW_SCALE = 0.65f;
+    const GLfloat ARROW_SCALE = 0.65f;
     if ((table->Flags & ImGuiTableFlags_Sortable) && !(column->Flags & ImGuiTableColumnFlags_NoSort))
     {
         w_arrow = ImFloor(g.FontSize * ARROW_SCALE + g.Style.FramePadding.x);
@@ -2806,7 +2806,7 @@ void ImGui::TableHeader(const char* label)
     }
 
     // We feed our unclipped width to the column without writing on CursorMaxPos, so that column is still considering for merging.
-    float max_pos_x = label_pos.x + label_size.x + w_sort_text + w_arrow;
+    GLfloat max_pos_x = label_pos.x + label_size.x + w_sort_text + w_arrow;
     column->ContentMaxXHeadersUsed = ImMax(column->ContentMaxXHeadersUsed, column->WorkMaxX);
     column->ContentMaxXHeadersIdeal = ImMax(column->ContentMaxXHeadersIdeal, max_pos_x);
 
@@ -2865,13 +2865,13 @@ void ImGui::TableHeader(const char* label)
     }
 
     // Sort order arrow
-    const float ellipsis_max = cell_r.Max.x - w_arrow - w_sort_text;
+    const GLfloat ellipsis_max = cell_r.Max.x - w_arrow - w_sort_text;
     if ((table->Flags & ImGuiTableFlags_Sortable) && !(column->Flags & ImGuiTableColumnFlags_NoSort))
     {
         if (column->SortOrder != -1)
         {
-            float x = ImMax(cell_r.Min.x, cell_r.Max.x - w_arrow - w_sort_text);
-            float y = label_pos.y;
+            GLfloat x = ImMax(cell_r.Min.x, cell_r.Max.x - w_arrow - w_sort_text);
+            GLfloat y = label_pos.y;
             if (column->SortOrder > 0)
             {
                 PushStyleColor(ImGuiCol_Text, GetColorU32(ImGuiCol_Text, 0.70f));
@@ -3132,7 +3132,7 @@ void ImGui::TableSaveSettings(ImGuiTable* table)
     settings->SaveFlags = ImGuiTableFlags_None;
     for (int n = 0; n < table->ColumnsCount; n++, column++, column_settings++)
     {
-        const float width_or_weight = (column->Flags & ImGuiTableColumnFlags_WidthStretch) ? column->StretchWeight : column->WidthRequest;
+        const GLfloat width_or_weight = (column->Flags & ImGuiTableColumnFlags_WidthStretch) ? column->StretchWeight : column->WidthRequest;
         column_settings->WidthOrWeight = width_or_weight;
         column_settings->Index = (ImGuiTableColumnIdx)n;
         column_settings->DisplayOrder = column->DisplayOrder;
@@ -3269,7 +3269,7 @@ static void TableSettingsHandler_ReadLine(ImGuiContext*, ImGuiSettingsHandler*, 
 {
     // "Column 0  UserID=0x42AD2D21 Width=100 Visible=1 Order=0 Sort=0v"
     ImGuiTableSettings* settings = (ImGuiTableSettings*)entry;
-    float f = 0.0f;
+    GLfloat f = 0.0f;
     int column_n = 0, r = 0, n = 0;
 
     if (sscanf(line, "RefScale=%f", &f) == 1) { settings->RefScale = f; return; }
@@ -3283,7 +3283,7 @@ static void TableSettingsHandler_ReadLine(ImGuiContext*, ImGuiSettingsHandler*, 
         ImGuiTableColumnSettings* column = settings->GetColumnSettings() + column_n;
         column->Index = (ImGuiTableColumnIdx)column_n;
         if (sscanf(line, "UserID=0x%08X%n", (ImU32*)&n, &r)==1) { line = ImStrSkipBlank(line + r); column->UserID = (ImGuiID)n; }
-        if (sscanf(line, "Width=%d%n", &n, &r) == 1)            { line = ImStrSkipBlank(line + r); column->WidthOrWeight = (float)n; column->IsStretch = 0; settings->SaveFlags |= ImGuiTableFlags_Resizable; }
+        if (sscanf(line, "Width=%d%n", &n, &r) == 1)            { line = ImStrSkipBlank(line + r); column->WidthOrWeight = (GLfloat)n; column->IsStretch = 0; settings->SaveFlags |= ImGuiTableFlags_Resizable; }
         if (sscanf(line, "Weight=%f%n", &f, &r) == 1)           { line = ImStrSkipBlank(line + r); column->WidthOrWeight = f; column->IsStretch = 1; settings->SaveFlags |= ImGuiTableFlags_Resizable; }
         if (sscanf(line, "Visible=%d%n", &n, &r) == 1)          { line = ImStrSkipBlank(line + r); column->IsEnabled = (ImU8)n; settings->SaveFlags |= ImGuiTableFlags_Hideable; }
         if (sscanf(line, "Order=%d%n", &n, &r) == 1)            { line = ImStrSkipBlank(line + r); column->DisplayOrder = (ImGuiTableColumnIdx)n; settings->SaveFlags |= ImGuiTableFlags_Reorderable; }
@@ -3440,7 +3440,7 @@ void ImGui::DebugNodeTable(ImGuiTable* table)
     BulletText("HoveredColumnBody: %d, HoveredColumnBorder: %d", table->HoveredColumnBody, table->HoveredColumnBorder);
     BulletText("ResizedColumn: %d, ReorderColumn: %d, HeldHeaderColumn: %d", table->ResizedColumn, table->ReorderColumn, table->HeldHeaderColumn);
     //BulletText("BgDrawChannels: %d/%d", 0, table->BgDrawChannelUnfrozen);
-    float sum_weights = 0.0f;
+    GLfloat sum_weights = 0.0f;
     for (int n = 0; n < table->ColumnsCount; n++)
         if (table->Columns[n].Flags & ImGuiTableColumnFlags_WidthStretch)
             sum_weights += table->Columns[n].StretchWeight;
@@ -3553,19 +3553,19 @@ int ImGui::GetColumnsCount()
     return window->DC.CurrentColumns ? window->DC.CurrentColumns->Count : 1;
 }
 
-float ImGui::GetColumnOffsetFromNorm(const ImGuiOldColumns* columns, float offset_norm)
+GLfloat ImGui::GetColumnOffsetFromNorm(const ImGuiOldColumns* columns, GLfloat offset_norm)
 {
     return offset_norm * (columns->OffMaxX - columns->OffMinX);
 }
 
-float ImGui::GetColumnNormFromOffset(const ImGuiOldColumns* columns, float offset)
+GLfloat ImGui::GetColumnNormFromOffset(const ImGuiOldColumns* columns, GLfloat offset)
 {
     return offset / (columns->OffMaxX - columns->OffMinX);
 }
 
-static const float COLUMNS_HIT_RECT_HALF_WIDTH = 4.0f;
+static const GLfloat COLUMNS_HIT_RECT_HALF_WIDTH = 4.0f;
 
-static float GetDraggedColumnOffset(ImGuiOldColumns* columns, int column_index)
+static GLfloat GetDraggedColumnOffset(ImGuiOldColumns* columns, int column_index)
 {
     // Active (dragged) column always follow mouse. The reason we need this is that dragging a column to the right edge of an auto-resizing
     // window creates a feedback loop because we store normalized positions. So while dragging we enforce absolute positioning.
@@ -3574,7 +3574,7 @@ static float GetDraggedColumnOffset(ImGuiOldColumns* columns, int column_index)
     IM_ASSERT(column_index > 0); // We are not supposed to drag column 0.
     IM_ASSERT(g.ActiveId == columns->ID + ImGuiID(column_index));
 
-    float x = g.IO.MousePos.x - g.ActiveIdClickOffset.x + COLUMNS_HIT_RECT_HALF_WIDTH - window->Pos.x;
+    GLfloat x = g.IO.MousePos.x - g.ActiveIdClickOffset.x + COLUMNS_HIT_RECT_HALF_WIDTH - window->Pos.x;
     x = ImMax(x, ImGui::GetColumnOffset(column_index - 1) + g.Style.ColumnsMinSpacing);
     if ((columns->Flags & ImGuiOldColumnFlags_NoPreserveWidths))
         x = ImMin(x, ImGui::GetColumnOffset(column_index + 1) - g.Style.ColumnsMinSpacing);
@@ -3582,7 +3582,7 @@ static float GetDraggedColumnOffset(ImGuiOldColumns* columns, int column_index)
     return x;
 }
 
-float ImGui::GetColumnOffset(int column_index)
+GLfloat ImGui::GetColumnOffset(int column_index)
 {
     ImGuiWindow* window = GetCurrentWindowRead();
     ImGuiOldColumns* columns = window->DC.CurrentColumns;
@@ -3593,17 +3593,17 @@ float ImGui::GetColumnOffset(int column_index)
         column_index = columns->Current;
     IM_ASSERT(column_index < columns->Columns.Size);
 
-    const float t = columns->Columns[column_index].OffsetNorm;
-    const float x_offset = ImLerp(columns->OffMinX, columns->OffMaxX, t);
+    const GLfloat t = columns->Columns[column_index].OffsetNorm;
+    const GLfloat x_offset = ImLerp(columns->OffMinX, columns->OffMaxX, t);
     return x_offset;
 }
 
-static float GetColumnWidthEx(ImGuiOldColumns* columns, int column_index, bool before_resize = false)
+static GLfloat GetColumnWidthEx(ImGuiOldColumns* columns, int column_index, bool before_resize = false)
 {
     if (column_index < 0)
         column_index = columns->Current;
 
-    float offset_norm;
+    GLfloat offset_norm;
     if (before_resize)
         offset_norm = columns->Columns[column_index + 1].OffsetNormBeforeResize - columns->Columns[column_index].OffsetNormBeforeResize;
     else
@@ -3611,7 +3611,7 @@ static float GetColumnWidthEx(ImGuiOldColumns* columns, int column_index, bool b
     return ImGui::GetColumnOffsetFromNorm(columns, offset_norm);
 }
 
-float ImGui::GetColumnWidth(int column_index)
+GLfloat ImGui::GetColumnWidth(int column_index)
 {
     ImGuiContext& g = *GImGui;
     ImGuiWindow* window = g.CurrentWindow;
@@ -3624,7 +3624,7 @@ float ImGui::GetColumnWidth(int column_index)
     return GetColumnOffsetFromNorm(columns, columns->Columns[column_index + 1].OffsetNorm - columns->Columns[column_index].OffsetNorm);
 }
 
-void ImGui::SetColumnOffset(int column_index, float offset)
+void ImGui::SetColumnOffset(int column_index, GLfloat offset)
 {
     ImGuiContext& g = *GImGui;
     ImGuiWindow* window = g.CurrentWindow;
@@ -3636,7 +3636,7 @@ void ImGui::SetColumnOffset(int column_index, float offset)
     IM_ASSERT(column_index < columns->Columns.Size);
 
     const bool preserve_width = !(columns->Flags & ImGuiOldColumnFlags_NoPreserveWidths) && (column_index < columns->Count - 1);
-    const float width = preserve_width ? GetColumnWidthEx(columns, column_index, columns->IsBeingResized) : 0.0f;
+    const GLfloat width = preserve_width ? GetColumnWidthEx(columns, column_index, columns->IsBeingResized) : 0.0f;
 
     if (!(columns->Flags & ImGuiOldColumnFlags_NoForceWithinWindow))
         offset = ImMin(offset, columns->OffMaxX - g.Style.ColumnsMinSpacing * (columns->Count - column_index));
@@ -3646,7 +3646,7 @@ void ImGui::SetColumnOffset(int column_index, float offset)
         SetColumnOffset(column_index + 1, offset + ImMax(g.Style.ColumnsMinSpacing, width));
 }
 
-void ImGui::SetColumnWidth(int column_index, float width)
+void ImGui::SetColumnWidth(int column_index, GLfloat width)
 {
     ImGuiWindow* window = GetCurrentWindowRead();
     ImGuiOldColumns* columns = window->DC.CurrentColumns;
@@ -3745,10 +3745,10 @@ void ImGui::BeginColumns(const char* str_id, int columns_count, ImGuiOldColumnFl
 
     // Set state for first column
     // We aim so that the right-most column will have the same clipping width as other after being clipped by parent ClipRect
-    const float column_padding = g.Style.ItemSpacing.x;
-    const float half_clip_extend_x = ImFloor(ImMax(window->WindowPadding.x * 0.5f, window->WindowBorderSize));
-    const float max_1 = window->WorkRect.Max.x + column_padding - ImMax(column_padding - window->WindowPadding.x, 0.0f);
-    const float max_2 = window->WorkRect.Max.x + half_clip_extend_x;
+    const GLfloat column_padding = g.Style.ItemSpacing.x;
+    const GLfloat half_clip_extend_x = ImFloor(ImMax(window->WindowPadding.x * 0.5f, window->WindowBorderSize));
+    const GLfloat max_1 = window->WorkRect.Max.x + column_padding - ImMax(column_padding - window->WindowPadding.x, 0.0f);
+    const GLfloat max_2 = window->WorkRect.Max.x + half_clip_extend_x;
     columns->OffMinX = window->DC.Indent.x - column_padding + ImMax(column_padding - window->WindowPadding.x, 0.0f);
     columns->OffMaxX = ImMax(ImMin(max_1, max_2) - window->Pos.x, columns->OffMinX + 1.0f);
     columns->LineMinY = columns->LineMaxY = window->DC.CursorPos.y;
@@ -3765,7 +3765,7 @@ void ImGui::BeginColumns(const char* str_id, int columns_count, ImGuiOldColumnFl
         for (int n = 0; n < columns_count + 1; n++)
         {
             ImGuiOldColumnData column;
-            column.OffsetNorm = n / (float)columns_count;
+            column.OffsetNorm = n / (GLfloat)columns_count;
             columns->Columns.push_back(column);
         }
     }
@@ -3774,8 +3774,8 @@ void ImGui::BeginColumns(const char* str_id, int columns_count, ImGuiOldColumnFl
     {
         // Compute clipping rectangle
         ImGuiOldColumnData* column = &columns->Columns[n];
-        float clip_x1 = IM_ROUND(window->Pos.x + GetColumnOffset(n));
-        float clip_x2 = IM_ROUND(window->Pos.x + GetColumnOffset(n + 1) - 1.0f);
+        GLfloat clip_x1 = IM_ROUND(window->Pos.x + GetColumnOffset(n));
+        GLfloat clip_x2 = IM_ROUND(window->Pos.x + GetColumnOffset(n + 1) - 1.0f);
         column->ClipRect = ImRect(clip_x1, -FLT_MAX, clip_x2, +FLT_MAX);
         column->ClipRect.ClipWithFull(window->ClipRect);
     }
@@ -3788,9 +3788,9 @@ void ImGui::BeginColumns(const char* str_id, int columns_count, ImGuiOldColumnFl
     }
 
     // We don't generally store Indent.x inside ColumnsOffset because it may be manipulated by the user.
-    float offset_0 = GetColumnOffset(columns->Current);
-    float offset_1 = GetColumnOffset(columns->Current + 1);
-    float width = offset_1 - offset_0;
+    GLfloat offset_0 = GetColumnOffset(columns->Current);
+    GLfloat offset_1 = GetColumnOffset(columns->Current + 1);
+    GLfloat width = offset_1 - offset_0;
     PushItemWidth(width * 0.65f);
     window->DC.ColumnsOffset.x = ImMax(column_padding - window->WindowPadding.x, 0.0f);
     window->DC.CursorPos.x = IM_FLOOR(window->Pos.x + window->DC.Indent.x + window->DC.ColumnsOffset.x);
@@ -3825,7 +3825,7 @@ void ImGui::NextColumn()
     SetWindowClipRectBeforeSetChannel(window, column->ClipRect);
     columns->Splitter.SetCurrentChannel(window->DrawList, columns->Current + 1);
 
-    const float column_padding = g.Style.ItemSpacing.x;
+    const GLfloat column_padding = g.Style.ItemSpacing.x;
     columns->LineMaxY = ImMax(columns->LineMaxY, window->DC.CursorPos.y);
     if (columns->Current > 0)
     {
@@ -3845,9 +3845,9 @@ void ImGui::NextColumn()
     window->DC.CurrLineTextBaseOffset = 0.0f;
 
     // FIXME-COLUMNS: Share code with BeginColumns() - move code on columns setup.
-    float offset_0 = GetColumnOffset(columns->Current);
-    float offset_1 = GetColumnOffset(columns->Current + 1);
-    float width = offset_1 - offset_0;
+    GLfloat offset_0 = GetColumnOffset(columns->Current);
+    GLfloat offset_1 = GetColumnOffset(columns->Current + 1);
+    GLfloat width = offset_1 - offset_0;
     PushItemWidth(width * 0.65f);
     window->WorkRect.Max.x = window->Pos.x + offset_1 - column_padding;
 }
@@ -3878,15 +3878,15 @@ void ImGui::EndColumns()
     if (!(flags & ImGuiOldColumnFlags_NoBorder) && !window->SkipItems)
     {
         // We clip Y boundaries CPU side because very long triangles are mishandled by some GPU drivers.
-        const float y1 = ImMax(columns->HostCursorPosY, window->ClipRect.Min.y);
-        const float y2 = ImMin(window->DC.CursorPos.y, window->ClipRect.Max.y);
+        const GLfloat y1 = ImMax(columns->HostCursorPosY, window->ClipRect.Min.y);
+        const GLfloat y2 = ImMin(window->DC.CursorPos.y, window->ClipRect.Max.y);
         int dragging_column = -1;
         for (int n = 1; n < columns->Count; n++)
         {
             ImGuiOldColumnData* column = &columns->Columns[n];
-            float x = window->Pos.x + GetColumnOffset(n);
+            GLfloat x = window->Pos.x + GetColumnOffset(n);
             const ImGuiID column_id = columns->ID + ImGuiID(n);
-            const float column_hit_hw = COLUMNS_HIT_RECT_HALF_WIDTH;
+            const GLfloat column_hit_hw = COLUMNS_HIT_RECT_HALF_WIDTH;
             const ImRect column_hit_rect(ImVec2(x - column_hit_hw, y1), ImVec2(x + column_hit_hw, y2));
             KeepAliveID(column_id);
             if (IsClippedEx(column_hit_rect, column_id, false))
@@ -3904,7 +3904,7 @@ void ImGui::EndColumns()
 
             // Draw column
             const ImU32 col = GetColorU32(held ? ImGuiCol_SeparatorActive : hovered ? ImGuiCol_SeparatorHovered : ImGuiCol_Separator);
-            const float xi = IM_FLOOR(x);
+            const GLfloat xi = IM_FLOOR(x);
             window->DrawList->AddLine(ImVec2(xi, y1 + 1.0f), ImVec2(xi, y2), col);
         }
 
@@ -3915,7 +3915,7 @@ void ImGui::EndColumns()
                 for (int n = 0; n < columns->Count + 1; n++)
                     columns->Columns[n].OffsetNormBeforeResize = columns->Columns[n].OffsetNorm;
             columns->IsBeingResized = is_being_resized = true;
-            float x = GetDraggedColumnOffset(columns, dragging_column);
+            GLfloat x = GetDraggedColumnOffset(columns, dragging_column);
             SetColumnOffset(dragging_column, x);
         }
     }

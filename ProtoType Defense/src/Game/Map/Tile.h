@@ -13,11 +13,11 @@ public:
 	};
 
 	Tile();
-	Tile(glm::vec2 pos, float size = 32.0f, glm::vec3 color = glm::vec3(0.1f, 0.2f, 0.6f));
-	Tile(glm::vec2 pos, Direction dir, float size = 32.0f, glm::vec3 color = glm::vec3(0.1f, 0.2f, 0.6f));
+	Tile(glm::vec2 pos, GLfloat size = 32.0f, glm::vec3 color = glm::vec3(0.1f, 0.2f, 0.6f));
+	Tile(glm::vec2 pos, Direction dir, GLfloat size = 32.0f, glm::vec3 color = glm::vec3(0.1f, 0.2f, 0.6f));
 
 	glm::vec2 getPosition() const { return position; }
-	float getSize() const { return size; }
+	GLfloat getSize() const { return size; }
 	glm::vec3 getColor() const { return color; }
 
 	Direction getDirection() const { return direction; }
@@ -30,7 +30,7 @@ public:
 
 private:
 	glm::vec2 position;
-	float size;
+	GLfloat size;
 	glm::vec3 color;
 
 	// Direction that will go an Enemy above it

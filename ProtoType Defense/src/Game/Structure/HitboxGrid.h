@@ -11,12 +11,12 @@ public:
 
 	struct VertexSimple
 	{
-		float position[3];
-		float color[4];
+		GLfloat position[3];
+		GLfloat color[4];
 	};
 	
 	VertexSimple m_Vertices[4];
-	unsigned int m_indices[4];
+	GLuint m_indices[4];
 	VertexArray VAO;
 	VertexBuffer VBO;
 	IndexBuffer IBO;
@@ -33,8 +33,8 @@ public:
 		VBO(m_Vertices, sizeof(VertexSimple) * 4),
 		IBO(m_indices, 4)
 	{		
-		layout.Push<float>(3);
-		layout.Push<float>(4);
+		layout.Push<GLfloat>(3); // Position
+		layout.Push<GLfloat>(4); // Color
 		VAO.addBuffer(VBO, layout);
 	}
 };

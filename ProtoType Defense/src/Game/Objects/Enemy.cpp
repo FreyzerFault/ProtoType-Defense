@@ -7,14 +7,14 @@ using namespace glm;
 
 static vec2 hitboxSize(64,64);
 
-Enemy::Enemy(const vec3 pos, const int texID, double yaw, vec2 spriteScale, const int life, const float speed)
+Enemy::Enemy(const vec3 pos, const int texID, double yaw, vec2 spriteScale, const int life, const GLfloat speed)
 	: Entity(pos, spriteScale, texID, spriteScale, yaw),
 	tile(nullptr), healthBar(pos, spriteScale.y / 2, spriteScale.x),
 	life(life), iniLife(life), speed(speed), reward(baseReward), damage(baseDamage)
 {
 }
 
-Enemy::Enemy(Tile& tile, const int texID, vec2 spriteScale, const int life, const float speed)
+Enemy::Enemy(Tile& tile, const int texID, vec2 spriteScale, const int life, const GLfloat speed)
 	: Entity(vec3(tile.getCenter(), 1.f), spriteScale, texID, spriteScale, tile.getYaw()),
 	tile(&tile), healthBar(vec3(tile.getCenter(), 1.f), spriteScale.y / 2,spriteScale.x),
 	life(life), iniLife(life), speed(speed), reward(baseReward), damage(baseDamage)
@@ -23,7 +23,7 @@ Enemy::Enemy(Tile& tile, const int texID, vec2 spriteScale, const int life, cons
 
 Enemy::~Enemy() = default;
 
-int Enemy::getHit(float hitDmg)
+int Enemy::getHit(GLfloat hitDmg)
 {
 	// If the damage is 0 don't flash red hit color
 	if (hitDmg == 0)
@@ -49,7 +49,7 @@ int Enemy::getHit(float hitDmg)
 	return life;
 }
 
-void Enemy::slow(const float slowPercentage)
+void Enemy::slow(const GLfloat slowPercentage)
 {
 	speed -= speed * slowPercentage / 100;
 }
@@ -64,7 +64,7 @@ void Enemy::setPosition(glm::vec3 pos)
 }
 
 // Checks if tile changed direction, and goes towards his direction when enemy reaches a position randomly near the center
-void Enemy::move(const float d)
+void Enemy::move(const GLfloat d)
 {
 	if (tile != nullptr)
 	{
@@ -128,10 +128,10 @@ void Enemy::drawHitbox(Renderer& renderer) const
 	renderer.draw(*m_Hitbox);
 }
 
-bool Enemy::inRange(glm::vec2 center, float range) const
+bool Enemy::inRange(glm::vec2 center, GLfloat range) const
 {
 	vec2 enemySize = getSize2D();
-	const float margin = enemySize.x < enemySize.y ? enemySize.x : enemySize.y; // Smallest size as enemy MARGIN
+	const GLfloat margin = enemySize.x < enemySize.y ? enemySize.x : enemySize.y; // Smallest size as enemy MARGIN
 
 	return distance(vec2(m_Position), center) - margin < range; // If enters inside the range
 }

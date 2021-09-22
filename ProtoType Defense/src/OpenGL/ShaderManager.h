@@ -19,12 +19,12 @@ public:
 
 	// UNIFORMS
 	void setUniform1i(const std::string& name, int value) const { currentShader->setUniform1i(name, value); }
-	void setUniform1iv(const std::string& name, uint32_t count, const int& value) const { currentShader->setUniform1iv(name, count, value); }
-	void setUniform1f(const std::string& name, float value) const { currentShader->setUniform1f(name, value); }
-	void setUniform4f(const std::string& name, float v0, float v1, float v2, float v3) const { currentShader->setUniform4f(name, v0, v1, v2, v3); }
+	void setUniform1iv(const std::string& name, GLuint count, const int& value) const { currentShader->setUniform1iv(name, count, value); }
+	void setUniform1f(const std::string& name, GLfloat value) const { currentShader->setUniform1f(name, value); }
+	void setUniform4f(const std::string& name, GLfloat v0, GLfloat v1, GLfloat v2, GLfloat v3) const { currentShader->setUniform4f(name, v0, v1, v2, v3); }
 	void setUniformMat4f(const std::string& name, const glm::mat4& matrix) const { currentShader->setUniformMat4f(name, matrix); }
 
-	void setTextureSlots(const uint32_t count) const; // Asigna al Uniforme u_Texture el vector de slots usados
+	void setTextureSlots(const GLuint count) const; // Asigna al Uniforme u_Texture el vector de slots usados
 
 	Shader& getShader() const { return *currentShader; }
 	const std::string& getShaderName() const { return currentShaderName; }

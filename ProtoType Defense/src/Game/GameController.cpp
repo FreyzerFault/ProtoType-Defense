@@ -11,8 +11,8 @@ static int numTextures = 3;
 static int startingLives = 100;
 static int startingMoney = 2000;
 
-static float maxGameSpeed = 20;
-static float minGameSpeed = 0.01;
+static GLfloat maxGameSpeed = 20;
+static GLfloat minGameSpeed = 0.01;
 
 GameController::GameController()
 	: money(startingMoney), lives(startingLives), speed(1), active(false), map(vec2(10,10), &renderer), renderer(numTextures)
@@ -56,7 +56,7 @@ void GameController::startGame()
 	active = true;
 }
 
-void GameController::update(float deltaTime)
+void GameController::update(GLfloat deltaTime)
 {
 	deltaTime *= speed;
 	
@@ -278,7 +278,7 @@ Tower* GameController::getTower(glm::vec2 pos)
 }
 
 
-void GameController::moveEnemies(float deltaTime)
+void GameController::moveEnemies(GLfloat deltaTime)
 {
 	lives -= getPath().moveEnemies(deltaTime);
 }
@@ -314,7 +314,7 @@ void GameController::resumeGame()
 	AudioManager::resumeMusic();
 }
 
-void GameController::fastForward(float speedPercent)
+void GameController::fastForward(GLfloat speedPercent)
 {
 	speed *= speedPercent / 100;
 	

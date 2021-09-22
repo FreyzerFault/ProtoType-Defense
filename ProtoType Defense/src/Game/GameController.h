@@ -18,7 +18,7 @@ public:
 	GameController();
 
 	// Pipeline
-	void update(float deltaTime);
+	void update(GLfloat deltaTime);
 	void render(glm::mat4 mvp);
 	void reset();
 
@@ -37,7 +37,7 @@ public:
 	void clearTower();
 
 	// Enemies
-	void moveEnemies(float deltaTime);
+	void moveEnemies(GLfloat deltaTime);
 	
 	// Game, Rounds, Waves
 	void startGame();
@@ -50,8 +50,8 @@ public:
 	Wave& getWave() const { return currentRound.getWave(); }
 
 	// Game Speed
-	void fastForward(float speedPercent);
-	float getSpeed() const { return speed; }
+	void fastForward(GLfloat speedPercent);
+	GLfloat getSpeed() const { return speed; }
 
 	// Player
 	void addMoney(int gain) { money += gain; }
@@ -72,7 +72,7 @@ public:
 private:
 	int money;
 	int lives;
-	float speed;
+	GLfloat speed;
 
 	Map map;
 

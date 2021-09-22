@@ -43,7 +43,7 @@ public:
 
 	// Use Raw vertex and index data
 	template <typename T>
-	void draw(const void* vertices, uint32_t vertexCount, uint32_t* indices, uint32_t indexCount, const std::string& shaderName = "NoTexture", glm::mat4 mvp = glm::mat4(0.0f), GLenum mode = GL_TRIANGLES);
+	void draw(const void* vertices, GLuint vertexCount, GLuint* indices, GLuint indexCount, const std::string& shaderName = "NoTexture", glm::mat4 mvp = glm::mat4(0.0f), GLenum mode = GL_TRIANGLES);
 
 	// Sprite Quad
 	void draw(Sprite& sprite);
@@ -58,8 +58,8 @@ public:
 	void drawQuadBorder(const void* vertices, const std::string& shaderName = "NoTexture", glm::mat4 mvp = glm::mat4(0.0f));
 
 	// Circle
-	void drawCircle(glm::vec3 center, float radius, int segments, glm::vec4 color);
-	void drawCircumference(glm::vec3 center, float radius, int segments, glm::vec4 color, int lineWidth = 5);
+	void drawCircle(glm::vec3 center, GLfloat radius, int segments, glm::vec4 color);
+	void drawCircumference(glm::vec3 center, GLfloat radius, int segments, glm::vec4 color, int lineWidth = 5);
 
 
 
@@ -70,11 +70,11 @@ public:
 	
 	// Fill the VAO with a new VBO
 	template <typename T>
-	VertexArray& fillVAO(VertexArray& vao, VertexBufferLayout& layout, const void* vertices, uint32_t count, GLenum drawType = GL_STATIC_DRAW);
+	VertexArray& fillVAO(VertexArray& vao, VertexBufferLayout& layout, const void* vertices, GLuint count, GLenum drawType = GL_STATIC_DRAW);
 	static VertexArray& fillVAO(VertexArray& vao, VertexBuffer& vbo, VertexBufferLayout& layout);
 
 	// Fill the IBO with indices
-	IndexBuffer& fillIBO(uint32_t* indices, uint32_t count, GLenum drawType = GL_STATIC_DRAW);
+	IndexBuffer& fillIBO(GLuint* indices, GLuint count, GLenum drawType = GL_STATIC_DRAW);
 	
 
 private:
@@ -94,7 +94,7 @@ private:
 };
 
 template <typename T>
-void Renderer::draw(const void* vertices, uint32_t vertexCount, uint32_t* indices, uint32_t indexCount,
+void Renderer::draw(const void* vertices, GLuint vertexCount, GLuint* indices, GLuint indexCount,
 	const std::string& shaderName, glm::mat4 mvp, GLenum mode)
 {
 	// No texture
@@ -113,7 +113,7 @@ void Renderer::draw(const void* vertices, uint32_t vertexCount, uint32_t* indice
 template <typename T>
 void Renderer::drawQuad(const void* vertices, const std::string& shaderName, glm::mat4 mvp)
 {
-	uint32_t indices[6]{
+	GLuint indices[6]{
 		0, 1, 2,
 		2, 3, 0,
 	};
@@ -124,7 +124,7 @@ void Renderer::drawQuad(const void* vertices, const std::string& shaderName, glm
 template <typename T>
 void Renderer::drawQuadBorder(const void* vertices, const std::string& shaderName, glm::mat4 mvp)
 {
-	uint32_t indices[4]{
+	GLuint indices[4]{
 		0, 1, 2, 3
 	};
 	const IndexBuffer ibo(indices, 4);
@@ -133,7 +133,7 @@ void Renderer::drawQuadBorder(const void* vertices, const std::string& shaderNam
 }
 
 template <typename T>
-VertexArray& Renderer::fillVAO(VertexArray& vao, VertexBufferLayout& layout, const void* vertices, uint32_t count, GLenum drawType)
+VertexArray& Renderer::fillVAO(VertexArray& vao, VertexBufferLayout& layout, const void* vertices, GLuint count, GLenum drawType)
 {
 	tmpVBO = std::make_shared<VertexBuffer>(vertices, count * sizeof(T), drawType);
 	

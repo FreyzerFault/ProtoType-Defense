@@ -10,11 +10,11 @@ WindowManager::WindowManager()
 {
 }
 
-WindowManager::WindowManager(const uint32_t width, const uint32_t height, const std::string& title, const uint32_t monitor)
+WindowManager::WindowManager(const GLuint width, const GLuint height, const std::string& title, const GLuint monitor)
 	: window(glfwCreateWindow(
 		width, height,
 		title.c_str(),nullptr, nullptr)), GUI(window),
-	time((float)glfwGetTime())
+	time((GLfloat)glfwGetTime())
 {
 	glfwMakeContextCurrent(window);
 }
@@ -40,8 +40,8 @@ void WindowManager::shutdown() const
 
 DeltaTime WindowManager::getDeltaTime()
 {
-	const float lastFrameTime = time;
-	const float frameTime = (float)glfwGetTime(); // Secs
+	const GLfloat lastFrameTime = time;
+	const GLfloat frameTime = (GLfloat)glfwGetTime(); // Secs
 	const DeltaTime deltaTime = frameTime - lastFrameTime;
 	time = frameTime;
 	return deltaTime;
@@ -63,7 +63,7 @@ void WindowManager::updateFPS(DeltaTime deltaTime)
 
 void WindowManager::renderingLoop()
 {
-	time = (float)glfwGetTime();
+	time = (GLfloat)glfwGetTime();
 
 	while (!glfwWindowShouldClose(window))
 	{

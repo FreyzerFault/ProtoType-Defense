@@ -7,7 +7,7 @@ class Tower;
 class Platform
 {
 public:
-	Platform(glm::vec3 position, float tileSize);
+	Platform(glm::vec3 position, GLfloat tileSize);
 	Platform(const Platform& orig) = default;
 	~Platform() = default;
 
@@ -28,7 +28,7 @@ public:
 
 private:
 	glm::vec3 m_Position;
-	float tileSize;
+	GLfloat tileSize;
 	
 	bool m_Empty;
 	

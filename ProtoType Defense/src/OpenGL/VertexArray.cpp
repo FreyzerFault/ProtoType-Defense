@@ -19,10 +19,10 @@ void VertexArray::addBuffer(const VertexBuffer& vb, const VertexBufferLayout& la
 	Bind();
 	vb.Bind();
 
-	uint32_t offset = 0;
+	GLuint offset = 0;
 
 	const auto& elements = layout.getElements();
-	for (uint32_t i = 0; i < elements.size(); i++)
+	for (GLuint i = 0; i < elements.size(); i++)
 	{
 		const auto& element = elements[i];
 
@@ -36,7 +36,7 @@ void VertexArray::addBuffer(const VertexBuffer& vb, const VertexBufferLayout& la
 			(const void*)offset));		// POINTER (offset) = Bytes entre el inicio del Vertice hasta el atributo (si falla castear a (const void*))
 
 		// Aumentamos el offset en bytes
-		offset += element.count * VertexBufferElement::getSizeOfType(element.type);
+		offset += element.count * sizeof(element.type);
 	}
 }
 
@@ -46,15 +46,15 @@ void VertexArray::setDefaultBuffer(const VertexBuffer& vb) const
 	vb.Bind();
 
 	VertexBufferLayout layout;
-	layout.Push<float>(3);	// POSITION
-	layout.Push<float>(4);	// COLOR
-	layout.Push<float>(2);	// TEXCOORDS
-	layout.Push<float>(1);	// TEXID
+	layout.Push<GLfloat>(3);	// POSITION
+	layout.Push<GLfloat>(4);	// COLOR
+	layout.Push<GLfloat>(2);	// TEXCOORDS
+	layout.Push<GLfloat>(1);	// TEXID
 
-	uint32_t offset = 0;
+	GLuint offset = 0;
 
 	const auto& elements = layout.getElements();
-	for (uint32_t i = 0; i < elements.size(); i++)
+	for (GLuint i = 0; i < elements.size(); i++)
 	{
 		const auto& element = elements[i];
 
@@ -68,7 +68,7 @@ void VertexArray::setDefaultBuffer(const VertexBuffer& vb) const
 			(const void*)offset));		// POINTER (offset) = Bytes entre el inicio del Vertice hasta el atributo (si falla castear a (const void*))
 
 		// Aumentamos el offset en bytes
-		offset += element.count * VertexBufferElement::getSizeOfType(element.type);
+		offset += element.count * sizeof(element.type);
 	}
 }
 

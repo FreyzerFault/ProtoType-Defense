@@ -20,7 +20,7 @@ Map::Map(glm::vec2 dimension, Renderer* renderer)
 	: dimension(dimension), tileSize(64), path(renderer)
 {
 	vertices = new Vertex[dimension.x * dimension.y * 4];
-	indices = new uint32_t[dimension.x * dimension.y * 6];
+	indices = new GLuint[dimension.x * dimension.y * 6];
 
 
 	// TILES
@@ -96,8 +96,8 @@ Map::Map(glm::vec2 dimension, Renderer* renderer)
 void Map::setupRendering(Renderer& renderer)
 {
 	VBO.setData(vertices, dimension.x * dimension.y * sizeof(Vertex) * 4, GL_STATIC_DRAW);
-	layout.Push<float>(3);
-	layout.Push<float>(4);
+	layout.Push<GLfloat>(3);
+	layout.Push<GLfloat>(4);
 	VAO.addBuffer(VBO, layout);
 	IBO.setIndices(indices, dimension.x * dimension.y * 6);
 }
@@ -198,13 +198,13 @@ Tile* Map::getTile(glm::vec2 pos)
 void Map::addTileVertexData(int tileX, int tileY, vec3 position, vec3 color) const
 {
 	// Index of the tile
-	const uint32_t numTile = tileY * dimension.x + tileX;
+	const GLuint numTile = tileY * dimension.x + tileX;
 
-	const float quadSize = tileSize - 4;
+	const GLfloat quadSize = tileSize - 4;
 
-	float x = position.x;
-	float y = position.y;
-	float z = position.z;
+	GLfloat x = position.x;
+	GLfloat y = position.y;
+	GLfloat z = position.z;
 
 	vertices[numTile * 4 + 0] = { {position.x,				position.y,				z},	{color.r, color.g, color.b, 1.0f} };
 	color += 0.03f;

@@ -26,8 +26,8 @@ namespace test {
 		
 
 		// TIMERS
-		float shootTimer = 0;
-		float enemyTimer = 0;
+		GLfloat shootTimer = 0;
+		GLfloat enemyTimer = 0;
 
 		GLFWwindow* window;
 	};

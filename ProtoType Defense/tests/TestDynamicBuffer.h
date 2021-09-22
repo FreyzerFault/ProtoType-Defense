@@ -5,20 +5,20 @@
 
 #include "Renderer.h"
 
-static float iniPosition[]{ // Esquina Inf Izq
+static GLfloat iniPosition[]{ // Esquina Inf Izq
 	0.0f, 0.0f, 0.0f
 };
-static float iniSize = 1.0f;
-static float iniRotation = 0;
+static GLfloat iniSize = 1.0f;
+static GLfloat iniRotation = 0;
 
-static float tileSize = 16;
-static float tileColor[3]{ 0.1f, 0.1f, 0.3f };
+static GLfloat tileSize = 16;
+static GLfloat tileColor[3]{ 0.1f, 0.1f, 0.3f };
 
 static std::string shaderPath = "res/shaders/Basic.shader";
 
 static const int numTextures = 2;
 
-static const uint32_t MAX_QUADS = 4096;
+static const GLuint MAX_QUADS = 4096;
 
 
 namespace test {
@@ -26,17 +26,17 @@ namespace test {
 	class TestDynamicBuffer final : public Test
 	{
 		struct Vertex {
-			float position[2];
-			float color[4];
-			float texCoords[2];
-			float texIndex;
+			GLfloat position[2];
+			GLfloat color[4];
+			GLfloat texCoords[2];
+			GLfloat texIndex;
 		};
 		static const int numTextures = 10;
 
 	private:
-		float m_Position[3];
-		float m_Size;
-		float m_Rotation;
+		GLfloat m_Position[3];
+		GLfloat m_Size;
+		GLfloat m_Rotation;
 		int m_QuadsX;
 		int m_QuadsY;
 
@@ -53,7 +53,7 @@ namespace test {
 		glm::mat4 m_Model;
 
 		Vertex m_BoardVertices[MAX_QUADS * 4];
-		uint32_t m_BoardIndices[MAX_QUADS * 6];
+		GLuint m_BoardIndices[MAX_QUADS * 6];
 
 	public:
 		TestDynamicBuffer();
@@ -66,7 +66,7 @@ namespace test {
 		void onImGuiRender() override;
 
 
-		static Vertex* createQuad(Vertex* target, float x, float y, float size, float texIndex);
+		static Vertex* createQuad(Vertex* target, GLfloat x, GLfloat y, GLfloat size, GLfloat texIndex);
 
 		void createBoard();
 

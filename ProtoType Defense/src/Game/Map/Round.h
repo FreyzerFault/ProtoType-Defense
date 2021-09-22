@@ -25,7 +25,7 @@ public:
 
 	bool isEnded() const { return ended; }
 
-	void sendEnemy(float deltaTime);
+	void sendEnemy(GLfloat deltaTime);
 
 	std::string toString() const;
 

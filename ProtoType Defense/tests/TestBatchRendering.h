@@ -9,9 +9,9 @@ namespace test {
 	class TestBatchRendering final : public Test
 	{
 	private:
-		float m_Position[3];
-		float m_Size;
-		float m_Rotation;
+		GLfloat m_Position[3];
+		GLfloat m_Size;
+		GLfloat m_Rotation;
 
 		VertexArray m_VAO;
 		VertexBuffer m_VBO;

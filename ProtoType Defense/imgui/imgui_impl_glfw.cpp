@@ -104,8 +104,8 @@ void ImGui_ImplGlfw_ScrollCallback(GLFWwindow* window, double xoffset, double yo
         g_PrevUserCallbackScroll(window, xoffset, yoffset);
 
     ImGuiIO& io = ImGui::GetIO();
-    io.MouseWheelH += (float)xoffset;
-    io.MouseWheel += (float)yoffset;
+    io.MouseWheelH += (GLfloat)xoffset;
+    io.MouseWheel += (GLfloat)yoffset;
 }
 
 void ImGui_ImplGlfw_KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -285,7 +285,7 @@ static void ImGui_ImplGlfw_UpdateMousePosAndButtons()
         {
             double mouse_x, mouse_y;
             glfwGetCursorPos(g_Window, &mouse_x, &mouse_y);
-            io.MousePos = ImVec2((float)mouse_x, (float)mouse_y);
+            io.MousePos = ImVec2((GLfloat)mouse_x, (GLfloat)mouse_y);
         }
     }
 }
@@ -320,9 +320,9 @@ static void ImGui_ImplGlfw_UpdateGamepads()
 
     // Update gamepad inputs
     #define MAP_BUTTON(NAV_NO, BUTTON_NO)       { if (buttons_count > BUTTON_NO && buttons[BUTTON_NO] == GLFW_PRESS) io.NavInputs[NAV_NO] = 1.0f; }
-    #define MAP_ANALOG(NAV_NO, AXIS_NO, V0, V1) { float v = (axes_count > AXIS_NO) ? axes[AXIS_NO] : V0; v = (v - V0) / (V1 - V0); if (v > 1.0f) v = 1.0f; if (io.NavInputs[NAV_NO] < v) io.NavInputs[NAV_NO] = v; }
+    #define MAP_ANALOG(NAV_NO, AXIS_NO, V0, V1) { GLfloat v = (axes_count > AXIS_NO) ? axes[AXIS_NO] : V0; v = (v - V0) / (V1 - V0); if (v > 1.0f) v = 1.0f; if (io.NavInputs[NAV_NO] < v) io.NavInputs[NAV_NO] = v; }
     int axes_count = 0, buttons_count = 0;
-    const float* axes = glfwGetJoystickAxes(GLFW_JOYSTICK_1, &axes_count);
+    const GLfloat* axes = glfwGetJoystickAxes(GLFW_JOYSTICK_1, &axes_count);
     const unsigned char* buttons = glfwGetJoystickButtons(GLFW_JOYSTICK_1, &buttons_count);
     MAP_BUTTON(ImGuiNavInput_Activate,   0);     // Cross / A
     MAP_BUTTON(ImGuiNavInput_Cancel,     1);     // Circle / B
@@ -358,13 +358,13 @@ void ImGui_ImplGlfw_NewFrame()
     int display_w, display_h;
     glfwGetWindowSize(g_Window, &w, &h);
     glfwGetFramebufferSize(g_Window, &display_w, &display_h);
-    io.DisplaySize = ImVec2((float)w, (float)h);
+    io.DisplaySize = ImVec2((GLfloat)w, (GLfloat)h);
     if (w > 0 && h > 0)
-        io.DisplayFramebufferScale = ImVec2((float)display_w / w, (float)display_h / h);
+        io.DisplayFramebufferScale = ImVec2((GLfloat)display_w / w, (GLfloat)display_h / h);
 
     // Setup time step
     double current_time = glfwGetTime();
-    io.DeltaTime = g_Time > 0.0 ? (float)(current_time - g_Time) : (float)(1.0f / 60.0f);
+    io.DeltaTime = g_Time > 0.0 ? (GLfloat)(current_time - g_Time) : (GLfloat)(1.0f / 60.0f);
     g_Time = current_time;
 
     ImGui_ImplGlfw_UpdateMousePosAndButtons();

@@ -28,8 +28,8 @@ Tower::Tower(const int texID, Platform* platform)
 {
 }
 
-Tower::Tower(Platform* platform, const int damage, float const attackSpeed, float const range,
-	float const projectileSpeed, int const projectilePierce, const int cost, const int texID)
+Tower::Tower(Platform* platform, const int damage, GLfloat const attackSpeed, GLfloat const range,
+	GLfloat const projectileSpeed, int const projectilePierce, const int cost, const int texID)
 	: Entity(vec3(vec2(platform->getCenter()), 0.0f), texID, vec2(64.0f), 0.0f), // No Hitbox
      platform(platform),
      aimedEnemy(nullptr), damage(damage), atkSpd(attackSpeed),
@@ -82,7 +82,7 @@ void Tower::sell() const
 	platform->sellTower();
 }
 
-void Tower::shoot(float deltaTime)
+void Tower::shoot(GLfloat deltaTime)
 {
 	// Update ShootTimer
 	if (shootTimer < 1 / atkSpd)
@@ -121,7 +121,7 @@ bool Tower::shoot()
 	return false;
 }
 
-void Tower::moveProjectiles(float deltaTime)
+void Tower::moveProjectiles(GLfloat deltaTime)
 {
 	for (Projectile& projectile : projectiles)
 	{
@@ -170,7 +170,7 @@ void Tower::aimPredictive(Enemy& enemy)
 	
 	if (enemyOnRange())
 	{
-		const float predictiveCoefficient = enemy.getSpeed() / 2; // Distance towards the enemy movement
+		const GLfloat predictiveCoefficient = enemy.getSpeed() / 2; // Distance towards the enemy movement
 
 		glm::vec3 predictedPos(enemy.getPosition3D().x, enemy.getPosition3D().y, 0.0f);
 		predictedPos.x += predictiveCoefficient * cos(enemy.getYaw());
@@ -186,7 +186,7 @@ bool Tower::enemyOnRange() const
 
 	// Distance between Enemy and tower must be < range
 	const glm::vec2 enemyPos = aimedEnemy->getPosition2D();
-	float distance = sqrt(pow(enemyPos.x - m_Position.x, 2) + pow(enemyPos.y - m_Position.y, 2));
+	GLfloat distance = sqrt(pow(enemyPos.x - m_Position.x, 2) + pow(enemyPos.y - m_Position.y, 2));
 
 	// Distance = tower.center -> enemy.center
 	// Add enemy size to be more precise

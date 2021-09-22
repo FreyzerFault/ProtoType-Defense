@@ -6,13 +6,13 @@
 #include "TextureManager.h"
 
 
-static float iniPosition[]{ // Esquina Inf Izq
+static GLfloat iniPosition[]{ // Esquina Inf Izq
 	windowCenterX, windowCenterY, 0.0f
 };
-static float iniSize = 200.0f;
-static float iniRotation = 0;
+static GLfloat iniSize = 200.0f;
+static GLfloat iniRotation = 0;
 
-static float spriteBoxVertex[] = {
+static GLfloat spriteBoxVertex[] = {
 		0.0f		,	0.0f		  ,		0.0f, 1.0f,		0.0f,
 		0.0f + iniSize,	0.0f		  ,		1.0f, 1.0f,		0.0f,
 		0.0f + iniSize,	0.0f + iniSize,		1.0f, 0.0f,		0.0f,
@@ -23,7 +23,7 @@ static float spriteBoxVertex[] = {
 		200.0f + iniSize,	0.0f + iniSize,		1.0f, 0.0f,		1.0f,
 		200.0f,				0.0f + iniSize,		0.0f, 0.0f,		1.0f,
 };
-static uint32_t spriteBoxIndices[] = {
+static GLuint spriteBoxIndices[] = {
 		0, 1, 2,
 		2, 3, 0,
 
@@ -38,11 +38,11 @@ static std::string texturePath2 = textureFolderPath + "Foto de perfil mamadisima
 
 test::TestBatchRendering::TestBatchRendering()
 	: m_Position{ iniPosition[0], iniPosition[1], iniPosition[2] }, m_Size(iniSize), m_Rotation(iniRotation),
-	m_VBO(spriteBoxVertex, 2 * 4*5 * sizeof(float)), m_IBO(spriteBoxIndices, 2 * 6),
+	m_VBO(spriteBoxVertex, 2 * 4*5 * sizeof(GLfloat)), m_IBO(spriteBoxIndices, 2 * 6),
 	m_Shader(shaderPath),
 	m_Texture{Texture(texturePath1), Texture(texturePath2)},
 	//m_Proj(glm::perspective(45.0f, windowWidth / windowHeight, 1.0f, 2000.0f)),
-	m_Proj(glm::ortho(0.0f, (float)windowWidth, 0.0f, (float)windowHeight, -200.0f, 2000.0f)),
+	m_Proj(glm::ortho(0.0f, (GLfloat)windowWidth, 0.0f, (GLfloat)windowHeight, -200.0f, 2000.0f)),
 	//m_View(translate(glm::mat4(1.0f), glm::vec3(0, 0, 0))),
 	m_View(glm::lookAt(glm::vec3(0.0f, 0.0f, 1000.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f))),
 	m_Model(translate(glm::mat4(1.0f), glm::vec3(0, 0, 0)))
@@ -50,9 +50,9 @@ test::TestBatchRendering::TestBatchRendering()
 	// LAYOUTs:
 
 	VertexBufferLayout layout;
-	layout.Push<float>(2);
-	layout.Push<float>(2);
-	layout.Push<float>(1);
+	layout.Push<GLfloat>(2);
+	layout.Push<GLfloat>(2);
+	layout.Push<GLfloat>(1);
 
 	m_VAO.addBuffer(m_VBO, layout);
 

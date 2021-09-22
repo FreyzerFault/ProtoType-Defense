@@ -5,9 +5,9 @@
 
 using namespace glm;
 
-static float barThick = 8.f;
+static GLfloat barThick = 8.f;
 
-HealthBar::HealthBar(glm::vec3 enemyPos, float height, float length)
+HealthBar::HealthBar(glm::vec3 enemyPos, GLfloat height, GLfloat length)
 	: barPos(enemyPos.x - length / 2, enemyPos.y + height, enemyPos.z), barLength(length), life(100)
 {
 	// Start with Full bar
@@ -16,7 +16,7 @@ HealthBar::HealthBar(glm::vec3 enemyPos, float height, float length)
 	updateVertex();
 }
 
-void HealthBar::decrease(float percentage)
+void HealthBar::decrease(GLfloat percentage)
 {
 	if (percentage > life) percentage = life;
 
@@ -25,7 +25,7 @@ void HealthBar::decrease(float percentage)
 }
 
 
-void HealthBar::move(float d, float yaw)
+void HealthBar::move(GLfloat d, GLfloat yaw)
 {
 	barPos.x += d * cos(yaw);
 	barPos.y += d * sin(yaw);

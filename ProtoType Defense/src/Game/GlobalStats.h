@@ -12,7 +12,7 @@ static int baseKillReward = 10;
 
 static int baseNumEnemies = 10;
 static int baseDelay = 2; // Secs
-static float baseFrecuency = 2; // Enemy per Sec
+static GLfloat baseFrecuency = 2; // Enemy per Sec
 
 
 

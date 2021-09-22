@@ -20,7 +20,7 @@ public:
 	void Unbind() const;
 
 private:
-	uint32_t m_RendererID;
+	GLuint m_RendererID;
 
 };
 
