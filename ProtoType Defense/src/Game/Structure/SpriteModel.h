@@ -13,7 +13,6 @@ public:
 		GLfloat position[3];
 		GLfloat color[4];
 		GLfloat texCoords[2];
-		GLint texIndex; // Tex Index can be -1 (No Texture)
 	};
 
 	SpriteVertex vertices[4];
@@ -22,15 +21,13 @@ public:
 	VertexBuffer VBO;
 	IndexBuffer IBO;
 	VertexBufferLayout layout;
-
-	SpriteModel() : SpriteModel(0){}
-
-	SpriteModel(GLint texID)
+	
+	SpriteModel()
 		: vertices{
-			{{-0.5f, -0.5f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, {0.0f, 1.0f}, texID},
-			{{+0.5f, -0.5f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, {1.0f, 1.0f}, texID},
-			{{+0.5f, +0.5f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, {1.0f, 0.0f}, texID},
-			{{-0.5f, +0.5f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, {0.0f, 0.0f}, texID},
+			{{-0.5f, -0.5f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, {0.0f, 1.0f}},
+			{{+0.5f, -0.5f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, {1.0f, 1.0f}},
+			{{+0.5f, +0.5f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, {1.0f, 0.0f}},
+			{{-0.5f, +0.5f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, {0.0f, 0.0f}},
 		},
 		indices{
 			0, 1, 2,
@@ -43,7 +40,6 @@ public:
 		layout.Push<GLfloat>(3);	// POSITION
 		layout.Push<GLfloat>(4);	// COLOR
 		layout.Push<GLfloat>(2);	// TEXCOORDS
-		layout.Push<GLint>(1);	// TEXID
 		VAO.addBuffer(VBO, layout);
 	}
 

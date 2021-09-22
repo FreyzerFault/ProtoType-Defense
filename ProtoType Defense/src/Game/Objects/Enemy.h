@@ -9,10 +9,10 @@ class Path;
 
 enum class TypeEnemy
 {
-	basic,
-	tank,
-	sneaky,
-	flying
+	basic = 2,
+	tank = 3,
+	sneaky = 4,
+	flying = 5
 };
 
 static std::string typeToString(TypeEnemy& type)

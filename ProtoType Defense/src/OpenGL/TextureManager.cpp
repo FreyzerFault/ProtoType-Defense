@@ -18,16 +18,26 @@ TextureManager::TextureManager()
 void TextureManager::add(const std::string& name, int slot)
 {
 	std::cout << "Adding Texture " << name << " into Slot " << slot << std::endl;
-	currentTexture = &textureList.emplace(name, getFolderPath() + name + ".png").first->second;
+	Texture* texture = &textureList.emplace(name, getFolderPath() + name + ".png").first->second;
+	currentTexture = texture;
 	currentTextureName = name;
+
+	// If first texture --> default texture
+	if (defaultTexture == nullptr)
+		defaultTexture = texture;
 
 	Bind(slot);
 }
 
 void TextureManager::Bind(const std::string& name, int slot)
 {
-	currentTexture = &textureList.find(name)->second;
-	currentTextureName = name;
+	Texture* texture = getTexture(name);
+	
+	currentTexture = texture;
+	currentTextureName = texture->getName();
+
+	// If no texture exists with that name, assign the default to the slot given
+	// It's a copy from slot 0 to slot X, to fill empty slots with the default
 	
 	Bind(slot);
 }
@@ -46,8 +56,16 @@ void TextureManager::unBind()
 	GLCall(glBindTexture(GL_TEXTURE_2D, 0));
 }
 
+Texture* TextureManager::getTexture(const std::string& name)
+{
+	auto it = textureList.find(name);
+	if (it == textureList.end())
+		return defaultTexture;
+	return &it->second;
+}
+
 glm::vec2 TextureManager::getSize(std::string& texName)
 {
-	Texture& texture = getTexture(texName);
-	return glm::vec2(texture.getWidth(), texture.getHeight());
+	Texture* texture = getTexture(texName);
+	return glm::vec2(texture->getWidth(), texture->getHeight());
 }

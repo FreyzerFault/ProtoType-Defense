@@ -112,6 +112,7 @@ void Enemy::move(const GLfloat d)
 
 void Enemy::draw(Renderer& renderer) const
 {
+	renderer.getShaderManager().Bind("Basic");
 	// Flashy red color when got hit
 	if (hit)
 		renderer.getShaderManager().setUniform4f("u_BlendColor", 1.f, 0.f, 0.f, 0.5f);

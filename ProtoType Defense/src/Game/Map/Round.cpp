@@ -33,7 +33,7 @@ void Round::startRound(Path& path)
 {
 	for (int i = 0; i < numWaves; ++i)
 	{
-		TypeEnemy type = TypeEnemy::sneaky;
+		TypeEnemy type = TypeEnemy::basic;
 		int numEnemies = 5;
 		GLfloat delay = 5;
 		GLfloat frecuency = 1;

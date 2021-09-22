@@ -34,7 +34,7 @@ public:
 	const std::string& getTextureName(int slot) const { return textureSlots.find(slot)->second->getName(); }
 
 	// by Name
-	Texture& getTexture(const std::string& name) { return textureList.find(name)->second; }
+	Texture* getTexture(const std::string& name);
 
 	// Texture Size (Width, Height)
 	glm::vec2 getSize(std::string& texName);
@@ -42,6 +42,7 @@ public:
 private:
 	std::unordered_map<std::string, Texture> textureList;
 	Texture* currentTexture;
+	Texture* defaultTexture;
 	std::string currentTextureName;
 
 	std::unordered_map<int, Texture*> textureSlots;

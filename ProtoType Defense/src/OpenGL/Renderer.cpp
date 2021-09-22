@@ -20,7 +20,7 @@ Renderer::Renderer(const int numTextures)
 	// SpriteModels (texID)
 	for (int i = 0; i < numTextures; ++i)
 	{
-		spriteModels.try_emplace(i, i);
+		spriteModels.try_emplace(i);
 	}
 
 	// SHADERS
@@ -78,8 +78,13 @@ void Renderer::draw(Sprite& sprite)
 	textureManager.Bind(std::to_string(sprite.getTexID()), sprite.getTexID());
 	if (sprite.getScale().x == sprite.getScale().y && textureManager.getTexture().getWidth() != textureManager.getTexture().getHeight())
 		sprite.setRelativeScale(textureManager.getTexture().getWidth(), textureManager.getTexture().getHeight());
+
+	shaderManager.Bind("Basic");
+	shaderManager.setUniform1i("u_TexIndex", sprite.getTexID());
 	
 	draw(model.VAO, model.IBO, "Basic", defaultMVP * sprite.getModelMatrix());
+	
+	
 }
 
 // HITBOX
