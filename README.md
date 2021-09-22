@@ -58,8 +58,55 @@ Controla el flujo del juego a lo largo de un FRAME
 [![](https://mermaid.ink/img/eyJjb2RlIjoic2VxdWVuY2VEaWFncmFtXHJcblxyXG5wYXJ0aWNpcGFudCBHYW1lIGFzIEdhbWUgQ29udHJvbGxlclxyXG5wYXJ0aWNpcGFudCBTcHJpdGUgYXMgRW50aXR5IFNwcml0ZVxyXG5wYXJ0aWNpcGFudCBIaXRib3ggYXMgRW50aXR5IEhpdGJveFxyXG5wYXJ0aWNpcGFudCBUZXh0dXJlIGFzIFRleHR1cmUgTWFuYWdlclxyXG5wYXJ0aWNpcGFudCBTaGFkZXIgYXMgU2hhZGVyIE1hbmFnZXJcclxuXHJcbk5vdGUgbGVmdCBvZiBHYW1lIDogb25SZW5kZXIoKVxyXG5cclxuR2FtZS0-PitTaGFkZXIgOiBCaW5kIE1haW4gU2hhZGVyXHJcblxyXG5sb29wIENhZGEgVGV4dHVyYVxyXG4gICAgR2FtZS0-PitUZXh0dXJlIDogQmluZChzbG90KVxyXG5lbmRcclxuXHJcbk5vdGUgbGVmdCBvZiBHYW1lIDogU3ByaXRlIERyYXdpbmdcclxuXHJcbmxvb3AgQ2FkYSBFbnRpdHlcclxuXHJcbiAgICBHYW1lLT4-K1Nwcml0ZSA6IERyYXdcclxuICAgIFNwcml0ZS0-PitTaGFkZXIgOiBTRVQgTVZQIFVuaWZvcm0gPSBTcHJpdGUgTVZQICogZGVmYXVsdCBNVlBcclxuICAgIFNwcml0ZS0-Pi1TcHJpdGUgOiBnbERyYXcoKVxyXG5cclxuZW5kXHJcblxyXG5Ob3RlIGxlZnQgb2YgR2FtZSA6IEhpdGJveCBHcmlkIERyYXdpbmdcclxuXHJcbmxvb3AgQ2FkYSBFbnRpdHkgY29uIEhpdGJveFxyXG5cclxuICAgIEdhbWUtPj4rSGl0Ym94IDogRHJhdyBHcmlkXHJcbiAgICBIaXRib3gtPj4rU2hhZGVyIDogU0VUIE1WUCBVbmlmb3JtID0gSGl0Ym94IE1WUCAqIGRlZmF1bHQgTVZQXHJcbiAgICBIaXRib3gtPj4tSGl0Ym94IDogZ2xEcmF3KClcclxuXHJcbmVuZCIsIm1lcm1haWQiOnsidGhlbWUiOiJmb3Jlc3QifSwidXBkYXRlRWRpdG9yIjpmYWxzZX0)](https://mermaid-js.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoic2VxdWVuY2VEaWFncmFtXHJcblxyXG5wYXJ0aWNpcGFudCBHYW1lIGFzIEdhbWUgQ29udHJvbGxlclxyXG5wYXJ0aWNpcGFudCBTcHJpdGUgYXMgRW50aXR5IFNwcml0ZVxyXG5wYXJ0aWNpcGFudCBIaXRib3ggYXMgRW50aXR5IEhpdGJveFxyXG5wYXJ0aWNpcGFudCBUZXh0dXJlIGFzIFRleHR1cmUgTWFuYWdlclxyXG5wYXJ0aWNpcGFudCBTaGFkZXIgYXMgU2hhZGVyIE1hbmFnZXJcclxuXHJcbk5vdGUgbGVmdCBvZiBHYW1lIDogb25SZW5kZXIoKVxyXG5cclxuR2FtZS0-PitTaGFkZXIgOiBCaW5kIE1haW4gU2hhZGVyXHJcblxyXG5sb29wIENhZGEgVGV4dHVyYVxyXG4gICAgR2FtZS0-PitUZXh0dXJlIDogQmluZChzbG90KVxyXG5lbmRcclxuXHJcbk5vdGUgbGVmdCBvZiBHYW1lIDogU3ByaXRlIERyYXdpbmdcclxuXHJcbmxvb3AgQ2FkYSBFbnRpdHlcclxuXHJcbiAgICBHYW1lLT4-K1Nwcml0ZSA6IERyYXdcclxuICAgIFNwcml0ZS0-PitTaGFkZXIgOiBTRVQgTVZQIFVuaWZvcm0gPSBTcHJpdGUgTVZQICogZGVmYXVsdCBNVlBcclxuICAgIFNwcml0ZS0-Pi1TcHJpdGUgOiBnbERyYXcoKVxyXG5cclxuZW5kXHJcblxyXG5Ob3RlIGxlZnQgb2YgR2FtZSA6IEhpdGJveCBHcmlkIERyYXdpbmdcclxuXHJcbmxvb3AgQ2FkYSBFbnRpdHkgY29uIEhpdGJveFxyXG5cclxuICAgIEdhbWUtPj4rSGl0Ym94IDogRHJhdyBHcmlkXHJcbiAgICBIaXRib3gtPj4rU2hhZGVyIDogU0VUIE1WUCBVbmlmb3JtID0gSGl0Ym94IE1WUCAqIGRlZmF1bHQgTVZQXHJcbiAgICBIaXRib3gtPj4tSGl0Ym94IDogZ2xEcmF3KClcclxuXHJcbmVuZCIsIm1lcm1haWQiOnsidGhlbWUiOiJmb3Jlc3QifSwidXBkYXRlRWRpdG9yIjpmYWxzZX0)
 
 
+## INTERACTUABILIDAD
+
+Para gestionar los inputs he creado un InputManager donde tengo todos los callbacks asignados a los eventos de entrada. Por ahora solo está la pulsación de ratón.
+
+Al pulsar click Izquierdo se coloca una torre en la tile donde está el cursor, o se selecciona si hay una. Esto permite cambiar, por ejemplo, la prioridad de apuntado, al Primero, Último, más Fuerte y más Débil.
+
+El click Derecho vende la torre eliminándola.
+
+
+
 ## ENEMIGOS
+
 Siguen la dirección de la tile en la que están. Para hacerlo más orgánico añadí un factor aleatorio cada vez que deben cambiar de dirección.
-Si la Tile en la que entran tiene una dirección distinta, van a calcular una posición cerca del centro de forma aleatoria donde cambiará de dirección. El offset de la posición desde el centro es aleatorio. Y no tiene que ser precisamente en esa posición, sino que hay un espacio del tamaño de la tile / 10 designado para que cambien de dirección.
+Si la Tile en la que entran tiene una dirección distinta, van a calcular una posición cerca del centro de forma aleatoria donde cambiará de dirección. El offset de la posición desde el centro es aleatorio. Y no tiene que ser precisamente en esa posición, sino que hay un espacio del (tamaño de la tile / 10) designado para que cambien de dirección.
 
 <img width="107" alt="cambio de direccion enemigo" src="https://user-images.githubusercontent.com/72341309/120074379-dec7cf80-c09c-11eb-861e-ad40d88bdbb3.PNG">
+
+
+## TORRETAS
+
+Se colocan en Plataformas y pueden ser seleccionadas. Existe la capacidad de añadir torres de distinto tipo que no he implentando, de forma que cada una difiera en las estadísticas de daño, rango, etc.
+
+Su funcionamiento es sencillo, apuntan a un enemigo según su prioridad y será el Path el que elegirá el enemigo ideal, ya que tiene la capacidad de ordenarlos y consultar sus stats.
+Por ejemplo, para el primer enemigo, ordenará los enemigos en una Lista, primero ordenándolos según su Tile, ya que a la hora de la creación del camino, las Tiles se guardan ordenadas desde un principio. Para las Tiles que puedan tener más de un enemigo se realiza una comparación que depende de la Dirección de la Tile. Por ejemplo, si es una Tile que va para la derecha, los enemigos se ordenan según su coordenada X.
+
+Para disparar utilizo un Timer que gestiono manualmente. Según el deltaTime el Timer aumenta, y cuando supere el periodo que tiene que esperar entre disparos (1 / Speed), reinicia el Timer y se produce un Disparo.
+Al disparar se crea un proyectil en la posición de la Torreta con su misma dirección.
+Además he implementado un método de apuntado predictivo en el que según la dirección del enemigo, la torreta va a apuntar un pelín delante del enemigo para tener margen.
+
+![predictive](https://user-images.githubusercontent.com/72341309/123550671-f44d1980-d76e-11eb-810d-1c0abb737ac1.png)
+
+
+
+## PROYECTILES
+
+Se diferencian de si son Homing (guiado). Si no lo son su trayectoria no cambia y se mueven según su velocidad.
+Si son guiados he implementado un método de seguimiento que produce unas trayectorias más reales que simplemente hacer que apunte directamente al enemigo.
+Calculo el ángulo entre el vector dirección del proyectil y el vector que va del proyectil al enemigo. Si es mayor de un umbral, girará solamente ese umbral, para evitar giros bruscos.
+
+![homing](https://user-images.githubusercontent.com/72341309/123550741-4c841b80-d76f-11eb-88b4-0f394f51eaec.png)
+
+
+La interacción al golpear un enemigo tampoco es trivial. Ya que cada frame estoy comprobando colisiones, si un proyectil atraviesa un enemigo va a tardar varios frames más en dejar de colisionar, y no sería un comportamiento coherente ya que golpearía tantas veces como frames tarde en salir de su hitbox.
+Para evitar esto he implementado un Estado "hit" al enemigo como una flag que se activa a la primera colisión, recibe el daño al no estar activado previamente, pero a los frames consecutivos, si hit == true, no recibe daño. La flag se desactiva cuando en cualquier frame no reconozca ninguna colisión, entonces podrá volver a recibir daño en la próxima colisión.
+No es la mejor solución ya que implica que si dos proyectiles lo atraviesan a la vez solo reciba el daño del primero, pero es la mejor solución que he conseguido.
+
+Además cada proyectil tiene un contador llamado Pierce (penetración), que se ve reducido cada vez que golpea un enemigo, y la solución anterior ayuda a que no se reduzca por cada frame colisionando, sino por cada vez que atraviese un enemigo. Una vez llega a 0 desaparece, o cuando el número de proyectiles vivos supera 
+(ceil(atkSpd * range / prjSpd) + prjPierce), para que no dure eternamente. Está pensada la ecuación para que dependiendo del tiempo en el que un proyectil pueda recorrer el radio de su rango, pueda recorrerlo siempre, y tenga un pequeño margen tras recorrerlo de sobra, además de aumentar con su Pierce.
+Con esto me aseguro de que hay un límite de proyectiles en pantalla que no suponga un bajón de rendimiento.
+
+![rango](https://user-images.githubusercontent.com/72341309/123550820-93721100-d76f-11eb-86d0-d850f1ec37f0.png)
+
