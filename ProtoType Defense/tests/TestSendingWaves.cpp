@@ -38,13 +38,13 @@ void TestSendingWaves::onRender()
 	Renderer::setClearColor();
 
 	// ORTONORMAL
-	proj = ortho(0.f, (float)windowWidth, 0.f, (float)windowHeight, 1.f, 2000.f);
+	proj = ortho(0.f, (GLfloat)windowWidth, 0.f, (GLfloat)windowHeight, 1.f, 2000.f);
 	view = lookAt(glm::vec3(0.0f, 0.0f, 250.f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
 	// PERSPECTIVE
 	if (viewPerspective)
 	{
-		proj = perspective(90.f, (float)windowWidth / (float)windowHeight, 1.f, 2000.f);
+		proj = perspective(90.f, (GLfloat)windowWidth / (GLfloat)windowHeight, 1.f, 2000.f);
 		view = lookAt(glm::vec3(windowCenterX - 250.f, windowCenterY + 250.f, 250.f), glm::vec3(windowCenterX - 210.f, windowCenterY, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	}
 
