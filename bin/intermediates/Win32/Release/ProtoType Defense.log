@@ -1,0 +1,704 @@
+﻿  pch.cpp
+  InputManager.cpp
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Entity.h(14,8): warning C4244: 'argumento': conversión de 'int' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Entity.h(16,8): warning C4244: 'argumento': conversión de 'int' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Entity.h(18,8): warning C4244: 'argumento': conversión de 'int' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Map\Path.h(13,28): warning C4244: 'argumento': conversión de 'const T' a 'const _Kty'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              _Kty=int
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Map\Path.h(13,52): warning C4244: 'argumento': conversión de 'const T' a 'const _Kty'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              _Kty=int
+          ]
+  AudioManager.cpp
+  Song.cpp
+  Sound.cpp
+  imgui.cpp
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\minwindef.h(130,1): warning C4005: 'APIENTRY': redefinición de macro
+C:\VS\Projects\ProtoType Defense\Dependencies\GLFW\include\GLFW\glfw3.h(123): message : vea la definición anterior de 'APIENTRY'
+  imgui_demo.cpp
+  imgui_draw.cpp
+  imgui_impl_glfw.cpp
+  imgui_impl_opengl3.cpp
+  imgui_tables.cpp
+  imgui_widgets.cpp
+  HealthBar.cpp
+  Round.cpp
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Entity.h(14,8): warning C4244: 'argumento': conversión de 'int' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Entity.h(16,8): warning C4244: 'argumento': conversión de 'int' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Entity.h(18,8): warning C4244: 'argumento': conversión de 'int' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Map\Path.h(13,28): warning C4244: 'argumento': conversión de 'const T' a 'const _Kty'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              _Kty=int
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Map\Path.h(13,52): warning C4244: 'argumento': conversión de 'const T' a 'const _Kty'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              _Kty=int
+          ]
+  Map.cpp
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Entity.h(14,8): warning C4244: 'argumento': conversión de 'int' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Entity.h(16,8): warning C4244: 'argumento': conversión de 'int' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Entity.h(18,8): warning C4244: 'argumento': conversión de 'int' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Map\Path.h(13,28): warning C4244: 'argumento': conversión de 'const T' a 'const _Kty'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              _Kty=int
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Map\Path.h(13,52): warning C4244: 'argumento': conversión de 'const T' a 'const _Kty'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              _Kty=int
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Map\Map.cpp(22,50): warning C4244: 'inicializando': conversión de 'T' a 'unsigned int'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Map\Map.cpp(23,51): warning C4244: 'inicializando': conversión de 'T' a 'unsigned int'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Map\Map.cpp(37,8): warning C4244: 'inicializando': conversión de 'float' a 'int'; posible pérdida de datos
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Map\Map.cpp(38,31): warning C4244: 'inicializando': conversión de 'T' a 'int'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Map\Map.cpp(38,17): warning C4244: 'inicializando': conversión de 'T' a 'const int'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Map\Map.cpp(53,21): warning C4244: 'inicializando': conversión de 'float' a 'int'; posible pérdida de datos
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Map\Map.cpp(53,14): warning C4244: 'inicializando': conversión de 'float' a 'const int'; posible pérdida de datos
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Map\Map.cpp(54,31): warning C4244: 'inicializando': conversión de 'T' a 'int'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Map\Map.cpp(54,17): warning C4244: 'inicializando': conversión de 'T' a 'const int'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Map\Map.cpp(55,31): warning C4244: 'inicializando': conversión de 'T' a 'int'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Map\Map.cpp(55,17): warning C4244: 'inicializando': conversión de 'T' a 'const int'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Map\Map.cpp(56,13): warning C4244: 'inicializando': conversión de 'T' a 'int'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Map\Map.cpp(68,11): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Map\Map.cpp(69,31): warning C4244: 'inicializando': conversión de 'T' a 'int'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Map\Map.cpp(69,17): warning C4244: 'inicializando': conversión de 'T' a 'const int'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Map\Map.cpp(98,67): warning C4244: 'argumento': conversión de 'T' a 'uint32_t'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Map\Map.cpp(102,52): warning C4244: 'argumento': conversión de 'T' a 'uint32_t'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Map\Map.cpp(201,47): warning C4244: 'inicializando': conversión de 'T' a 'uint32_t'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Map\Map.cpp(201,25): warning C4244: 'inicializando': conversión de 'T' a 'const uint32_t'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+  Path.cpp
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Entity.h(14,8): warning C4244: 'argumento': conversión de 'int' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Entity.h(16,8): warning C4244: 'argumento': conversión de 'int' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Entity.h(18,8): warning C4244: 'argumento': conversión de 'int' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Map\Path.h(13,28): warning C4244: 'argumento': conversión de 'const T' a 'const _Kty'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              _Kty=int
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Map\Path.h(13,52): warning C4244: 'argumento': conversión de 'const T' a 'const _Kty'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              _Kty=int
+          ]
+  GameController.cpp
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Entity.h(14,8): warning C4244: 'argumento': conversión de 'int' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Entity.h(16,8): warning C4244: 'argumento': conversión de 'int' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Entity.h(18,8): warning C4244: 'argumento': conversión de 'int' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Map\Path.h(13,28): warning C4244: 'argumento': conversión de 'const T' a 'const _Kty'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              _Kty=int
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Map\Path.h(13,52): warning C4244: 'argumento': conversión de 'const T' a 'const _Kty'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              _Kty=int
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\GameController.cpp(15,33): warning C4305: 'inicializando': truncamiento de 'double' a 'float'
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\GameController.cpp(82,33): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
+  ShaderManager.cpp
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\OpenGL\ShaderManager.cpp(33,20): warning C4018: '<': no coinciden signed/unsigned
+  ImGuiManager.cpp
+  Enemy.cpp
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Entity.h(14,8): warning C4244: 'argumento': conversión de 'int' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Entity.h(16,8): warning C4244: 'argumento': conversión de 'int' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Entity.h(18,8): warning C4244: 'argumento': conversión de 'int' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Map\Path.h(13,28): warning C4244: 'argumento': conversión de 'const T' a 'const _Kty'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              _Kty=int
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Map\Path.h(13,52): warning C4244: 'argumento': conversión de 'const T' a 'const _Kty'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              _Kty=int
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Objects\Enemy.cpp(45,12): warning C4244: '=': conversión de 'int' a 'float'; posible pérdida de datos
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Objects\Enemy.cpp(47,16): warning C4244: '-=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Objects\Enemy.cpp(76,30): warning C4244: 'inicializando': conversión de 'float' a 'int'; posible pérdida de datos
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Objects\Enemy.cpp(76,23): warning C4244: 'inicializando': conversión de 'float' a 'const int'; posible pérdida de datos
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Objects\Enemy.cpp(81,24): warning C4244: 'argumento': conversión de 'time_t' a 'unsigned int'; posible pérdida de datos
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Objects\Enemy.cpp(110,20): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
+  Hitbox.cpp
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Hitbox.cpp(134,22): warning C4244: '+=': conversión de 'double' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Hitbox.cpp(135,22): warning C4244: '+=': conversión de 'double' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+  Compilando...
+  Entity.cpp
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Entity.h(14,8): warning C4244: 'argumento': conversión de 'int' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Entity.h(16,8): warning C4244: 'argumento': conversión de 'int' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Entity.h(18,8): warning C4244: 'argumento': conversión de 'int' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Entity.cpp(18,89): warning C4244: 'argumento': conversión de 'const double' a 'float'; posible pérdida de datos
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Entity.cpp(28,74): warning C4244: 'argumento': conversión de 'const double' a 'float'; posible pérdida de datos
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Entity.cpp(28,113): warning C4244: 'argumento': conversión de 'const double' a 'float'; posible pérdida de datos
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Entity.cpp(56,21): warning C4244: '+=': conversión de 'double' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Entity.cpp(57,21): warning C4244: '+=': conversión de 'double' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Entity.cpp(79,23): warning C4244: 'argumento': conversión de 'double' a 'const float'; posible pérdida de datos
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Entity.cpp(97,23): warning C4244: 'argumento': conversión de 'double' a 'const float'; posible pérdida de datos
+  Platform.cpp
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Entity.h(14,8): warning C4244: 'argumento': conversión de 'int' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Entity.h(16,8): warning C4244: 'argumento': conversión de 'int' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Entity.h(18,8): warning C4244: 'argumento': conversión de 'int' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+  Sprite.cpp
+  Shader.cpp
+  IndexBuffer.cpp
+  Projectile.cpp
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Entity.h(14,8): warning C4244: 'argumento': conversión de 'int' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Entity.h(16,8): warning C4244: 'argumento': conversión de 'int' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Entity.h(18,8): warning C4244: 'argumento': conversión de 'int' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Objects\Projectile.cpp(15,77): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Objects\Projectile.cpp(109,64): warning C4244: '+=': conversión de 'double' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Objects\Projectile.cpp(110,64): warning C4244: '+=': conversión de 'double' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+  Main.cpp
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Entity.h(14,8): warning C4244: 'argumento': conversión de 'int' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Entity.h(16,8): warning C4244: 'argumento': conversión de 'int' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Entity.h(18,8): warning C4244: 'argumento': conversión de 'int' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Map\Path.h(13,28): warning C4244: 'argumento': conversión de 'const T' a 'const _Kty'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              _Kty=int
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Map\Path.h(13,52): warning C4244: 'argumento': conversión de 'const T' a 'const _Kty'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              _Kty=int
+          ]
+  Tower.cpp
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Entity.h(14,8): warning C4244: 'argumento': conversión de 'int' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Entity.h(16,8): warning C4244: 'argumento': conversión de 'int' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Entity.h(18,8): warning C4244: 'argumento': conversión de 'int' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Map\Path.h(13,28): warning C4244: 'argumento': conversión de 'const T' a 'const _Kty'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              _Kty=int
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Map\Path.h(13,52): warning C4244: 'argumento': conversión de 'const T' a 'const _Kty'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              _Kty=int
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Objects\Tower.cpp(176,64): warning C4244: '+=': conversión de 'double' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Objects\Tower.cpp(177,64): warning C4244: '+=': conversión de 'double' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Objects\Tower.cpp(189,17): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
+  Renderer.cpp
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\OpenGL\Renderer.cpp(143,14): warning C4244: 'argumento': conversión de 'int' a 'GLfloat'; posible pérdida de datos
+  VertexBuffer.cpp
+  VertexArray.cpp
+  Texture.cpp
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\OpenGL\Texture.cpp(29,17): warning C4244: '=': conversión de 'int' a 'float'; posible pérdida de datos
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\OpenGL\Texture.cpp(29,37): warning C4244: '=': conversión de 'int' a 'float'; posible pérdida de datos
+  TestAudio.cpp
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Entity.h(14,8): warning C4244: 'argumento': conversión de 'int' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Entity.h(16,8): warning C4244: 'argumento': conversión de 'int' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Entity.h(18,8): warning C4244: 'argumento': conversión de 'int' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Map\Path.h(13,28): warning C4244: 'argumento': conversión de 'const T' a 'const _Kty'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              _Kty=int
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Map\Path.h(13,52): warning C4244: 'argumento': conversión de 'const T' a 'const _Kty'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              _Kty=int
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\tests\TestAudio.cpp(53,32): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
+  TestManager.cpp
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Entity.h(14,8): warning C4244: 'argumento': conversión de 'int' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Entity.h(16,8): warning C4244: 'argumento': conversión de 'int' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Entity.h(18,8): warning C4244: 'argumento': conversión de 'int' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Map\Path.h(13,28): warning C4244: 'argumento': conversión de 'const T' a 'const _Kty'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              _Kty=int
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Map\Path.h(13,52): warning C4244: 'argumento': conversión de 'const T' a 'const _Kty'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              _Kty=int
+          ]
+  Test.cpp
+  TestDynamicBuffer.cpp
+  TestSendingWaves.cpp
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Entity.h(14,8): warning C4244: 'argumento': conversión de 'int' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Entity.h(16,8): warning C4244: 'argumento': conversión de 'int' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Entity.h(18,8): warning C4244: 'argumento': conversión de 'int' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Map\Path.h(13,28): warning C4244: 'argumento': conversión de 'const T' a 'const _Kty'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              _Kty=int
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Map\Path.h(13,52): warning C4244: 'argumento': conversión de 'const T' a 'const _Kty'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              _Kty=int
+          ]
+  TestShootDeltaTime.cpp
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Entity.h(14,8): warning C4244: 'argumento': conversión de 'int' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Entity.h(16,8): warning C4244: 'argumento': conversión de 'int' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Entity.h(18,8): warning C4244: 'argumento': conversión de 'int' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Map\Path.h(13,28): warning C4244: 'argumento': conversión de 'const T' a 'const _Kty'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              _Kty=int
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Map\Path.h(13,52): warning C4244: 'argumento': conversión de 'const T' a 'const _Kty'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              _Kty=int
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\tests\TestShootDeltaTime.cpp(27,18): warning C4244: '=': conversión de 'const int' a 'float'; posible pérdida de datos
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\tests\TestShootDeltaTime.cpp(42,29): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
+  TestClearColor.cpp
+  TestBatchRendering.cpp
+  Compilando...
+  WindowManager.cpp
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Entity.h(14,8): warning C4244: 'argumento': conversión de 'int' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Entity.h(16,8): warning C4244: 'argumento': conversión de 'int' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Entity.h(18,8): warning C4244: 'argumento': conversión de 'int' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Map\Path.h(13,28): warning C4244: 'argumento': conversión de 'const T' a 'const _Kty'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              _Kty=int
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Map\Path.h(13,52): warning C4244: 'argumento': conversión de 'const T' a 'const _Kty'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              _Kty=int
+          ]
+  TextureManager.cpp
+  Tile.cpp
+  Wave.cpp
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Entity.h(14,8): warning C4244: 'argumento': conversión de 'int' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Entity.h(16,8): warning C4244: 'argumento': conversión de 'int' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Structure\Entity.h(18,8): warning C4244: 'argumento': conversión de 'int' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Map\Path.h(13,28): warning C4244: 'argumento': conversión de 'const T' a 'const _Kty'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              _Kty=int
+          ]
+C:\VS\Projects\ProtoType Defense\ProtoType Defense\src\Game\Map\Path.h(13,52): warning C4244: 'argumento': conversión de 'const T' a 'const _Kty'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              _Kty=int
+          ]
+LINK : warning LNK4098: la biblioteca predeterminada'LIBCMT' entra en conflicto con otras bibliotecas; use la biblioteca /NODEFAULTLIB:biblioteca
+  Generando código
+  Previous IPDB was built with incompatible compiler, fall back to full compilation.
+  All 4382 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Generación de código finalizada
+glew32s.lib(glew.obj) : warning LNK4099: no se encontró PDB '' con 'glew32s.lib(glew.obj)' o en ''; se vinculará el objeto sin tener en cuenta información de depuración
+  ProtoType Defense.vcxproj -> C:\VS\Projects\ProtoType Defense\bin\Win32\Release\ProtoType Defense.exe

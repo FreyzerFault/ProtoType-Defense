@@ -1,0 +1,2 @@
+C:/VS/Projects/ProtoType Defense/Dependencies/glm/out/build/x64-Debug (predeterminado)/CMakeFiles/edit_cache.dir
+C:/VS/Projects/ProtoType Defense/Dependencies/glm/out/build/x64-Debug (predeterminado)/CMakeFiles/rebuild_cache.dir
